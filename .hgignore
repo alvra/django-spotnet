@@ -1,0 +1,7 @@
+syntax: glob
+db_settings.py
+*.pyc
+*~
+pySpotnet
+testing
+
