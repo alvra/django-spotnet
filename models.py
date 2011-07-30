@@ -177,6 +177,9 @@ class SpotnetPost(models.Model):
             if save_db:
                 self.save()
 
+    def get_nzb_file(self):
+        pass
+
     def get_nzb_content(self):
         # connet to server
         news_server = get_news_server(0)
