@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-30 03:36+0200\n"
+"PO-Revision-Date: 2011-03-21 21:14\n"
+"Last-Translator: Alexander van Ratingen <alexandervanratingen@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.5.6\n"
+
+#: models.py:105
+msgid "Image"
+msgstr "Image"
+
+#: models.py:106
+msgid "Sound"
+msgstr "Sound"
+
+#: models.py:107
+msgid "Game"
+msgstr "Game"
+
+#: models.py:108
+msgid "Application"
+msgstr "Application"
+
+#: models.py:118
+msgid "Spotted"
+msgstr "Spotted"
+
+#: models.py:119
+msgid "Queued"
+msgstr "Queued"
+
+#: models.py:120
+msgid "Downloading"
+msgstr "Downloading"
+
+#: models.py:121
+msgid "Downloaded"
+msgstr "Downloaded"
+
+#: templates/spotnet_index.html:6
+msgid "Spotnet"
+msgstr "Spotnet"
+
+#: templates/spotnet_index.html:9
+msgid "Filter category"
+msgstr "Filter category"
+
+#: templates/spotnet_index.html:21
+msgid "Title"
+msgstr "Title"
+
+#: templates/spotnet_index.html:22
+msgid "Poster"
+msgstr "Poster"
+
+#: templates/spotnet_index.html:23 templates/spotnet_viewpost.html:21
+msgid "Category"
+msgstr "Category"
+
+#: templates/spotnet_index.html:24
+msgid "Posted"
+msgstr "Posted"
+
+#: templates/spotnet_index.html:25
+msgid "State"
+msgstr "State"
+
+#: templates/spotnet_index.html:40
+msgid "No posts in database!"
+msgstr "No posts in database!"
+
+#: templates/spotnet_index.html:40
+msgid "Try updating."
+msgstr "Try updating."
+
+#: templates/spotnet_index.html:47 templates/spotnet_viewpost.html:44
+msgid "Download"
+msgstr "Download"
+
+#: templates/spotnet_index.html:47
+msgid "Delete"
+msgstr "Delete"
+
+#: templates/spotnet_paginate.html:5 templates/spotnet_paginate.html.py:7
+#: templates/spotnet_paginate_full.html:5
+#: templates/spotnet_paginate_full.html:7
+msgid "Previous"
+msgstr "Previous"
+
+#: templates/spotnet_paginate.html:17 templates/spotnet_paginate.html.py:19
+#: templates/spotnet_paginate_full.html:17
+#: templates/spotnet_paginate_full.html:19
+msgid "Next"
+msgstr "Next"
+
+#: templates/spotnet_paginate.html:22
+msgid "Objects"
+msgstr "Objects"
+
+#: templates/spotnet_viewpost.html:6
+msgid "View post"
+msgstr "View post"
+
+#: templates/spotnet_viewpost.html:10
+msgid "Posted by"
+msgstr "Posted by"
+
+#: templates/spotnet_viewpost.html:10
+msgid "On"
+msgstr "On"
+
+#: templates/spotnet_viewpost.html:16
+msgid "Tag"
+msgstr "Tag"
+
+#: templates/spotnet_viewpost.html:25
+msgid "Subcategories"
+msgstr "Subcategories"
+
+#: templates/spotnet_viewpost.html:30
+msgid "Website"
+msgstr "Website"
+
+#: templates/spotnet_viewpost.html:35
+msgid "Size"
+msgstr "Size"
+
+#: templates/spotnet_viewpost.html:39
+msgid "Has nzb"
+msgstr "Has nzb"
+
+#: templates/spotnet_viewpost.html:40
+msgid "True"
+msgstr "True"
+
+#: templates/spotnet_viewpost.html:40
+msgid "False"
+msgstr "False"
+
+#: templates/spotnet_viewpost.html:47
+msgid "Comments"
+msgstr "Comments"
+
+#: templates/spotnet_viewpost.html:52
+msgid "No comments yet!"
+msgstr "No comments yet!"
+
+#: templates/spotnet_viewpost.html:54
+msgid "Post comment"
+msgstr "Post comment"

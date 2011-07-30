@@ -1,0 +1,23 @@
+{% load i18n %}
+<div class="pagination">
+  <ul>
+{% if page.has_previous %}
+    <li class="walk"><a href="?page={{ page.previous_page_number }}">{% trans "Previous" %}</a></li>
+{% else %}
+    <li class="disable"><span>{% trans "Previous" %}</span></li>
+{% endif %}
+{% for n in page.paginator.page_range %}
+{% if n = page.number %}
+    <li class="current"><a href="?page={{ n }}">{{ n }}</a></li>
+{% else %}
+    <li><a href="?page={{ n }}">{{ n }}</a></li>
+{% endif %}
+{% endfor %}
+{% if page.has_next %}
+    <li class="walk"><a href="?page={{ page.next_page_number }}">{% trans "Next" %}</a></li>
+{% else %}
+    <li class="disable"><span>{% trans "Next" %}</span></li>
+{% endif %}
+  </ul>
+  {% trans "Objects" %}: {{ page.paginator.count }}
+</div>

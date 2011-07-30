@@ -1,0 +1,22 @@
+{% load i18n %}
+<div class="pagination">
+  <ul>
+{% if page.has_previous %}
+    <li class="walk"><a href="">{% trans "Previous" %}</a></li>
+{% else %}
+    <li class="disable"><span>{% trans "Previous" %}</span></li>
+{% endif %}
+{% for n in paginator.page_range %}
+{% if n = page.number %}
+    <li class="current"><a href="">{{ n }}</a></li>
+{% else %}
+    <li><a href="">{{ n }}</a></li>
+{% endif %}
+{% endfor %}
+{% if page.has_next %}
+    <li class="walk"><a href="">{% trans "Next" %}</a></li>
+{% else %}
+    <li class="disable"><span>{% trans "Next" %}</span></li>
+{% endif %}
+  </ul>
+</div>

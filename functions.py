@@ -1,5 +1,7 @@
-from os import sleep
+from time import sleep
 from django.conf import settings
+from django.db.models import Max
+from django.db import IntegrityError
 from pySpotnet.nntplib import NNTP
 from pySpotnet.SpotFetcher import SpotFetcher
 
@@ -13,7 +15,7 @@ import downloadserver
 #
 # EXTENSIVE TODO'S:
 # * pevent multiple simultanious updates
-# * 
+# * allow omitting some of the settings in the settings file
 #
 
 
@@ -40,13 +42,13 @@ def get_newsserver():
     )
 
 def get_max_stored_spotid():
-    "Returns an integer indicating the maximum known post id in the db"
+    "Returns an integer indicating the maximum known post id in the db, or None if no posts found"
     try:
-        max_spotid = SpotnetPost.objects.aggregate(Avg('max'))['max']
+        max_spotid = SpotnetPost.objects.aggregate(m=Max('spotid'))['m']   # TODO: is this correct?
     except:
         return None
     else:
-        assert isinstance(max_spotid, (int,long))   # DEBUG
+        assert isinstance(max_spotid, (int,long)) or max_spotid is None   # DEBUG
         return max_spotid
 
 def spotid_is_stored(spotid):
@@ -79,14 +81,19 @@ def get_downloadserver(name=None):
 
 def add_spot(spot):
     "Adds a pySpotnet.Spot instance to the db."
-    snp = SpotnetPost.from_spot(spot)
-    snp.save()
+    # TODO: catch errors for dupliaction of the unique keys (happens!)
+    try:
+        snp = SpotnetPost.from_spot(spot)
+        snp.save()
+        return snp
+    except IntegrityError:   # probably duplicate entry (for key 'messageid_index')
+        return None
 
 def try_add_spot_by_id(spotid, newsserver=None):
     "Tries to add spot with given id, returns True on success."
     if newsserver is None:
         newsserver = get_newsserver()
-    spot_fetcher = pySpotnet.SpotFetcher(newsserver)
+    spot_fetcher = SpotFetcher(newsserver)
     try:
         spot = spot_fetcher(spotid)
     except:   # TODO: insert expected base exception
@@ -104,13 +111,27 @@ def update(thorough=False):
 def update_sloppy(newsserver=None):
     if newsserver is None:
         newsserver = get_newsserver()
-    min_spotid = settings.SPOTNET_UPDATE_MINPOST
-    spot_fetcher = pySpotnet.SpotFetcher(newsserver)
+    #min_spotid = settings.SPOTNET_UPDATE_MINPOST
+    min_spotid = get_max_stored_spotid()
+    if min_spotid is None:
+        min_spotid = settings.SPOTNET_UPDATE_MINPOST
+    else:
+        min_spotid += 1
+
+    spot_fetcher = SpotFetcher(newsserver)
     spots_added = 0
-    for h in spot_fetcher.get_spot_headers(min_spotid, None):
-        spot = spot_fetcher.get_spot(h.message_id)
-        add_spot(spot)
-        spots_added += 1
+    #for h in spot_fetcher.get_spot_headers(min_spotid, None):
+    for h in spot_fetcher.get_spot_headers(1, 200000000):
+    #for h in spot_fetcher.get_spot_headers(1, 100000):
+        try:
+            spot = spot_fetcher.get_spot(h.message_id)
+        except:   # TODO: insert expected base exception
+            pass
+        else:
+            if spot is not None:
+                add_spot(spot)
+                spots_added += 1
+                sleep(DBITEMS_ITERATE_SLEEPTIME)
     return spots_added
 
 def update_thorough(newsserver=None):
