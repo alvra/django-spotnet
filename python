@@ -1,0 +1,1 @@
+from django_spotnet import test; test.main() ../manage.py shell

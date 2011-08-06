@@ -1,0 +1,59 @@
+{% extends "django_spotnet/base.html" %}
+{% load i18n %}
+
+
+
+{% block title %}{% trans "Spotnet" %}{% endblock %}
+
+{% block content %}
+<p>{% trans "Go" %}</p>
+<ul>
+  <li><a href="{% url spotnet:downloaded %}">{% trans "Downloaded" %}</a></li>
+  <li><a href="{% url spotnet:watchlist %}">{% trans "Watching" %}</a></li>
+  <li><a href="{% url spotnet:recommendations %}">{% trans "Recommended" %}</a></li>
+  <li><a href="{% url spotnet:recommendations_made %}">{% trans "Recommendations made" %}</a></li>
+</ul>
+
+
+{% include "django_spotnet/search_pane.html" %}
+
+
+<form action="" method="post">
+{% csrf_token %}
+<table class="selector">
+  <thead>
+    <tr>
+      <td></td>
+      <td>{% trans "Title" %}</td>
+      <td>{% trans "Poster" %}</td>
+      <td>{% trans "Category" %}</td>
+      <td>{% trans "Posted" %}</td>
+      <td>{% trans "State" %}</td>
+    </tr>
+  </thead>
+  <tbody>
+{% for post in page.object_list %}
+    <tr>
+      <td class="check">{{ post.checkbox }}</td>
+      <td><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></td>
+      <td>{{ post.poster }}</td>
+      <td>{{ post.get_category_display }}</td>
+      <td>{{ post.posted }}</td>
+      <td>{{ post.get_state_display }}</td>
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="6"><i>{% trans "No posts in database!" %}<br/>{% trans "Try updating." %}</i></td>
+    </tr>
+{% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="5">{{ page.object_list.action_selector }} <input type="submit" value="{% trans "Go" %}" /></td>
+    </tr>
+  </tfoot>
+</table>
+</form>
+{% include "django_spotnet/paginate.html" %}
+{% endblock %}

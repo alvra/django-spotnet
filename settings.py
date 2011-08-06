@@ -11,35 +11,36 @@ try:
 except AttributeError:
     raise ImproperlyConfigured("You haven't set the django-spotnet mandatory setting SPOTNET_SERVER_HOST.")
 
-SERVER_PORT          = getattr(settings, 'SPOTNET_SERVER_PORT',          119)
-SERVER_SSL           = getattr(settings, 'SPOTNET_SERVER_SSL',           False)
-SERVER_USERNAME      = getattr(settings, 'SPOTNET_SERVER_USERNAME',      None)
-SERVER_PASSWORD      = getattr(settings, 'SPOTNET_SERVER_PASSWORD',      None)
-SERVER_READERMODE    = getattr(settings, 'SPOTNET_SERVER_READERMODE',    False)
+SERVER_PORT            = getattr(settings, 'SPOTNET_SERVER_PORT',            119)
+SERVER_SSL             = getattr(settings, 'SPOTNET_SERVER_SSL',             False)
+SERVER_USERNAME        = getattr(settings, 'SPOTNET_SERVER_USERNAME',        None)
+SERVER_PASSWORD        = getattr(settings, 'SPOTNET_SERVER_PASSWORD',        None)
+SERVER_READERMODE      = getattr(settings, 'SPOTNET_SERVER_READERMODE',      False)
 
-UPDATE_MINPOST       = getattr(settings, 'SPOTNET_UPDATE_MINPOST',       None)
-UPDATE_BULK_COUNT    = getattr(settings, 'SPOTNET_UPDATE_BULK_COUNT',    1000)
-UPDATE_GROUPS        = getattr(settings, 'SPOTNET_UPDATE_GROUPS',        ('free.pt', 'spot.net', ))
-UPDATE_ALLOW_INPAGE  = getattr(settings, 'SPOTNET_UPDATE_ALLOW_INPAGE',  True)
-UPDATE_LAST_STORAGE  = getattr(settings, 'SPOTNET_UPDATE_LAST_STORAGE',  False)
+UPDATE_MINPOST         = getattr(settings, 'SPOTNET_UPDATE_MINPOST',         None)
+UPDATE_BULK_COUNT      = getattr(settings, 'SPOTNET_UPDATE_BULK_COUNT',      1000)
+UPDATE_GROUPS          = getattr(settings, 'SPOTNET_UPDATE_GROUPS',          ('free.pt', 'spot.net', ))
+UPDATE_COMMENT_GROUPS  = getattr(settings, 'SPOTNET_UPDATE_COMMENT_GROUPS',  ('free.usenet', ))
+UPDATE_ALLOW_INPAGE    = getattr(settings, 'SPOTNET_UPDATE_ALLOW_INPAGE',    True)
+UPDATE_LAST_STORAGE    = getattr(settings, 'SPOTNET_UPDATE_LAST_STORAGE',    False)
 
-CLEANUP_MINAGE       = getattr(settings, 'SPOTNET_CLEANUP_MINAGE',       1999)
-CLEANUP_ALLOW_INPAGE = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE', True)
+CLEANUP_MINAGE         = getattr(settings, 'SPOTNET_CLEANUP_MINAGE',         1999)
+CLEANUP_ALLOW_INPAGE   = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE',   True)
 
-POST_PER_PAGE        = getattr(settings, 'SPOTNET_POST_PER_PAGE',        30)
-POST_LIST_ORPHANS    = getattr(settings, 'POST_LIST_ORPHANS',            POST_PER_PAGE//5)
+POST_PER_PAGE          = getattr(settings, 'SPOTNET_POST_PER_PAGE',          30)
+POST_LIST_ORPHANS      = getattr(settings, 'POST_LIST_ORPHANS',              POST_PER_PAGE//5)
 
-ALLOW_NZB_UPLOAD     = getattr(settings, 'SPOTNET_ALLOW_NZB_UPLOAD',     True)
+ALLOW_NZB_UPLOAD       = getattr(settings, 'SPOTNET_ALLOW_NZB_UPLOAD',       True)
 
-ANONYMOUS_ACTION     = getattr(settings, 'SPOTNET_ANONYMOUS_ACTION',     '404')
+ANONYMOUS_ACTION       = getattr(settings, 'SPOTNET_ANONYMOUS_ACTION',       '404')
 
-USE_CELERY           = getattr(settings, 'SPOTNET_USE_CELERY',           False)
+USE_CELERY             = getattr(settings, 'SPOTNET_USE_CELERY',             False)
 
 
 
 # category settings
 
-CATEGORY_MAPPING     = getattr(settings, 'SPOTNET_CATEGORY_MAPPING',     {
+CATEGORY_MAPPING       = getattr(settings, 'SPOTNET_CATEGORY_MAPPING',     {
     1 : _('image'),
     2 : _('sound'),
     3 : _('game'),

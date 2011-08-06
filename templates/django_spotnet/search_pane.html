@@ -1,0 +1,41 @@
+{% load i18n %}
+
+<div id="search_pane">
+  <div id="search">
+    <span>{% trans "Search" %}</span>
+    <input type="text" name="" autofocus="autofocus" />
+  </div>
+
+  <div id="filter">
+    <span>{% trans "Filter category" %}</span>
+    <ul>
+{% if searcher.is_category_filtered %}
+      <li><a href="{{ searcher.unfilter_categories }}"><i>{% trans "All" %}</i></a></li>
+{% endif %}
+{% for search_url,search_title in searcher.single_category_filters %}
+{% if search_url %}
+      <li><a href="{{ search_url }}">{{ search_title }}</a></li>
+{% else %}
+      <li><b>{{ search_title }}</b></li>
+{% endif %}
+{% endfor %}
+    </ul>
+  </div>
+
+  <div id="filter">
+    <span>{% trans "Filter subcategory" %}</span>
+    <ul>
+{% if searcher.is_subcategory_filtered %}
+      <li><a href="{{ searcher.unfilter_subcategories }}"><i>{% trans "All" %}</i></a></li>
+{% endif %}
+{% for search_url,search_title in searcher.single_subcategory_filters %}
+{% if search_url %}
+      <li><a href="{{ search_url }}">{{ search_title }}</a></li>
+{% else %}
+      <li><b>{{ search_title }}</b></li>
+{% endif %}
+{% endfor %}
+    </ul>
+  </div>
+
+</div>

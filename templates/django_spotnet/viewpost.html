@@ -1,0 +1,91 @@
+{% extends "django_spotnet/base.html" %}
+{% load i18n %}
+
+
+
+{% block title %}{% trans "View post" %}{% endblock %}
+
+{% block content %}
+<h3>{{ post.title }}</h3>
+<p>{% trans "Posted by" %}: <i>{% if post.website %}<a href="{{ post.website }}">{{ post.poster }}</a>{% else %}{{ post.poster }}{% endif %}</i> {% trans "On" %}: <i>{{ post.posted }}</i></p>
+{% if post.image %}<a href="{{ post.image }}"><img src="{{ post.image }}" alt="{{ post.title }}" style="max-width:200px;float:right;clear:right;margin:0.5em 0 1.3em 1.4em;" /></a>{% endif %}
+<div class="spotdescription">{{ post.description_markup|linebreaks }}</div>
+<table>
+{% if post.tag %}
+  <tr>
+    <th>{% trans "Tag" %}</th>
+    <td>{{ post.tag }}</td>
+  </tr>
+{% endif %}
+  <tr>
+    <th>{% trans "Category" %}</th>
+    <td>{{ post.get_category_display }}</td>
+  </tr>
+{% if post.website %}
+  <tr>
+    <th>{% trans "Website" %}</th>
+    <td><a href="{{ post.website }}">{{ post.website }}</a></td>
+  </tr>
+{% endif %}
+  <tr>
+    <th>{% trans "Size" %}</th>
+    <td>{{ post.size|filesizeformat }}</td>
+  </tr>
+  <tr>
+    <th>{% trans "Subcategories" %}</th>
+    <td>{{ post.subcategory_codes }}</td>
+  </tr>
+  <tr>
+    <th>{% trans "Has nzb" %}</th>
+    <td>{% if post.has_nzb %}{% trans "True" %}{% else %}{% trans "False" %}{% endif %}</td>
+  </tr>
+</table>
+
+<h4>{% trans "Subcategories" %}</h4>
+<ul>
+{% for scat in post.subcategories %}
+{% if scat.is_valid %}
+  <li>{{ scat.main }}: {{ scat.type }} = {{ scat.sub }}</li>
+{% else %}
+  <li style="color:lightgray;">{{ scat.main }}: {{ scat.type }} = {{ scat.sub }}</li>
+{% endif %}
+{% empty %}
+  <li>{% trans "No subcategories" %}</li>
+{% endfor %}
+</ul>
+
+
+{% if not download.is_empty %}
+<div id="download_buttons">
+{% if download.has_default %}
+{% if download.has_others %}
+  <a href="{% url spotnet:download post.id %}" title="">{% trans "Download" %} &#9660;</a>
+{% else %}
+  <a href="{% url spotnet:download post.id %}" title="">{% trans "Download" %}</a>
+{% endif %}
+{% endif %}
+{% if download.has_others %}
+  <ul>
+{% if download.has_default %}
+{% with download.get_default as serverdownload %}
+    <li>{{ serverdownload.render }}</li>
+{% endwith %}
+{% endif %}
+{% for serverdownload in download.iter_others %}
+    <li>{{ serverdownload.render }}</li>
+{% endfor %}
+  </ul>
+{% endif %}
+</div>
+{% endif %}
+<hr/>
+<h3>{% trans "Comments" %}</h3>
+{% for comment in post.comments %}
+<h4>{{ comment.author }}</h4>
+<p>{{ comment.content }}</p>
+{% empty %}
+<p><i>{% trans "No comments yet!" %}</i></p>
+{% endfor %}
+<h3>{% trans "Post comment" %}</h3>
+{{ commentform }}
+{% endblock %}
