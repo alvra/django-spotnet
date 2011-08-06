@@ -12,41 +12,63 @@ no_server_description_avaiable_message = ugettext_lazy("No description given.")
 
 
 class DownloadError(Exception):
-    "An error occured while trying to download a spot"
-    pass
+    description = ugettext_lazy(u"An error occured while trying to download a spot")
+
+    def __init__(self, details=None):
+        self.details = details
+
+    def as_json_object(self):
+        return dict()
+
+    def as_json_object(self):
+        obj = dict(
+            description = self.description,
+            type = type(self).__name__,
+        )
+        if self.details is not None:
+            self.obj['details'] = self.details
+        obj.update(self.as_json_object())
+        return obj
+
+    def as_message(self):
+        ret = [
+            ugettext(u'Downloading failed'),
+            u':\n',
+            ugettext(u'Description'),
+            u':\n',
+            self.description,
+        ]
+        if self.details is not None:
+            ret.append(u'\n')
+            ret.append(ugettext(u'Details'))
+            ret.append(u':\n')
+            ret.append(self.details)
+        return u''.join(unicode(x) for x in ret)
 
 class ConfigurationError(DownloadError):
-    "An error in the configuration was detected"
-    pass
+    description = ugettext_lazy(u"An error in the configuration was detected")
 
 class ConnectionError(DownloadError):
-    "An error while connecting to the download server"
-    pass
+    description = ugettext_lazy(u"An error occured while connecting to the download server")
 
 class PermissionDeniedError(DownloadError):
-    "The requesting user was denied access to the download server"
-    pass
+    description = ugettext_lazy(u"The requesting user was denied access to the download server")
+
 class UnauthenticatedError(PermissionDeniedError):
-    "The requesting user was denied access to the download server because he/she is unauthenticated"
-    pass
+    description = ugettext_lazy(u"The requesting user was denied access to the download server because he/she is unauthenticated")
 
 class FsError(DownloadError):
-    "There was an error when reading/writing the filesystem"
-    pass
-class DiskFullError(FileError):
-    "The disk is full"
-    pass
+    description = ugettext_lazy(u"There was an error when reading/writing the filesystem")
+class DiskFullError(FsError):
+    description = ugettext_lazy(u"Downloading failed because the disk is full")
 
 class InvalidNzbError(DownloadError):
-    "The nzb file is invalid"
-    pass
+    description = ugettext_lazy(u"The nzb file is invalid")
 class EmptyNzbError(InvalidNzbError):
-    "The nzb file is an empty file"
-    pass
+    description = ugettext_lazy(u"The nzb file is an empty file")
 
 class UnhandledDownloadError(DownloadError):
-    "The DownloadServer instance failed to handle an exception"
-    pass
+    description = ugettext_lazy(u"The DownloadServer instance failed to handle an exception")
 
 
 
@@ -118,7 +140,7 @@ class DownloadServer(object):
 class DownloadManager(object):
     default_server_name = 'default'
 
-    def __init__(self, servers={})
+    def __init__(self, servers={}):
         self._servers = dict(servers)
 
     def add_server(self, name, server):
@@ -130,6 +152,9 @@ class DownloadManager(object):
     def has_servers(self):
         return len(self._servers) > 0
 
+    def has_default(self):
+        return self.default_server_name in self._servers
+
     def has_other_servers(self):
         "Returns true if there are any servers besides the default one"
         return len(self._servers) - int(self.default_server_name in self._servers) > 0
@@ -139,36 +164,37 @@ class DownloadManager(object):
 
     def get_default(self):
         if self.has_servers():
-            default = self.get_server(self.default_server_name)
-            if default is None:
-                return 
-            else:
-                return default
+            return self.get_server(self.default_server_name)
         else:
             return None
 
 
-    def get_server_verbose_name(self, server_name, server):
+    def get_server_verbose_name(self, server_name):
+        server = self.get_server(server_name)
         if server.verbose_name:
             return server.verbose_name
         else:
             return server_name.capitalize()
 
-    def get_server_description(self, server_name, server):
+    def get_server_description(self, server_name):
+        server = self.get_server(server_name)
         if server.description:
             return server.description
         else:
             return no_server_description_avaiable_message
 
+    def list_servers(self):
+        return self._servers.keys()
+
     def list_servers_verbose(self):
         "This yields tuples of (server_name, server_verbose_name)"
-        for server_name, server in self._servers.iteritems():
-            yield server_name, self.get_server_verbose_name(server_name, server)
+        for server_name in self._servers:
+            yield server_name, self.get_server_verbose_name(server_name)
 
     def list_servers_verbose_extensive(self):
         "This yields tuples of (server_name, server_verbose_name, server_description)"
-        for server_name, server in self._servers.iteritems():
-            yield server_name, self.get_server_verbose_name(server_name, server)
+        for server_name in self._servers:
+            yield server_name, self.get_server_verbose_name(server_name)
 
 
     def download_spot_base(self, spot, server):
@@ -199,7 +225,7 @@ class DownloadManager(object):
             server = self.get_server(server_name)
             assert server is not None, "Requested to download spot from unknown download server '%s'." % server_name
         return server.download_spot(spot)
-        
+
 
 
 

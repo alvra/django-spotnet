@@ -1,83 +1,26 @@
 from django.db import models
 from datetime import datetime
+from cStringIO import StringIO
 from django.contrib import admin
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from fields import StringSetField, NzbField, CategoryField, SubCategoryField
+from subcategories import Subcategory
 
 
 
 
-class StringSetField(models.CommaSeparatedIntegerField):
-    """A field that holds a set of strings.
-    Subclass of CommaSeparatedIntegerField since the internal storage is the same.
-    """
 
-    description = "A field that holds a set of strings"
-
-    __metaclass__ = models.SubfieldBase
-
-    def to_python(self, value):
-        # from a db value to a python object
-        if isinstance(value, (list, set, tuple)):
-            return list(value)
-        elif isinstance(value, basestring):
-            return value.split(',')
-        elif value is None:
-            return []
-        else:
-            raise TypeError("StringSetField.to_python got an invalid type!")
-
-    def get_prep_value(self, value):
-        # from a python object to a db value
-        if isinstance(value, (list, set, tuple)):
-            return ','.join(value)
-        elif isinstance(value, basestring):
-            return value
-        elif value is None:
-            return None
-        else:
-            raise TypeError("StringSetField.get_prep_value got an invalid type!")
+#
+# ID's ON THE SpotnetPost
+#       and where they come from...
+#
+# * id : the id of the post in our database (used in this app for views etc.)
+# * spotid : increasing number (differs per usenet server)
+# * message_id : unique message id used by the NNTP protocol
+#
 
 
-class NzbField(models.TextField):
-    __metaclass__ = models.SubfieldBase
-
-    def to_python(self, value):
-        # from a db value to a python object
-        if isinstance(value, (list, set, tuple)):
-            return list(value)
-        elif isinstance(value, basestring):
-            return value.split(',')
-        elif value is None:
-            return []
-        else:
-            raise TypeError("NzbField.to_python got an invalid type!")
-
-    def get_prep_value(self, value):
-        # from a python object to a db value
-        if isinstance(value, (list, set, tuple)):
-            return ','.join(value)
-        elif isinstance(value, basestring):
-            return value
-        elif value is None:
-            return None
-        else:
-            raise TypeError("NzbField.get_prep_value got an invalid type!")
-
-
-
-class CategoryField(models.CharField):
-    def __init__(self, *args, **kwargs):
-        return __init__(self, max_length=30, *args, choices=(
-            ('',''),
-        ), **kwargs)
-
-class SubCategoryField(StringSetField):
-    def __init__(self, *args, **kwargs):
-        return __init__(self, max_length=80, *args, choices=(
-            ('',''),
-        ), **kwargs)
-
-    
 
 
 
@@ -85,36 +28,40 @@ class SubCategoryField(StringSetField):
 # DATABASE INDEX FIELDS:
 # 
 # * id : primary key
-# * spotid : unique
+# * spotid : not unique (over multiple usenet servers)
 # * messageid : unique
-# * timestamp : ordering (not unique)
+# * posted : ordering (not unique)
 #
+
+
+
+
 
 class SpotnetPost(models.Model):
     # id # omesium db id
 
     # SPOTNET PARAMETERS
-    spotid = models.PositiveIntegerField(editable=False, null=False) # spotnet post id
+    #postnumber = models.PositiveIntegerField(editable=False, null=False) # spotnet post id
     messageid = models.CharField(max_length=80, editable=False, null=False) # spotnet message id ???
     poster = models.CharField(max_length=120, null=True)
     title = models.CharField(max_length=150, null=True)
     description = models.TextField(null=True)
     tag = models.CharField(max_length=100, null=True)
-    timestamp = models.PositiveIntegerField(null=True, db_index=True)
-    category = models.CharField(max_length=3, null=True, choices=(
-        ('01', _('Image')),
-        ('02', _('Sound')),
-        ('03', _('Game')),
-        ('04', _('Application')),
+    posted = models.DateTimeField(null=True, db_index=True)
+    category = models.PositiveSmallIntegerField(null=True, choices=(
+        (1, _('Image')),
+        (2, _('Sound')),
+        (3, _('Game')),
+        (4, _('Application')),
     ))
-    subcategory = StringSetField(max_length=250, editable=False, null=True) ###
+    subcategory_codes = StringSetField(max_length=250, editable=False, null=True, db_column='subcategories') ###
     image = models.CharField(max_length=250, null=True) ###
     website = models.CharField(max_length=150, null=True) ###
     size = models.BigIntegerField(max_length=33, null=True)
     nzb = NzbField(max_length=250, editable=False, null=True)
 
-    # OMESIUM PARAMETERS
-    state = models.SmallIntegerField(choices=(
+    # APP PARAMETERS
+    state = models.PositiveSmallIntegerField(choices=(
         (0, _('Spotted')),
         (1, _('Queued')),
         (2, _('Downloading')),
@@ -124,23 +71,24 @@ class SpotnetPost(models.Model):
 
     class Meta:
         db_table = 'spotnet_post'
-        unique_together = (('messageid',),('spotid',),)
+        verbose_name = _('spotnet post')
+        unique_together = (('messageid',),)
 
     @models.permalink
     def get_absolute_url(self):
         return ('spotnet:viewpost', (), dict(id=self.id))
 
+    def mark_downloaded(self, user):
+        try:
+            PostDownloaded.objects.create(
+                user = user,
+                post = self,
+            )
+        except IntegrityError:
+            pass
 
-    def _datetime_get(self):
-        return datetime.utcfromtimestamp(self.timestamp)
-    def _datetime_set(self, dt):
-        if isinstance(dt, (int,long,float)):
-            self.timestamp = datetime
-        elif isinstance(dt, datetime):
-            self.timestamp = float(dt.strftime('%s'))
-        else:
-            raise TypeError
-    datetime = property(_datetime_get, _datetime_set)
+    # public properties that can be used to list
+    # details about this spotnet post
 
     @property
     def has_nzb(self):
@@ -150,59 +98,154 @@ class SpotnetPost(models.Model):
     def description_markup(self):
         return self.description.replace('[br]','\n')
 
+    @property
+    def subcategories(self):
+        return (Subcategory(code) for code in self.subcategory_codes)
 
+    # this is the identifier that is passed to download servers
+    # it is intended to be one-to-one with posts,
+    # but also usefull as title for the download on servers
+
+    @property
+    def identifier(self):
+        return '%s: %s' % (self.pk, self.title)
+
+    @classmethod
+    def from_identifier(cls, identifier):
+        id,title = identifier.split(': ', 1)
+        try:
+            return cls.objects.get(id=id) # , title=title)
+        except cls.DoesNotExist:
+            return None
+
+    # methods for extracting the nzb file
+
+    def get_nzb_file(self, connection=None):
+        return StringIO(self.get_nzb_content(connection))
+
+    def get_nzb_content(self, connection=None):
+        if not connection:
+            # create a new connection and close it again
+            from connection import SpotnetConnection
+            connection = SpotnetConnection(connect=True)
+            nzb = connection.get_nzb(self)
+            connection.disconnect()
+            return nzb
+        else:
+            # leave the connection open
+            return connection.get_nzb(self)
+
+    # internal methods
 
     @classmethod
     def from_spot(cls, spot):
         return cls(
-            spotid = spot.id,
-            messageid = spot.message_id[0:80],
-            poster = spot.poster[0:120],
-            title = spot.title[0:150],
+            #postnumber = spot.postnumber,
+            messageid = spot.messageid[0:80],
+            poster = spot.poster,
+            title = spot.subject[0:150],
             description = spot.description,
             tag = spot.tag[0:100] if spot.tag else None,
-            timestamp = spot.timestamp,
-            category = spot.category,
-            subcategory = spot.subcategory[0:250],
-            image = spot.image[0:250],
+            posted = spot.posted,
+            category = spot.category if spot.category else None,
+            # limit the number of subcategories,
+            # some people give posts way too many subcategories
+            # with an length of 5 joined with comma's
+            # this gives an difference of 1 with the maximum lenght
+            subcategory_codes = spot.subcategories[0:SpotnetPost._meta.get_field('subcategory_codes').max_length//6],
+            image = spot.image[0:250] if spot.image else None,
             website = spot.website[0:150] if spot.website else None,
-            size = spot.size,
-            nzb = spot.nzb[0:250],
+            size = spot.size if spot.size else None,
+            nzb = spot.nzb,
         )
-
-    def download(self, save_db=True):
-        with open(os.path.join(download_nzb_folder,spotnet_post_to_filename(self)), 'w') as f:
-            f.write(self.get_nzb_content())
-            self.state = 1
-            if save_db:
-                self.save()
-
-    def get_nzb_file(self):
-        pass
-
-    def get_nzb_content(self):
-        # connet to server
-        news_server = get_news_server(0)
-        nzb_fetcher = pySpotnet.NZBFetcher(n)
-        # create spot
-        spot = pySpotnet.Spot(self.postid, self.messageid)
-        spot.nzb = self.nzb
-        # return nzb content
-        return nzb.get(spot)
-
-
 
 
 
 class SpotnetPostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'poster', 'tag', 'category', 'datetime')
+    list_display = ('title', 'poster', 'tag', 'category', 'posted')
     list_filter = ('category',)
-    ordering = ('-timestamp',)
+    ordering = ('-posted',)
     #search_fields = ['title','description','tag']   # disabled since it's way to slow
 
     inlines = []
     actions = []
 
-
 admin.site.register(SpotnetPost, SpotnetPostAdmin)
+
+
+
+
+
+
+
+class PostMarker(models.Model):
+    messageid = models.CharField(max_length=80, editable=False, null=False)
+    person_id = models.CharField(max_length=180, editable=False, null=False)
+    is_good = models.BooleanField(blank=True)
+
+    class Meta:
+        db_table = 'spotnet_marker'
+        verbose_name = _('watched post')
+        unique_together = (('messageid','person_id',),)
+
+    @property
+    def person(self):
+        t,pid = self.person_id[0], self.person_id[1:]
+        if t == '#':
+            return User.objects.get(pk=pid)
+        elif t == '$':
+            return pid
+        else:
+            raise ValueError("Invalid value found for PostMarker.person_id.")
+
+
+
+
+
+class PostWatch(models.Model):
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(SpotnetPost, related_name='watched')
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'spotnet_watch'
+        verbose_name = _('watched post')
+        unique_together = (('user','post',),)
+
+
+
+
+
+class PostDownloaded(models.Model):
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(SpotnetPost)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'spotnet_downloaded'
+        verbose_name = _('downloaded post')
+        unique_together = (('user','post',),)
+
+
+
+
+
+class PostRecommendation(models.Model):
+    from_user = models.ForeignKey(User, related_name='spotnet_recommended_from')
+    to_users = models.ManyToManyField(User, related_name='spotnet_recommended_to')
+    posts = models.ManyToManyField(SpotnetPost)
+    message = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    #@models.permalink
+    #def get_absolute_url(self):
+    #    return ('spotnet:viewpost', (), dict(id=self.post_id))
+
+    class Meta:
+        db_table = 'spotnet_recommendation'
+        verbose_name = _('recommended post')
+    
+
+
+
 

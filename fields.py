@@ -1,34 +1,90 @@
 from django.db import models
-from datetime import datetime
-from time import strftime
-#
-# Custom field types in here.
-#
-class UnixTimestampField(models.DateTimeField):
-    """UnixTimestampField: creates a DateTimeField that is represented on the
-    database as a TIMESTAMP field rather than the usual DATETIME field.
+
+
+
+
+
+class StringSetField(models.CommaSeparatedIntegerField):
+    """A field that holds a set of strings.
+    Subclass of CommaSeparatedIntegerField since the internal storage is the same.
     """
-    def __init__(self, null=False, blank=False, **kwargs):
-        super(UnixTimestampField, self).__init__(**kwargs)
-        # default for TIMESTAMP is NOT NULL unlike most fields, so we have to
-        # cheat a little:
-        self.blank, self.isnull = blank, null
-        self.null = True # To prevent the framework from shoving in "not null".
-        
-    def db_type(self):
-        typ=['TIMESTAMP']
-        # See above!
-        if self.isnull:
-            typ += ['NULL']
-        if self.auto_created:
-            typ += ['default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP']
-        return ' '.join(typ)
-    
+
+    description = "A field that holds a set of strings"
+
+    __metaclass__ = models.SubfieldBase
+
     def to_python(self, value):
-        return datetime.from_timestamp(value)
-    
-    def get_db_prep_value(self, value):
-        if value==None:
+        # from a db value to a python object
+        if isinstance(value, (list, set, tuple)):
+            return list(value)
+        elif isinstance(value, basestring):
+            return value.split(',')
+        elif value is None:
+            return []
+        else:
+            raise TypeError("StringSetField.to_python got an invalid type!")
+
+    def get_prep_value(self, value):
+        # from a python object to a db value
+        if isinstance(value, (list, set, tuple)):
+            return ','.join(value)
+        elif isinstance(value, basestring):
+            return value
+        elif value is None:
             return None
-        return strftime('%Y%m%d%H%M%S',value.timetuple()
+        else:
+            raise TypeError("StringSetField.get_prep_value got an invalid type!")
+
+
+
+
+
+class NzbField(models.TextField):
+    __metaclass__ = models.SubfieldBase
+
+    def to_python(self, value):
+        # from a db value to a python object
+        if isinstance(value, (list, set, tuple)):
+            return list(value)
+        elif isinstance(value, basestring):
+            return value.split(',')
+        elif value is None:
+            return []
+        else:
+            raise TypeError("NzbField.to_python got an invalid type!")
+
+    def get_prep_value(self, value):
+        # from a python object to a db value
+        if isinstance(value, (list, set, tuple)):
+            return ','.join(value)
+        elif isinstance(value, basestring):
+            return value
+        elif value is None:
+            return None
+        else:
+            raise TypeError("NzbField.get_prep_value got an invalid type!")
+
+
+
+
+
+class CategoryField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        return __init__(self, max_length=30, *args, choices=(
+            ('',''),
+        ), **kwargs)
+
+
+
+
+
+class SubCategoryField(StringSetField):
+    def __init__(self, *args, **kwargs):
+        return __init__(self, max_length=80, *args, choices=(
+            ('',''),
+        ), **kwargs)
+
+
+
+
 

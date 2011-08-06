@@ -2,162 +2,1474 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-30 03:36+0200\n"
-"PO-Revision-Date: 2011-03-21 21:16\n"
+"POT-Creation-Date: 2011-08-06 04:11+0200\n"
+"PO-Revision-Date: 2011-08-06 04:22\n"
 "Last-Translator: Alexander van Ratingen <alexandervanratingen@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: Nederlands\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Translated-Using: django-rosetta 0.5.6\n"
+"Language: Nederlands\n"
+"X-Translated-Using: django-rosetta 0.6.2\n"
 
-#: models.py:105
-msgid "Image"
-msgstr "Beeld"
-
-#: models.py:106
-msgid "Sound"
-msgstr "Geluid"
-
-#: models.py:107
-msgid "Game"
-msgstr "Spel"
-
-#: models.py:108
-msgid "Application"
-msgstr "Toepassing"
-
-#: models.py:118
-msgid "Spotted"
-msgstr "Gespot"
-
-#: models.py:119
-msgid "Queued"
-msgstr "In wachtrij"
-
-#: models.py:120
-msgid "Downloading"
-msgstr "Aan het downloaden"
-
-#: models.py:121
-msgid "Downloaded"
-msgstr "Gedownload"
-
-#: templates/spotnet_index.html:6
-msgid "Spotnet"
-msgstr "Spotnet"
-
-#: templates/spotnet_index.html:9
-msgid "Filter category"
-msgstr "Filter categorie"
-
-#: templates/spotnet_index.html:21
-msgid "Title"
-msgstr "Titel"
-
-#: templates/spotnet_index.html:22
-msgid "Poster"
-msgstr "Poster"
-
-#: templates/spotnet_index.html:23 templates/spotnet_viewpost.html:21
-msgid "Category"
-msgstr "Categorie"
-
-#: templates/spotnet_index.html:24
-msgid "Posted"
-msgstr "Gepost"
-
-#: templates/spotnet_index.html:25
-msgid "State"
-msgstr "Status"
-
-#: templates/spotnet_index.html:40
-msgid "No posts in database!"
-msgstr "Geen posts in de database!"
-
-#: templates/spotnet_index.html:40
-msgid "Try updating."
-msgstr "Probeer bij te werken."
-
-#: templates/spotnet_index.html:47 templates/spotnet_viewpost.html:44
-msgid "Download"
-msgstr "Downloaden"
-
-#: templates/spotnet_index.html:47
+#: actions.py:40 downloadserver/sabnzbd.py:26
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: templates/spotnet_paginate.html:5 templates/spotnet_paginate.html.py:7
-#: templates/spotnet_paginate_full.html:5
-#: templates/spotnet_paginate_full.html:7
+#: actions.py:128
+msgid "Download nzb files"
+msgstr "Download nzb bestanden"
+
+#: actions.py:148
+msgid "Could not download nzbs since no posts were selected."
+msgstr ""
+"Er konden geen nzbs gedownload worden omdat er geen post geselecteerd "
+"waren."
+
+#: actions.py:154 actions.py:162
+msgid "The post you requested to download nzbs from does not exist."
+msgstr "De posts die u wil wil downloaden bestaan niet."
+
+#: actions.py:169
+msgid ""
+"Could not download all nzbs for all posts you requested since some of "
+"them do not exists."
+msgstr ""
+"Niet voor alle posts konden nzbs worden gedownload omdat sommige ervan"
+" niet betsaan."
+
+#: downloading.py:8
+msgid "No description given."
+msgstr "Geen beschrijving gegeven."
+
+#: downloading.py:15
+msgid "An error occured while trying to download a spot"
+msgstr "Er is een fout opgetreden tijdens het downloaden van een spot"
+
+#: downloading.py:35
+msgid "Downloading failed"
+msgstr "Downloaden is mislukt"
+
+#: downloading.py:37
+msgid "Description"
+msgstr "Beschrijving"
+
+#: downloading.py:43
+msgid "Details"
+msgstr "Details"
+
+#: downloading.py:49
+msgid "An error in the configuration was detected"
+msgstr "Er is een fout in de configuratie ontdekt"
+
+#: downloading.py:52
+msgid "An error occured while connecting to the download server"
+msgstr ""
+"Er is een fout opgetreden tijdens het verbinding maken met de download"
+" server"
+
+#: downloading.py:55
+msgid "The requesting user was denied access to the download server"
+msgstr "De verzoekende gebruiker is toegang tot de download server geweigerd"
+
+#: downloading.py:58
+msgid ""
+"The requesting user was denied access to the download server because "
+"he/she is unauthenticated"
+msgstr ""
+"De verzoekende gebruiker is toegang geweigerd tot de download server "
+"omdat zijn/haar identiteit niet geverifieerd is"
+
+#: downloading.py:61
+msgid "There was an error when reading/writing the filesystem"
+msgstr "Een fout is opgetreden bij het lezen/schrijven van het bestandssysteem"
+
+#: downloading.py:63
+msgid "Downloading failed because the disk is full"
+msgstr "Downloaden is mislukt omdat de schijf vol is"
+
+#: downloading.py:66
+msgid "The nzb file is invalid"
+msgstr "Het nzb bestand is niet geldig"
+
+#: downloading.py:68
+msgid "The nzb file is an empty file"
+msgstr "Het nzb bestand is een leeg bestand"
+
+#: downloading.py:71
+msgid "The DownloadServer instance failed to handle an exception"
+msgstr "De DownloadServer instance heeft een fout niet behandeld"
+
+#: downloading.py:81
+#, python-format
+msgid ""
+"While connecting to the server, got an unexpected http response code: "
+"%s"
+msgstr ""
+"Tijdens het verbinding maken met de server is een onverwachte http "
+"response code ontvangen: %s"
+
+#: downloading.py:83
+#, python-format
+msgid "Error while connecting to the server: %s"
+msgstr "Fout tijdens het verbinden met de server: %s"
+
+#: downloading.py:85
+msgid "While connecting to the server, got nothing as response"
+msgstr "Tijdens het verbinding maken met de server is geen antwoord ontvangen"
+
+#: models.py:52
+msgid "Image"
+msgstr "Beeld"
+
+#: models.py:53
+msgid "Sound"
+msgstr "Geluid"
+
+#: models.py:54
+msgid "Game"
+msgstr "Spel"
+
+#: models.py:55
+msgid "Application"
+msgstr "Toepassing"
+
+#: models.py:65
+msgid "Spotted"
+msgstr "Gespot"
+
+#: models.py:66
+msgid "Queued"
+msgstr "In wachtrij"
+
+#: models.py:67
+msgid "Downloading"
+msgstr "Aan het downloaden"
+
+#: models.py:68 views.py:170 templates/django_spotnet/index.html:11
+#: templates/django_spotnet/list.html:11
+#: templates/django_spotnet/list_related.html:11
+msgid "Downloaded"
+msgstr "Gedownload"
+
+#: models.py:74
+msgid "spotnet post"
+msgstr "spotnet post"
+
+#: models.py:184 models.py:208
+msgid "watched post"
+msgstr ""
+
+#: models.py:222
+msgid "downloaded post"
+msgstr "gedownloade post"
+
+#: models.py:238
+msgid "recommended post"
+msgstr "aanbevolen post"
+
+#: settings.py:43
+msgid "image"
+msgstr "beeld"
+
+#: settings.py:44
+msgid "sound"
+msgstr "geluid"
+
+#: settings.py:45
+msgid "game"
+msgstr "spel"
+
+#: settings.py:46
+msgid "application"
+msgstr "toepassing"
+
+#: settings.py:52 settings.py:59 settings.py:67
+msgid "format"
+msgstr "formaat"
+
+#: settings.py:53 settings.py:60
+msgid "source"
+msgstr "bron"
+
+#: settings.py:54
+msgid "language"
+msgstr "taal"
+
+#: settings.py:55 settings.py:62 settings.py:68 settings.py:72
+msgid "genre"
+msgstr "genre"
+
+#: settings.py:56 settings.py:63
+msgid "type"
+msgstr "type"
+
+#: settings.py:61
+msgid "bitrate"
+msgstr "bitrate"
+
+#: settings.py:66 settings.py:71 settings.py:332
+msgid "platform"
+msgstr "platform"
+
+#: settings.py:80
+msgid "DivX"
+msgstr ""
+
+#: settings.py:81
+msgid "wmv"
+msgstr ""
+
+#: settings.py:82
+msgid "mpg"
+msgstr ""
+
+#: settings.py:83
+msgid "dvd5"
+msgstr ""
+
+#: settings.py:84
+msgid "other highdef"
+msgstr "ander hd"
+
+#: settings.py:85
+msgid "ePub"
+msgstr ""
+
+#: settings.py:86
+msgid "Blu-ray"
+msgstr ""
+
+#: settings.py:87
+msgid "hd-dvd"
+msgstr ""
+
+#: settings.py:88
+msgid "wmvhd"
+msgstr ""
+
+#: settings.py:89
+msgid "x264hd"
+msgstr ""
+
+#: settings.py:90
+msgid "dvd9"
+msgstr ""
+
+#: settings.py:93
+msgid "cam"
+msgstr ""
+
+#: settings.py:94
+msgid "(s)vcd"
+msgstr ""
+
+#: settings.py:95
+msgid "promo"
+msgstr ""
+
+#: settings.py:96 settings.py:317
+msgid "retail"
+msgstr "retail"
+
+#: settings.py:97
+msgid "tv"
+msgstr ""
+
+#: settings.py:99
+msgid "satellite"
+msgstr "satelliet"
+
+#: settings.py:100
+msgid "r5"
+msgstr ""
+
+#: settings.py:101
+msgid "telecine"
+msgstr ""
+
+#: settings.py:102
+msgid "telesync"
+msgstr ""
+
+#: settings.py:103
+msgid "scan"
+msgstr ""
+
+#: settings.py:106
+msgid "no subtitles"
+msgstr "geen ondertiteling"
+
+#: settings.py:107
+msgid "dutch subtitled (external)"
+msgstr "nederlands ondertiteld (extern)"
+
+#: settings.py:108
+msgid "dutch subtitled (internal)"
+msgstr "nederlands ondertiteld (intern)"
+
+#: settings.py:109
+msgid "english subtitled (external)"
+msgstr "engels ondertiteld (extern)"
+
+#: settings.py:110
+msgid "english subtitled (internal)"
+msgstr "engels ondertiteld (intern)"
+
+#: settings.py:112
+msgid "dutch subtitled (selectable)"
+msgstr "nederlands ondertiteld (instelbaar)"
+
+#: settings.py:113
+msgid "english subtitled (selectable)"
+msgstr "engels ondertiteld (instelbaar)"
+
+#: settings.py:116
+msgid "english spoken"
+msgstr "engels gesproken"
+
+#: settings.py:117
+msgid "dutch spoken"
+msgstr "nederlands gesproken"
+
+#: settings.py:118
+msgid "german spoken"
+msgstr "duits gesproken"
+
+#: settings.py:119
+msgid "french spoken"
+msgstr "frans gesproken"
+
+#: settings.py:120
+msgid "spanish spoken"
+msgstr "spaans gesproken"
+
+#: settings.py:123 settings.py:324
+msgid "action"
+msgstr "actie"
+
+#: settings.py:124 settings.py:325
+msgid "adventure"
+msgstr "avontuur"
+
+#: settings.py:125
+msgid "animation"
+msgstr "animatie"
+
+#: settings.py:126 settings.py:249
+msgid "cabaret"
+msgstr "cabaret"
+
+#: settings.py:127
+msgid "comedy"
+msgstr "komedie"
+
+#: settings.py:128
+msgid "crime"
+msgstr "misdaad"
+
+#: settings.py:129
+msgid "documentary"
+msgstr "documantaire"
+
+#: settings.py:130
+msgid "drama"
+msgstr "drama"
+
+#: settings.py:131 settings.py:341
+msgid "family"
+msgstr "familie"
+
+#: settings.py:132
+msgid "fantasy"
+msgstr "fantasie"
+
+#: settings.py:133
+msgid "art film"
+msgstr "filmhuis"
+
+#: settings.py:134
+msgid "television"
+msgstr "televisie"
+
+#: settings.py:135
+msgid "horror"
+msgstr "horror"
+
+#: settings.py:136 settings.py:340
+msgid "music"
+msgstr "muziek"
+
+#: settings.py:137
+msgid "musical"
+msgstr "musical"
+
+#: settings.py:138
+msgid "mystery"
+msgstr "mysterie"
+
+#: settings.py:139
+msgid "romance"
+msgstr "romantiek"
+
+#: settings.py:140
+msgid "science fiction"
+msgstr "science fictie"
+
+#: settings.py:141 settings.py:333
+msgid "sport"
+msgstr "sport"
+
+#: settings.py:142
+msgid "short movie"
+msgstr "korte film"
+
+#: settings.py:143
+msgid "thriller"
+msgstr "thriller"
+
+#: settings.py:144
+msgid "war"
+msgstr "oorlog"
+
+#: settings.py:145
+msgid "western"
+msgstr "western"
+
+#: settings.py:146
+msgid "erotica (hetero)"
+msgstr "erotiek (hetero)"
+
+#: settings.py:147
+msgid "erotica (gay men)"
+msgstr "erotiek (homo mannen)"
+
+#: settings.py:148
+msgid "erotica (gay women)"
+msgstr "erotiek (homo vrouwen)"
+
+#: settings.py:149
+msgid "erotica (bi)"
+msgstr "erotiek (bi)"
+
+#: settings.py:151 settings.py:269
+msgid "asian"
+msgstr "aziatisch"
+
+#: settings.py:152
+msgid "anime"
+msgstr "anime"
+
+#: settings.py:153
+msgid "cover"
+msgstr "cover"
+
+#: settings.py:154
+msgid "comic"
+msgstr "stripboek"
+
+#: settings.py:155
+msgid "cartoon"
+msgstr "cartoon"
+
+#: settings.py:156
+msgid "study"
+msgstr "studie"
+
+#: settings.py:157 settings.py:255 settings.py:334
+msgid "kids"
+msgstr "kinderen"
+
+#: settings.py:158
+msgid "business"
+msgstr "zakenlijk"
+
+#: settings.py:159
+msgid "economics"
+msgstr "economie"
+
+#: settings.py:160
+msgid "computer"
+msgstr "computer"
+
+#: settings.py:161
+msgid "hobby"
+msgstr "hobby"
+
+#: settings.py:162
+msgid "cooking"
+msgstr "koken"
+
+#: settings.py:163
+msgid "crafts"
+msgstr "knutselen"
+
+#: settings.py:164
+msgid "handwork"
+msgstr "handwerk"
+
+#: settings.py:165
+msgid "health"
+msgstr "gezondheid"
+
+#: settings.py:166
+msgid "history"
+msgstr "geschiedenis"
+
+#: settings.py:167
+msgid "psychology"
+msgstr "psychologie"
+
+#: settings.py:168
+msgid "journal"
+msgstr "dagblad"
+
+#: settings.py:169
+msgid "magazine"
+msgstr "tijdschrift"
+
+#: settings.py:170
+msgid "science"
+msgstr "wetenschap"
+
+#: settings.py:171
+msgid "women"
+msgstr "vrouwen"
+
+#: settings.py:172
+msgid "religion"
+msgstr "religie"
+
+#: settings.py:173
+msgid "novel"
+msgstr "roman"
+
+#: settings.py:174
+msgid "biography"
+msgstr "biografie"
+
+#: settings.py:175
+msgid "detective"
+msgstr "detective"
+
+#: settings.py:176
+msgid "animals"
+msgstr "dieren"
+
+#: settings.py:177
+msgid "humor"
+msgstr "humor"
+
+#: settings.py:178
+msgid "travel"
+msgstr "reizen"
+
+#: settings.py:179
+msgid "true events"
+msgstr "waargebeurd"
+
+#: settings.py:180
+msgid "nonfiction"
+msgstr "non-fictie"
+
+#: settings.py:181
+msgid "politics"
+msgstr "politiek"
+
+#: settings.py:182
+msgid "poetry"
+msgstr "poëzie"
+
+#: settings.py:183
+msgid "fairy tale"
+msgstr "sprookje"
+
+#: settings.py:184
+msgid "technics"
+msgstr "techniek"
+
+#: settings.py:185
+msgid "art"
+msgstr "kunst"
+
+#: settings.py:187
+msgid "bi"
+msgstr "bi"
+
+#: settings.py:188
+msgid "lesbian"
+msgstr "lesbisch"
+
+#: settings.py:189
+msgid "gay"
+msgstr "homo"
+
+#: settings.py:190
+msgid "hetero"
+msgstr "hetero"
+
+#: settings.py:191
+msgid "amature"
+msgstr "amateur"
+
+#: settings.py:192
+msgid "group"
+msgstr "groep"
+
+#: settings.py:193
+msgid "pov"
+msgstr "pov"
+
+#: settings.py:194
+msgid "solo"
+msgstr "solo"
+
+#: settings.py:195
+msgid "young"
+msgstr "jong"
+
+#: settings.py:196
+msgid "soft"
+msgstr "soft"
+
+#: settings.py:197
+msgid "fetish"
+msgstr "fetisj"
+
+#: settings.py:198
+msgid "old"
+msgstr "oud"
+
+#: settings.py:199
+msgid "fat"
+msgstr "dik"
+
+#: settings.py:200
+msgid "sm"
+msgstr "sm"
+
+#: settings.py:201
+msgid "rough"
+msgstr "ruig"
+
+#: settings.py:202
+msgid "dark"
+msgstr "donker"
+
+#: settings.py:203
+msgid "hentai"
+msgstr "hentai"
+
+#: settings.py:204
+msgid "outside"
+msgstr "buiten"
+
+#: settings.py:207
+msgid "movie"
+msgstr "film"
+
+#: settings.py:208
+msgid "series"
+msgstr "serie"
+
+#: settings.py:209
+msgid "book"
+msgstr "boek"
+
+#: settings.py:210
+msgid "erotica"
+msgstr "erotiek"
+
+#: settings.py:215
+msgid "mp3"
+msgstr ""
+
+#: settings.py:216
+msgid "wma"
+msgstr ""
+
+#: settings.py:217
+msgid "wav"
+msgstr ""
+
+#: settings.py:218
+msgid "ogg"
+msgstr ""
+
+#: settings.py:219
+msgid "eac"
+msgstr ""
+
+#: settings.py:220
+msgid "dts"
+msgstr ""
+
+#: settings.py:221
+msgid "aac"
+msgstr ""
+
+#: settings.py:222
+msgid "ape"
+msgstr ""
+
+#: settings.py:223
+msgid "flac"
+msgstr ""
+
+#: settings.py:226
+msgid "cd"
+msgstr "cd"
+
+#: settings.py:227
+msgid "radio"
+msgstr "radio"
+
+#: settings.py:228 settings.py:248
+msgid "compilation"
+msgstr "compilatie"
+
+#: settings.py:229
+msgid "dvd"
+msgstr "dvd"
+
+#: settings.py:231
+msgid "vinyl"
+msgstr "vinyl"
+
+#: settings.py:232
+msgid "stream"
+msgstr "stream"
+
+#: settings.py:235
+msgid "variable"
+msgstr "variabel"
+
+#: settings.py:236
+msgid "< 96k"
+msgstr ""
+
+#: settings.py:237
+msgid "96k"
+msgstr ""
+
+#: settings.py:238
+msgid "128k"
+msgstr ""
+
+#: settings.py:239
+msgid "160k"
+msgstr ""
+
+#: settings.py:240
+msgid "192k"
+msgstr ""
+
+#: settings.py:241
+msgid "256k"
+msgstr ""
+
+#: settings.py:242
+msgid "320k"
+msgstr ""
+
+#: settings.py:243
+msgid "lossless"
+msgstr ""
+
+#: settings.py:247
+msgid "blues"
+msgstr ""
+
+#: settings.py:250
+msgid "dance"
+msgstr ""
+
+#: settings.py:251
+msgid "various"
+msgstr "diversen"
+
+#: settings.py:252
+msgid "hardcore"
+msgstr ""
+
+#: settings.py:253
+msgid "world"
+msgstr "wereld"
+
+#: settings.py:254
+msgid "jazz"
+msgstr ""
+
+#: settings.py:256
+msgid "classic"
+msgstr "klassiek"
+
+#: settings.py:257
+msgid "preforming"
+msgstr "kleinkunst"
+
+#: settings.py:258
+msgid "dutch"
+msgstr "hollands"
+
+#: settings.py:259
+msgid "new age"
+msgstr "new age"
+
+#: settings.py:260
+msgid "pop"
+msgstr "pop"
+
+#: settings.py:261
+msgid "r&b"
+msgstr ""
+
+#: settings.py:262
+msgid "hiphop"
+msgstr ""
+
+#: settings.py:263
+msgid "reggae"
+msgstr ""
+
+#: settings.py:264
+msgid "religious"
+msgstr "religieus"
+
+#: settings.py:265
+msgid "rock"
+msgstr "rock"
+
+#: settings.py:266
+msgid "soundtrack"
+msgstr "soundtrack"
+
+#: settings.py:268
+msgid "hardstyle"
+msgstr ""
+
+#: settings.py:270
+msgid "disco"
+msgstr ""
+
+#: settings.py:271
+msgid "classics"
+msgstr "klassiekers"
+
+#: settings.py:272
+msgid "metal"
+msgstr "metal"
+
+#: settings.py:273
+msgid "country"
+msgstr ""
+
+#: settings.py:274
+msgid "dubstep"
+msgstr ""
+
+#: settings.py:275
+msgid "dutch hiphop"
+msgstr "nederhop"
+
+#: settings.py:276
+msgid "drum&bass"
+msgstr ""
+
+#: settings.py:277
+msgid "electro"
+msgstr ""
+
+#: settings.py:278
+msgid "folk"
+msgstr ""
+
+#: settings.py:279
+msgid "soul"
+msgstr ""
+
+#: settings.py:280
+msgid "trance"
+msgstr "trance"
+
+#: settings.py:281
+msgid "balkan"
+msgstr ""
+
+#: settings.py:282
+msgid "techno"
+msgstr "techno"
+
+#: settings.py:283
+msgid "ambient"
+msgstr ""
+
+#: settings.py:284
+msgid "latin"
+msgstr "latin"
+
+#: settings.py:285
+msgid "live"
+msgstr "live"
+
+#: settings.py:288
+msgid "album"
+msgstr "album"
+
+#: settings.py:289
+msgid "liveset"
+msgstr "liveset"
+
+#: settings.py:290
+msgid "podcast"
+msgstr "podcast"
+
+#: settings.py:291
+msgid "audiobook"
+msgstr "luisterboek"
+
+#: settings.py:296 settings.py:346
+msgid "windows"
+msgstr ""
+
+#: settings.py:297 settings.py:347
+msgid "mac"
+msgstr ""
+
+#: settings.py:298 settings.py:348
+msgid "unix"
+msgstr ""
+
+#: settings.py:299
+msgid "ps"
+msgstr ""
+
+#: settings.py:300
+msgid "ps2"
+msgstr ""
+
+#: settings.py:301
+msgid "psp"
+msgstr ""
+
+#: settings.py:302
+msgid "xbox"
+msgstr ""
+
+#: settings.py:303
+msgid "360"
+msgstr ""
+
+#: settings.py:304
+msgid "gba"
+msgstr ""
+
+#: settings.py:305
+msgid "gc"
+msgstr ""
+
+#: settings.py:306
+msgid "nds"
+msgstr ""
+
+#: settings.py:307
+msgid "Wii"
+msgstr ""
+
+#: settings.py:308
+msgid "ps3"
+msgstr ""
+
+#: settings.py:309 settings.py:350
+msgid "windows phone"
+msgstr ""
+
+#: settings.py:310 settings.py:352
+msgid "iOS"
+msgstr ""
+
+#: settings.py:311 settings.py:353
+msgid "android"
+msgstr ""
+
+#: settings.py:312
+msgid "3ds"
+msgstr ""
+
+#: settings.py:315
+msgid "iso"
+msgstr ""
+
+#: settings.py:316
+msgid "rip"
+msgstr ""
+
+#: settings.py:318
+msgid "dlc"
+msgstr ""
+
+#: settings.py:320
+msgid "patch"
+msgstr ""
+
+#: settings.py:321
+msgid "crack"
+msgstr ""
+
+#: settings.py:326
+msgid "strategy"
+msgstr "strategie"
+
+#: settings.py:327
+msgid "roleplay"
+msgstr ""
+
+#: settings.py:328
+msgid "simulation"
+msgstr ""
+
+#: settings.py:329
+msgid "race"
+msgstr ""
+
+#: settings.py:330
+msgid "flying"
+msgstr ""
+
+#: settings.py:331
+msgid "shooter"
+msgstr ""
+
+#: settings.py:335
+msgid "puzzle"
+msgstr "puzzel"
+
+#: settings.py:337
+msgid "bordgame"
+msgstr "bordspel"
+
+#: settings.py:338
+msgid "cards"
+msgstr "kaarten"
+
+#: settings.py:339
+msgid "education"
+msgstr "educatie"
+
+#: settings.py:349
+msgid "os/2"
+msgstr ""
+
+#: settings.py:351
+msgid "nav"
+msgstr ""
+
+#: settings.py:356
+msgid "audio"
+msgstr ""
+
+#: settings.py:357
+msgid "video"
+msgstr ""
+
+#: settings.py:358
+msgid "graphics"
+msgstr "grafisch"
+
+#: settings.py:359
+msgid "cd/dvd tools"
+msgstr ""
+
+#: settings.py:360
+msgid "media players"
+msgstr "media spelers"
+
+#: settings.py:361
+msgid "rippers & encoders"
+msgstr ""
+
+#: settings.py:362
+msgid "plugins"
+msgstr ""
+
+#: settings.py:363
+msgid "database tools"
+msgstr ""
+
+#: settings.py:364
+msgid "email software"
+msgstr ""
+
+#: settings.py:365
+msgid "picture managers"
+msgstr "foto managers"
+
+#: settings.py:366
+msgid "screensavers"
+msgstr ""
+
+#: settings.py:367
+msgid "skins"
+msgstr ""
+
+#: settings.py:368
+msgid "drivers"
+msgstr ""
+
+#: settings.py:369
+msgid "browsers"
+msgstr ""
+
+#: settings.py:370
+msgid "download managers"
+msgstr "download managers"
+
+#: settings.py:371
+msgid "download"
+msgstr "download"
+
+#: settings.py:372
+msgid "usenet software"
+msgstr ""
+
+#: settings.py:373
+msgid "rss readers"
+msgstr ""
+
+#: settings.py:374
+msgid "ftp software"
+msgstr ""
+
+#: settings.py:375
+msgid "firewalls"
+msgstr ""
+
+#: settings.py:376
+msgid "antivirus"
+msgstr ""
+
+#: settings.py:377
+msgid "antispyware"
+msgstr ""
+
+#: settings.py:378
+msgid "optimization software"
+msgstr "optimalisatie software"
+
+#: settings.py:379
+msgid "security software"
+msgstr "beveiligings software"
+
+#: settings.py:380
+msgid "system software"
+msgstr "systeem software"
+
+#: settings.py:382
+msgid "educational"
+msgstr "educatief"
+
+#: settings.py:383
+msgid "office"
+msgstr "kantoor"
+
+#: settings.py:384
+msgid "internet"
+msgstr "internet"
+
+#: settings.py:385
+msgid "communication"
+msgstr "communiatie"
+
+#: settings.py:386
+msgid "development"
+msgstr "ontwikkeling"
+
+#: settings.py:387
+msgid "spotnet"
+msgstr "spotnet"
+
+#: subcategories.py:8
+msgid "unknown"
+msgstr "onbekend"
+
+#: views.py:171
+msgid "Remove from list"
+msgstr "Verwijderen uit lijst"
+
+#: views.py:182 templates/django_spotnet/index.html:12
+#: templates/django_spotnet/list.html:12
+#: templates/django_spotnet/list_related.html:12
+msgid "Watching"
+msgstr ""
+
+#: views.py:183
+msgid "Unwatch"
+msgstr ""
+
+#: views.py:193 templates/django_spotnet/list.html:14
+msgid "Recommendations made"
+msgstr "Gedane aanbevelingen"
+
+#: views.py:203 templates/django_spotnet/index.html:13
+#: templates/django_spotnet/list.html:13
+#: templates/django_spotnet/list_related.html:13
+msgid "Recommended"
+msgstr "Aanbevolen"
+
+#: downloadserver/sabnzbd.py:23 templates/django_spotnet/viewpost.html:62
+#: templates/django_spotnet/viewpost.html:64
+msgid "Download"
+msgstr "Downloaden"
+
+#: downloadserver/sabnzbd.py:24
+msgid "Repair"
+msgstr "Repareren"
+
+#: downloadserver/sabnzbd.py:25
+msgid "Unpack"
+msgstr "Uitpakken"
+
+#: downloadserver/sabnzbd.py:29
+msgid "Low"
+msgstr "Laag"
+
+#: downloadserver/sabnzbd.py:30
+msgid "Normal"
+msgstr "Normaal"
+
+#: downloadserver/sabnzbd.py:31
+msgid "High"
+msgstr "Hoog"
+
+#: downloadserver/sabnzbd.py:32
+msgid "Force"
+msgstr "Forceer"
+
+#: downloadserver/sabnzbd.py:115
+#, python-format
+msgid ""
+"Successfully added nzb file to Sabnzbd server, it was added under the "
+"name '%(id)s'."
+msgstr ""
+"Het nzb bestand is succesvol toegevoegd aan de Sabnzbd server onder de"
+" naam '%(id)s'."
+
+#: downloadserver/sabnzbd.py:117
+#, python-format
+msgid ""
+"Successfully added '%(name)s' to Sabnzbd server, it was added under the"
+" name '%(id)s'."
+msgstr ""
+"Download '%(name)s' is succesvol toegevoegd aan de Sabnzbd server "
+"onder de naam '%(id)s'."
+
+#: downloadserver/sabnzbd.py:119 downloadserver/sabnzbd.py:130
+#, python-format
+msgid "An unknown error occured, response was: %s"
+msgstr "Een onbekende fout is opgetreden, antwoord was: %s"
+
+#: downloadserver/sabnzbd.py:128
+#, python-format
+msgid ""
+"Successfully added url '%(url)s' to Sabnzbd server, it was added under "
+"the name '%(id)s'."
+msgstr ""
+"De url '%(url)s' is succesvol toegevoegd aan de Sabnzbd server onder "
+"de naam '%(id)s'."
+
+#: downloadserver/watchfolder.py:47
+#, python-format
+msgid ""
+"Successfully placed nzb file in watchfolder, it was added under the "
+"name '%(id)s'."
+msgstr ""
+"Het nzb bestand is succesvol in de watchfolder geplaatst onder de naam"
+" '%(id)s'."
+
+#: downloadserver/watchfolder.py:49
+#, python-format
+msgid ""
+"Successfully placed '%(name)s' in watchfolder, it was added under the "
+"name '%(id)s'."
+msgstr ""
+"De download '%(name)s' is succesvol in de watchfolder geplaatst onder "
+"de naam '%(id)s'."
+
+#: templates/django_spotnet/base.html:62
+msgid "Omesium"
+msgstr ""
+
+#: templates/django_spotnet/base.html:62
+msgid "Beta"
+msgstr ""
+
+#: templates/django_spotnet/base.html:76
+msgid "No title!"
+msgstr "Geen titel!"
+
+#: templates/django_spotnet/base.html:76
+msgid "No content!"
+msgstr "Geen inhoud!"
+
+#: templates/django_spotnet/base.html:79
+msgid "Copyright"
+msgstr ""
+
+#: templates/django_spotnet/base.html:79
+msgid "Valid HTML5"
+msgstr "Valide HTML5"
+
+#: templates/django_spotnet/index.html:6 templates/django_spotnet/list.html:6
+#: templates/django_spotnet/list_related.html:6
+msgid "Spotnet"
+msgstr "Spotnet"
+
+#: templates/django_spotnet/index.html:9 templates/django_spotnet/list.html:9
+#: templates/django_spotnet/list.html:53
+#: templates/django_spotnet/list_related.html:9
+msgid "Go"
+msgstr "Ga"
+
+#: templates/django_spotnet/index.html:17
+#: templates/django_spotnet/search_pane.html:10
+msgid "Filter category"
+msgstr "Filter categorie"
+
+#: templates/django_spotnet/index.html:20
+#: templates/django_spotnet/search_pane.html:13
+#: templates/django_spotnet/search_pane.html:29
+msgid "All"
+msgstr "Allen"
+
+#: templates/django_spotnet/index.html:37
+#: templates/django_spotnet/list.html:27
+#: templates/django_spotnet/list_related.html:22
+msgid "Title"
+msgstr "Titel"
+
+#: templates/django_spotnet/index.html:38
+#: templates/django_spotnet/list.html:28
+#: templates/django_spotnet/list_related.html:23
+msgid "Poster"
+msgstr "Poster"
+
+#: templates/django_spotnet/index.html:39
+#: templates/django_spotnet/list.html:29
+#: templates/django_spotnet/list_related.html:24
+#: templates/django_spotnet/viewpost.html:21
+msgid "Category"
+msgstr "Categorie"
+
+#: templates/django_spotnet/index.html:40
+#: templates/django_spotnet/list.html:30
+#: templates/django_spotnet/list_related.html:25
+msgid "Posted"
+msgstr "Gepost"
+
+#: templates/django_spotnet/index.html:41
+#: templates/django_spotnet/list.html:31
+#: templates/django_spotnet/list_related.html:26
+msgid "State"
+msgstr "Status"
+
+#: templates/django_spotnet/index.html:56
+#: templates/django_spotnet/list.html:46
+msgid "No posts in database!"
+msgstr "Geen posts in de database!"
+
+#: templates/django_spotnet/index.html:56
+#: templates/django_spotnet/list.html:46
+msgid "Try updating."
+msgstr "Probeer bij te werken."
+
+#: templates/django_spotnet/list_related.html:41
+msgid "Nothing here!"
+msgstr "Niets hier!"
+
+#: templates/django_spotnet/paginate.html:6
+#: templates/django_spotnet/paginate.html:8
+#: templates/django_spotnet/paginate_full.html:5
+#: templates/django_spotnet/paginate_full.html:7
 msgid "Previous"
 msgstr "Vorige"
 
-#: templates/spotnet_paginate.html:17 templates/spotnet_paginate.html.py:19
-#: templates/spotnet_paginate_full.html:17
-#: templates/spotnet_paginate_full.html:19
+#: templates/django_spotnet/paginate.html:12
+#: templates/django_spotnet/paginate.html:14
+#: templates/django_spotnet/paginate_full.html:17
+#: templates/django_spotnet/paginate_full.html:19
 msgid "Next"
 msgstr "Volgende"
 
-#: templates/spotnet_paginate.html:22
-msgid "Objects"
-msgstr "Objecten"
+#: templates/django_spotnet/search_pane.html:5
+msgid "Search"
+msgstr "Zoeken"
 
-#: templates/spotnet_viewpost.html:6
+#: templates/django_spotnet/search_pane.html:26
+msgid "Filter subcategory"
+msgstr "Filter subcategorie"
+
+#: templates/django_spotnet/viewpost.html:6
 msgid "View post"
 msgstr "Bekijk post"
 
-#: templates/spotnet_viewpost.html:10
+#: templates/django_spotnet/viewpost.html:10
 msgid "Posted by"
 msgstr "Gepost door"
 
-#: templates/spotnet_viewpost.html:10
+#: templates/django_spotnet/viewpost.html:10
 msgid "On"
 msgstr "Op"
 
-#: templates/spotnet_viewpost.html:16
+#: templates/django_spotnet/viewpost.html:16
 msgid "Tag"
 msgstr "Tag"
 
-#: templates/spotnet_viewpost.html:25
-msgid "Subcategories"
-msgstr "Subcategorieën"
-
-#: templates/spotnet_viewpost.html:30
+#: templates/django_spotnet/viewpost.html:26
 msgid "Website"
 msgstr "Website"
 
-#: templates/spotnet_viewpost.html:35
+#: templates/django_spotnet/viewpost.html:31
 msgid "Size"
 msgstr "Grootte"
 
-#: templates/spotnet_viewpost.html:39
+#: templates/django_spotnet/viewpost.html:35
+#: templates/django_spotnet/viewpost.html:44
+msgid "Subcategories"
+msgstr "Subcategorieën"
+
+#: templates/django_spotnet/viewpost.html:39
 msgid "Has nzb"
 msgstr "Heeft nzb"
 
-#: templates/spotnet_viewpost.html:40
+#: templates/django_spotnet/viewpost.html:40
 msgid "True"
 msgstr "Waar"
 
-#: templates/spotnet_viewpost.html:40
+#: templates/django_spotnet/viewpost.html:40
 msgid "False"
 msgstr "Niet waar"
 
-#: templates/spotnet_viewpost.html:47
+#: templates/django_spotnet/viewpost.html:53
+msgid "No subcategories"
+msgstr "Geen subcategorieën"
+
+#: templates/django_spotnet/viewpost.html:82
 msgid "Comments"
 msgstr "Reacties"
 
-#: templates/spotnet_viewpost.html:52
+#: templates/django_spotnet/viewpost.html:87
 msgid "No comments yet!"
 msgstr "Nog geen reacties!"
 
-#: templates/spotnet_viewpost.html:54
+#: templates/django_spotnet/viewpost.html:89
 msgid "Post comment"
 msgstr "Post reactie"
+
+#~ msgid "Objects"
+#~ msgstr "Objecten"
