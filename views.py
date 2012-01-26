@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -64,13 +64,13 @@ def search(request, search=None, cats=None, scats=None):
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
         raise Http404
-    return render_to_response(
+    return render(
+        request,
         'django_spotnet/list.html',
         dict(
             searcher = searcher,
             page = page,
         ),
-        context_instance = RequestContext(request)
     )
 
 
@@ -78,13 +78,13 @@ def search(request, search=None, cats=None, scats=None):
 @authenticate
 def viewpost(request, id):
     post = get_object_or_404(SpotnetPost, id=id)
-    return render_to_response(
+    return render(
+        request,
         'django_spotnet/viewpost.html',
         dict(
             post = post,
             download = SpotDownload(post),
         ),
-        context_instance = RequestContext(request)
     )
 
 
@@ -149,13 +149,13 @@ def view_related_post_list(request, objects, page, title, extra_actions={}):
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
         raise Http404
-    return render_to_response(
+    return render(
+        request,
         'django_spotnet/list_related.html',
         dict(
             title = title,
             page = page,
         ),
-        context_instance = RequestContext(request)
     )
 
 
