@@ -7,9 +7,9 @@ import settings
 
 
 
-class SpotDownload(object):
-    def __init__(self, spot):
-        self.spot = spot
+class PostDownload(object):
+    def __init__(self, post):
+        self.post = post
 
     def is_empty(self):
         return not settings.DOWNLOAD_SERVERS.has_servers()
@@ -21,7 +21,7 @@ class SpotDownload(object):
         return settings.DOWNLOAD_SERVERS.has_other_servers()
 
     def get_for_server(self, servername):
-        return SpotDownloadForServer(self.spot, servername)
+        return PostDownloadForServer(self.post, servername)
 
 
     def get_default(self):
@@ -40,9 +40,9 @@ class SpotDownload(object):
 
 
 
-class SpotDownloadForServer(object):
-    def __init__(self, spot, servername):
-        self.spot = spot
+class PostDownloadForServer(object):
+    def __init__(self, post, servername):
+        self.post = post
         self.servername = servername
 
     @property
@@ -62,7 +62,7 @@ class SpotDownloadForServer(object):
         return reverse(
             'spotnet:download_using', 
             kwargs = dict(
-                id = self.spot.id, 
+                id = self.post.id, 
                 dls = self.servername,
             ),
         )

@@ -5,14 +5,14 @@ import urllib2
 
 
 
-no_server_description_avaiable_message = ugettext_lazy("No description given.")
+no_server_description_available_message = ugettext_lazy("No description given.")
 
 
 
 
 
 class DownloadError(Exception):
-    description = ugettext_lazy(u"An error occured while trying to download a spot")
+    description = ugettext_lazy(u"An error occured while trying to download a post")
 
     def __init__(self, details=None):
         self.details = details
@@ -75,6 +75,9 @@ class UnhandledDownloadError(DownloadError):
 
 
 def download_url(url, timeout):
+    """Downloads a webpage.
+    This is guaranteed to work, or throw an appropriate DownloadError.
+    """
     try:
         response = urllib2.urlopen(url, None, timeout)
     except urllib2.HTTPError as e:
@@ -98,15 +101,15 @@ class DownloadServer(object):
         self._connection_timeout = 30 if connection_timeout is None else connection_timeout
 
 
-    def download_spot_base(self, user, id, post):
+    def download_post_base(self, user, id, post):
         if user.is_anonymous() and not self.allow_anonymous:
             raise UnauthenticatedError
-        return self.download_spot(user, id, post)
+        return self.download_post(user, id, post)
 
     def download_url_base(self, user, id, url):
         if user.is_anonymous() and not self.allow_anonymous:
             raise UnauthenticatedError
-        return self.download_spot(user, id, post)
+        return self.download_post(user, id, post)
 
     def download_nzb_base(self, user, id, nzb):
         if user.is_anonymous() and not self.allow_anonymous:
@@ -114,11 +117,11 @@ class DownloadServer(object):
         return self.download_nzb(user, id, nzb)
 
 
-    def download_spot(self, user, id, post):
+    def download_post(self, user, id, post):
         if getattr(self.download_nzb, 'implemented', True):
             return self.download_nzb(user, id, post.get_nzb_file())
         else:
-            raise NotImplementedError("The download_spot method of this DownloadServer is not implemented.")
+            raise NotImplementedError("The download_post method of this DownloadServer is not implemented.")
 
     def download_url(self, user, id, url):
         if getattr(self.download_nzb, 'implemented', True):
@@ -197,9 +200,9 @@ class DownloadManager(object):
             yield server_name, self.get_server_verbose_name(server_name)
 
 
-    def download_spot_base(self, spot, server):
-        """Download a spot using a server.
-        Spot must be a SpotnetPost instance,
+    def download_post_base(self, post, server):
+        """Download a post using a server.
+        Post must be a Post instance,
         server must be a DownloadServer instance.
         This method is guarantied to either
         * return None
@@ -207,7 +210,7 @@ class DownloadManager(object):
         This is an internal method!
         """
         try:
-            response = server.download_spot(spot)
+            response = server.download_post(post)
         except DownloadError:
             raise
         except Exception as e:
@@ -215,16 +218,16 @@ class DownloadManager(object):
         else:
             return response
 
-    def download_spot(self, spot, server_name=None):
-        """This downloads a SpotnetPost throug a named server.
+    def download_post(self, post, server_name=None):
+        """This downloads a Post throug a named server.
         Returns None or raises a DownloadError subclass."""
         if server_name is None:
             server = self.get_default()
-            assert server is not None, "Requested to download spot from default download server when there is no default defined."
+            assert server is not None, "Requested to download post from default download server when there is no default defined."
         else:
             server = self.get_server(server_name)
-            assert server is not None, "Requested to download spot from unknown download server '%s'." % server_name
-        return server.download_spot(spot)
+            assert server is not None, "Requested to download post from unknown download server '%s'." % server_name
+        return server.download_post(post)
 
 
 

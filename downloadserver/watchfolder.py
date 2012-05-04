@@ -10,7 +10,10 @@ from ..downloading import DownloadServer, FsError
 class WatchfolderDownloadServer(DownloadServer):
     def __init__(self, dirpath, **kwargs):
         if not os.path.isdir(dirpath):
-            raise ImproperlyConfigured("Created WatchfolderDownloadServer with nonexisting dirpath '%s'." %  dirpath)
+            raise ImproperlyConfigured(
+                "Created WatchfolderDownloadServer with nonexisting dirpath '%s'."
+                % dirpath
+            )
         self._dirpath = dirpath
         super(WatchfolderDownloadServer, self).__init__(**kwargs)
 
@@ -22,7 +25,10 @@ class WatchfolderDownloadServer(DownloadServer):
             attempt = 1
             attempt_filename = id
             while f is None:
-                f = open(os.path.join(self._dirpath, '%s.nzb'%attempt_filename), 'a')
+                f = open(os.path.join(
+                    self._dirpath,
+                    '%s.nzb' % attempt_filename,
+                ), 'a')
                 f.seek(0, os.SEEK_END)
                 if f.tell() != 0:
                     # the file already exists!
@@ -44,9 +50,11 @@ class WatchfolderDownloadServer(DownloadServer):
                raise
         else:
             if name is None:
-                return ugettext(u"Successfully placed nzb file in watchfolder, it was added under the name '%(id)s'.") % dict(id='%s.nzb'%attempt_filename)
+                return ugettext(u"Successfully placed nzb file in watchfolder, it was added under the name '%(id)s'.")
+                    % dict(id='%s.nzb'%attempt_filename)
             else:
-                return ugettext(u"Successfully placed '%(name)s' in watchfolder, it was added under the name '%(id)s'.") % dict(name=name, id='%s.nzb'%attempt_filename)
+                return ugettext(u"Successfully placed '%(name)s' in watchfolder, it was added under the name '%(id)s'.")
+                    % dict(name=name, id='%s.nzb'%attempt_filename)
 
 
     def download_nzb(self, user, id, nzb):

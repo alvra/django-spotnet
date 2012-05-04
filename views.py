@@ -4,10 +4,10 @@ from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.utils.functional import wraps # TODO: use this for decorators (right one?)
 import json
 from models import SpotnetPost, PostDownloaded, PostWatch, PostRecommendation
-from downloading import DownloadError
-from helpers import SpotDownload
+from downloading import DownloadError, PostDownload
 import settings
 #from paginator import Paginator, InvalidPage, EmptyPage
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -83,7 +83,7 @@ def viewpost(request, id):
         'django_spotnet/viewpost.html',
         dict(
             post = post,
-            download = SpotDownload(post),
+            download = PostDownload(post),
         ),
     )
 
@@ -171,50 +171,6 @@ def downloaded(request):
        delete = DeleteAction(objects.model, title=_('Remove from list')),
     ))
     
-
-
-
-@authenticate
-def watchlist(request):
-    page = request.GET.get('page', 1)
-    objects = PostWatch.objects.order_by('-created').select_related('post').filter(user=request.user)
-
-    return view_related_post_list(request, objects, page, _('Watching'), dict(
-       delete = DeleteAction(objects.model, title=_('Unwatch')),
-    ))
-
-
-
-@authenticate
-def recommendations_made(request):
-    page = request.GET.get('page', 1)
-    objects = PostRecommendation.objects.order_by('-created').select_related('post').filter(from_user=request.user)
-
-    return view_related_post_list(request, objects, page, _('Recommendations made'))
-
-
-
-@authenticate
-def recommendations(request):
-    page = request.GET.get('page', 1)
-    #objects = PostRecommendation.objects.order_by('-created').select_related('post').filter(to_users__contains=request.user)
-    objects = request.user.spotnet_recommended_to.all()
-
-    return view_related_post_list(request, objects, page, _('Recommended'))
-
-
-
-@authenticate
-def create_recommendation(request, id):
-    pass # TODO
-
-
-
-
-
-@authenticate
-def update(request):
-    pass
 
 
 

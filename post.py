@@ -6,29 +6,6 @@ from datetime import datetime
 
 
 
-example_posts_dir = 'tests/example_posts'
-def write_post_to_testfile(post):
-    import os, pickle
-    path = os.path.join(os.path.dirname(__file__), example_posts_dir, post.messageid)
-    if os.path.exists(path):
-        pass
-    else:
-        with open(path, 'w') as f:
-            pickle.dump((post.postnumber, post._rawpost), f)
-def get_post_from_testfile(path):
-    import os, pickle
-    with open(path, 'r') as f:
-        content = pickle.load(f)
-    return SpotnetRawPost(*content)
-def iter_test_posts():
-    import os
-    for filename in os.listdir(os.path.join(os.path.dirname(__file__), example_posts_dir)):
-        path = os.path.join(os.path.dirname(__file__), example_posts_dir, filename)
-        if os.path.isfile(path):
-           yield get_post_from_testfile(path)
-
-
-
 class InvalidPost(Exception):
     pass
 
@@ -40,7 +17,7 @@ class SpotnetRawPost(object):
 
     # PUBLIC ATTRIBUTES:
     # messageid     : string, like <xxx@spot.net>
-    # postnumber    : integer (server dependend!)
+    # postnumber    : integer (server dependent!)
     # poster        : string, name of the poster
     # title         : string, post title
     # description   : string, post description
@@ -91,26 +68,21 @@ class SpotnetRawPost(object):
         self.postnumber = int(postnumber) if postnumber is not None else None
         self.messageid = rawpost[2]
         self._rawpost = rawpost
-        #write_post_to_testfile(self) # TODO: remove after debugging
         try:
             self.content = self.parse_rawpost_content(self._rawpost[3])
         except InvalidPost:
             raise
         except Exception as e:
-            # TODO: log
-            print 'Error in parsing raw post content'
             raise InvalidPost("Error in parsing raw post content, exception was '%s'" % e)
         try:
             xml_data = self.content['X-XML']
         except KeyError:
-            # TODO: log
             raise InvalidPost("Post has no X-XML header")
         try:
             self.extra = self.parse_xml_content(xml_data)
         except InvalidPost:
             raise
         except:
-            # TODO: log
             print 'Error in parsing raw post content'
 
     def parse_rawpost_content(self, content):
@@ -122,7 +94,8 @@ class SpotnetRawPost(object):
             if line.startswith('Lines: '):
                 l = num
                 break
-        assert l >= 0, "Post does not have a Lines header."
+        if l == 0:
+            raise InvalidPost("Post does not have a Lines header.")
         body_lines = int(content[l][len('Lines: '):])
         for l in xrange(len(content)-body_lines-1):
             if ':' in content[l]:
@@ -136,8 +109,10 @@ class SpotnetRawPost(object):
                 if content[l] != '':
                     raise InvalidPost("Post has invalid header line '%s'" % content[l])
             l += 1
-        assert content[l] == '', "First line after headers is not empty!"
-        assert len(content) == int(d['Lines']) + l + 1, "Header value for Lines differs from actual number of lines!"
+        if not content[l] == '':
+            raise InvalidPost("First line after headers is not empty!")
+        if not len(content) == int(d['Lines']) + l + 1:
+            raise InvalidPost("Header value for Lines differs from actual number of lines!")
         return d
 
     def parse_xml_content(self, xml_string):
@@ -146,10 +121,13 @@ class SpotnetRawPost(object):
         except:
             raise InvalidPost("Post has invalid XML data for header X-XML")
         doc = xml.documentElement
-        assert doc.tagName == 'Spotnet', "XML for spotnet post does not have a main node called 'Spotnet'"
-        assert len(doc.childNodes) == 1, "XML for spotnet post does not have 1 child for main node 'Spotnet'"
+        if not doc.tagName == 'Spotnet':
+            raise InvalidPost("XML for spotnet post does not have a main node called 'Spotnet'")
+        if not len(doc.childNodes) == 1:
+            raise InvalidPost("XML for spotnet post does not have 1 child for main node 'Spotnet'")
         main = doc.childNodes[0]
-        assert main.tagName == 'Posting', "XML for spotnet post does not have a main child node called 'Posting' for 'Spotnet'"
+        if not main.tagName == 'Posting':
+            raise InvalidPost("XML for spotnet post does not have a main child node called 'Posting' for 'Spotnet'")
         # assemble dict of content
         d = {}
         for e in main.childNodes:
@@ -172,10 +150,10 @@ class SpotnetRawPost(object):
                 # the location, the result is similar (a string instead of a string list)
                 d['NZB'] = []
                 for nzb_node in e.childNodes:
-                    assert nzb_node.tagName == 'Segment', "XML for spotnet post, in NZB node there are child nodes that are not named 'Segment'"
+                    if not nzb_node.tagName == 'Segment':
+                        raise InvalidPost("XML for spotnet post, in NZB node there are child nodes that are not named 'Segment'")
                     d['NZB'].append(nzb_node.childNodes[0].nodeValue)
         if isinstance(d.get('Category', None), list):
-              assert len(d['Category']) <= 1, "Spot has more than one category!"
               if len(d['Category']) == 0:
                   d['Category'] = None
               else:
@@ -190,17 +168,6 @@ class SpotnetRawPost(object):
 
     def decode_string(self, string):
         return string
-        if string is None:
-            return string
-        # TODO: make this a little bit more fail-safe
-        if 'Content-Type' in self.content:
-            # get encoding
-            mime,enc = self.content['Content-Type'].split('; ')
-            assert enc.startswith('charset=')
-            enc = enc[len('charset='):]
-            return string.decode(enc)
-        else:
-            return string
 
     # public properties
 
@@ -218,13 +185,6 @@ class SpotnetRawPost(object):
         subj = self.content['Subject']
         if ' | ' in subj:
             subj, poster = subj.split(' | ',1)
-        print
-        print self.content['Subject']
-        print
-        print subj
-        print
-        print self.extra['Title']
-        print
         assert subj == self.extra['Title']
         #assert poster == self.extra['Poster'] # this is not True
         return self.decode_string(self.extra['Title'])
@@ -269,6 +229,7 @@ class SpotnetRawPost(object):
         else:
             return None
         # the following has been deprecated because
+        # (same reason as description)
         p = self.content.get('NNTP-Posting-Date', None)
         # A Date sometimes added by the NNTP server in case the current server date is different to the date provided by the news client.
         # source: http://tgos.org/newbie/xheader.html

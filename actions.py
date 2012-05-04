@@ -5,8 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 from django.contrib import messages
-from models import SpotnetPost, PostDownloaded
-from connection import SpotnetConnection
+from models import Post, PostDownloaded
+from connection import Connection
 
 
 
@@ -89,7 +89,7 @@ class DownloadFileAction(Action):
         response['Content-Length'] = self.clean_response_header(unicode(filesize))
         return response
 
-    # public methods (name is the proposed filename to the browser)
+    # public methods (name is the proposed filename to the client browser)
 
     def download_filepath(self, f, name, mimetype=None):
         "Download a file by giving it's path"
@@ -120,7 +120,7 @@ class DownloadFileAction(Action):
 
 
 class DownloadNzbAction(DownloadFileAction):
-    "Action to download nzb files from SpotnetPosts"
+    "Action to download nzb files from Posts"
 
     nzb_mimetype = 'application/x-nzb'
 
@@ -131,13 +131,13 @@ class DownloadNzbAction(DownloadFileAction):
         return '%s.nzb' % post.title
 
     def get_post_from_single_pk(self, pk):
-        return SpotnetPost.objects.get(pk=pk)
+        return Post.objects.get(pk=pk)
 
     def get_posts_from_several_pks(self, pks):
-        return SpotnetPost.objects.filter(pk__in=pks)
+        return Post.objects.filter(pk__in=pks)
 
     def mark_posts_downloaded(self, user, posts):
-        if isinstance(posts, SpotnetPost):
+        if isinstance(posts, Post):
             posts.mark_downloaded(user)
         else:
             for post in posts:
@@ -176,7 +176,7 @@ class DownloadNzbAction(DownloadFileAction):
 
 
 class DownloadRelatedNzbAction(DownloadNzbAction):
-    """Action to download nzb files from database objects that have a foreignkey to a SpotnetPost named 'post'"""
+    """Action to download nzb files from database objects that have a foreignkey to a Post named 'post'"""
 
     def get_post_from_single_pk(self, pk):
         raise NotImplementedError

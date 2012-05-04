@@ -36,7 +36,7 @@ from subcategories import Subcategory
 
 
 
-class SpotnetPost(models.Model):
+class Post(models.Model):
     # id # omesium db id
 
     # SPOTNET PARAMETERS
@@ -59,13 +59,6 @@ class SpotnetPost(models.Model):
     size = models.BigIntegerField(max_length=33, null=True)
     nzb = NzbField(max_length=250, editable=False, null=True)
 
-    # APP PARAMETERS
-    state = models.PositiveSmallIntegerField(choices=(
-        (0, _('Spotted')),
-        (1, _('Queued')),
-        (2, _('Downloading')),
-        (3, _('Downloaded')),
-    ), editable=False, default=0)
 
 
     class Meta:
@@ -103,7 +96,7 @@ class SpotnetPost(models.Model):
 
     # this is the identifier that is passed to download servers
     # it is intended to be one-to-one with posts,
-    # but also usefull as title for the download on servers
+    # but also useful as title for the download on servers
 
     @property
     def identifier(self):
@@ -125,8 +118,8 @@ class SpotnetPost(models.Model):
     def get_nzb_content(self, connection=None):
         if not connection:
             # create a new connection and close it again
-            from connection import SpotnetConnection
-            connection = SpotnetConnection(connect=True)
+            from connection import Connection
+            connection = Connection(connect=True)
             nzb = connection.get_nzb(self)
             connection.disconnect()
             return nzb
@@ -137,30 +130,30 @@ class SpotnetPost(models.Model):
     # internal methods
 
     @classmethod
-    def from_spot(cls, spot):
+    def from_raw(cls, raw):
         return cls(
-            #postnumber = spot.postnumber,
-            messageid = spot.messageid[0:80],
-            poster = spot.poster,
-            title = spot.subject[0:150],
-            description = spot.description,
-            tag = spot.tag[0:100] if spot.tag else None,
-            posted = spot.posted,
-            category = spot.category if spot.category else None,
+            #postnumber = raw.postnumber,
+            messageid = raw.messageid[0:80],
+            poster = raw.poster,
+            title = raw.subject[0:150],
+            description = raw.description,
+            tag = raw.tag[0:100] if raw.tag else None,
+            posted = raw.posted,
+            category = raw.category if raw.category else None,
             # limit the number of subcategories,
             # some people give posts way too many subcategories
             # with an length of 5 joined with comma's
             # this gives an difference of 1 with the maximum lenght
-            subcategory_codes = spot.subcategories[0:SpotnetPost._meta.get_field('subcategory_codes').max_length//6],
-            image = spot.image[0:250] if spot.image else None,
-            website = spot.website[0:150] if spot.website else None,
-            size = spot.size if spot.size else None,
-            nzb = spot.nzb,
+            subcategory_codes = raw.subcategories[0:Post._meta.get_field('subcategory_codes').max_length//6],
+            image = raw.image[0:250] if raw.image else None,
+            website = raw.website[0:150] if raw.website else None,
+            size = raw.size if raw.size else None,
+            nzb = raw.nzb,
         )
 
 
 
-class SpotnetPostAdmin(admin.ModelAdmin):
+class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'poster', 'tag', 'category', 'posted')
     list_filter = ('category',)
     ordering = ('-posted',)
@@ -169,7 +162,7 @@ class SpotnetPostAdmin(admin.ModelAdmin):
     inlines = []
     actions = []
 
-admin.site.register(SpotnetPost, SpotnetPostAdmin)
+admin.site.register(Post, PostAdmin)
 
 
 
@@ -201,20 +194,6 @@ class PostMarker(models.Model):
 
 
 
-class PostWatch(models.Model):
-    user = models.ForeignKey(User)
-    post = models.ForeignKey(SpotnetPost, related_name='watched')
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'spotnet_watch'
-        verbose_name = _('watched post')
-        unique_together = (('user','post',),)
-
-
-
-
-
 class PostDownloaded(models.Model):
     user = models.ForeignKey(User)
     post = models.ForeignKey(SpotnetPost)
@@ -225,25 +204,6 @@ class PostDownloaded(models.Model):
         verbose_name = _('downloaded post')
         unique_together = (('user','post',),)
 
-
-
-
-
-class PostRecommendation(models.Model):
-    from_user = models.ForeignKey(User, related_name='spotnet_recommended_from')
-    to_users = models.ManyToManyField(User, related_name='spotnet_recommended_to')
-    posts = models.ManyToManyField(SpotnetPost)
-    message = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-
-    #@models.permalink
-    #def get_absolute_url(self):
-    #    return ('spotnet:viewpost', (), dict(id=self.post_id))
-
-    class Meta:
-        db_table = 'spotnet_recommendation'
-        verbose_name = _('recommended post')
-    
 
 
 

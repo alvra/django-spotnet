@@ -16,7 +16,7 @@ class SabnzbdDownloadServer(DownloadServer):
     Sabnzbd api doc: http://wiki.sabnzbd.org/api
     """
 
-    incorrect_api_response = 'error: API Key Incorrect'
+    incorrect_apikey_response = 'error: API Key Incorrect'
     error_repsonse_start = 'error: '
 
     POST_PROCESSING = {
@@ -44,7 +44,10 @@ class SabnzbdDownloadServer(DownloadServer):
       **kwargs
     ):
         if not webpath.endswith('api'):
-            raise ImproperlyConfigured("Created SabnzbdDownloadServer with invalid webpath '%s'." %  webpath)
+            raise ImproperlyConfigured(
+                "Created SabnzbdDownloadServer with invalid webpath '%s'."
+                % webpath
+            )
         self._webpath = webpath
         self._apikey = apikey
         self._category = category
@@ -54,10 +57,15 @@ class SabnzbdDownloadServer(DownloadServer):
         super(SabnzbdDownloadServer, self).__init__(**kwargs)
 
     def response_to_error(self, response):
-        if response.read(len(self.incorrect_api_response)) == self.incorrect_api_response:
+        if response.read(len(self.incorrect_apikey_response)) \
+          == self.incorrect_api_response:
             raise ConfigurationError("Invalid Sabnzbd api key")
-        elif response.read(len(self.error_repsonse_start)) == self.error_repsonse_start:
-            raise DownloadError("Sabnzbd returned error while communicating: %s" % response.read()[error_repsonse_start:])
+        elif response.read(len(self.error_repsonse_start)) \
+          == self.error_repsonse_start:
+            raise DownloadError(
+                "Sabnzbd returned error while communicating: %s"
+                % response.read()[error_repsonse_start:]
+            )
         else:
             raise DownloadError("Invalid Sabnzbd api key")
 
@@ -112,11 +120,15 @@ class SabnzbdDownloadServer(DownloadServer):
         ))
         if x['status'] is True:
             if name is None:
-                return ugettext(u"Successfully added nzb file to Sabnzbd server, it was added under the name '%(id)s'.") % dict(id=id)
+                return ugettext(u"Successfully added nzb file to Sabnzbd server, it was added under the name '%(id)s'.")
+                    % dict(id=id)
             else:
-                return ugettext(u"Successfully added '%(name)s' to Sabnzbd server, it was added under the name '%(id)s'.") % dict(name=name,id=id)
+                return ugettext(u"Successfully added '%(name)s' to Sabnzbd server, it was added under the name '%(id)s'.")
+                    % dict(name=name,id=id)
         else:
-            raise DownloadError(ugettext("An unknown error occured, response was: %s") % x)
+            raise DownloadError(
+                ugettext("An unknown error occured, response was: %s") % x
+            )
 
     def download_url(self, user, id, url):
         x = self.base_action(dict(
@@ -125,9 +137,13 @@ class SabnzbdDownloadServer(DownloadServer):
             nzbname = id,
         ))
         if x['status'] is True:
-            return ugettext(u"Successfully added url '%(url)s' to Sabnzbd server, it was added under the name '%(id)s'.") % dict(url=url,id=id)
+            return ugettext(u"Successfully added url '%(url)s' to Sabnzbd server, it was added under the name '%(id)s'.")
+                % dict(url=url,id=id)
         else:
-            raise DownloadError(ugettext("An unknown error occured, response was: %s") % x)
+            raise DownloadError(
+                ugettext("An unknown error occured, response was: %s")
+                % x
+            )
 
 
 

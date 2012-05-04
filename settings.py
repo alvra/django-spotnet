@@ -18,11 +18,13 @@ SERVER_PASSWORD        = getattr(settings, 'SPOTNET_SERVER_PASSWORD',        Non
 SERVER_READERMODE      = getattr(settings, 'SPOTNET_SERVER_READERMODE',      False)
 
 UPDATE_MINPOST         = getattr(settings, 'SPOTNET_UPDATE_MINPOST',         None)
+UPDATE_EXTRA           = getattr(settings, 'SPOTNET_UPDATE_EXTRA',         15000)
 UPDATE_BULK_COUNT      = getattr(settings, 'SPOTNET_UPDATE_BULK_COUNT',      1000)
 UPDATE_GROUPS          = getattr(settings, 'SPOTNET_UPDATE_GROUPS',          ('free.pt', 'spot.net', ))
 UPDATE_COMMENT_GROUPS  = getattr(settings, 'SPOTNET_UPDATE_COMMENT_GROUPS',  ('free.usenet', ))
 UPDATE_ALLOW_INPAGE    = getattr(settings, 'SPOTNET_UPDATE_ALLOW_INPAGE',    True)
 UPDATE_LAST_STORAGE    = getattr(settings, 'SPOTNET_UPDATE_LAST_STORAGE',    False)
+UPDATE_DISCARD_ENDINGS = getattr(settings, 'SPOTNET_UPDATE_DISCARD_ENDINGS', (SERVER_HOST,))
 
 CLEANUP_MINAGE         = getattr(settings, 'SPOTNET_CLEANUP_MINAGE',         1999)
 CLEANUP_ALLOW_INPAGE   = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE',   True)
