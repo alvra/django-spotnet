@@ -2,10 +2,8 @@
 {% load i18n %}
 
 
-
-{% block title %}{% trans "Spotnet" %}: {{ title }}{% endblock %}
-
 {% block content %}
+<h1>{% trans "Spotnet" %}: {{ title }}</h1>
 <p>{% trans "Go" %}</p>
 <ul>
   <li><a href="{% url spotnet:downloaded %}">{% trans "Downloaded" %}</a></li>
@@ -45,7 +43,7 @@
   <tfoot>
     <tr>
       <td></td>
-      <td colspan="5">{{ page.object_list.action_selector }} <input type="submit" value="Go" /></td>
+      <td colspan="5">{{ page.object_list.action_selector }} <input type="submit" value="{% trans "Go" %}" /></td>
     </tr>
   </tfoot>
 </table>

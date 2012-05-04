@@ -26,6 +26,10 @@ try:
 except ImportError:
     print_log_colors = {}
 
+# TODO:
+# maybe decode headers using a function (new in python 3?)
+# http://docs.python.org/py3k/library/nntplib.html?highlight=nntp#nntplib.decode_header
+
 
 
 
@@ -68,20 +72,37 @@ class SpotnetConnection(object):
         return self._nntp is not None
 
     def connect(self):
+        # connect to server
         try:
             nntp = nntplib.NNTP(
                 host = settings.SERVER_HOST,
                 port = settings.SERVER_PORT,
-                user = settings.SERVER_USERNAME if settings.SERVER_USERNAME is not None else NEWSSERVER_UNAUTH_USERNAME,
-                password = settings.SERVER_PASSWORD if settings.SERVER_PASSWORD is not None else NEWSSERVER_UNAUTH_PASSWORD,
                 readermode = settings.SERVER_READERMODE,
+                usenetrc = False,
             )
         except nntplib.NNTPError as e:
             self.log('error', "Error at connecting: %s" % e)
             return
         else:
-            self._nntp = nntp
             self.log('info', 'Connected to newsserver')
+        # try to encrypt connection using ssl
+        if hasattr(nntp, 'starttls'):
+            nntp.starttls(ssl_context=None)
+            self.log('info', 'Encrypted connection to newsserver')
+        else:
+            self.log('info', 'Unable to encrypt connection to newsserver')
+        # login, now that we might be encrypted
+        try:
+            nntp.login(
+                user = settings.SERVER_USERNAME if settings.SERVER_USERNAME is not None else NEWSSERVER_UNAUTH_USERNAME,
+                password = settings.SERVER_PASSWORD if settings.SERVER_PASSWORD is not None else NEWSSERVER_UNAUTH_PASSWORD,
+            )
+        except nntplib.NNTPError as e:
+            self.log('error', "Error at logging in: %s" % e)
+            return
+        else:
+            self.log('info', 'Logged into newsserver')
+        self._nntp = nntp
 
     def disconnect(self):
         if self.is_connected():

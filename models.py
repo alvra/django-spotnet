@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import datetime
 from cStringIO import StringIO
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _

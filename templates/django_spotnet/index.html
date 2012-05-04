@@ -2,10 +2,9 @@
 {% load i18n %}
 
 
-
-{% block title %}{% trans "Spotnet" %}{% endblock %}
-
 {% block content %}
+<h1>{% trans "Spotnet" %}</h1>
+
 <p>{% trans "Go" %}</p>
 <ul>
   <li><a href="{% url spotnet:downloaded %}">{% trans "Downloaded" %}</a></li>

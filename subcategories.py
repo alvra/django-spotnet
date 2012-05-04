@@ -50,5 +50,8 @@ class Subcategory(object):
         ccmap = cmap.get(self.type_base, {})
         return _(ccmap.get(self._sub, UNKNOWN_TEXT))
 
+    def __unicode__(self):
+        return self.sub
+
 
 

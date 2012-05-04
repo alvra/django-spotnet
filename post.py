@@ -246,6 +246,16 @@ class SpotnetRawPost(object):
 
     @property
     def posted(self):
+        # TODO:
+        # This has to be rewritten to use django's new timezone support.
+        # The NNTP-Posting-Date header is not mandatory, but does contain
+        # timezonde data (always?) and can thus be used to get the tz.
+        # If that's not available, another fallback is the Created
+        # header can supply the creation datetime, but it does not contain
+        # timezone info, so we must make assumptions.
+        # Note that the 'Date' header is the only one usefull here
+        # that is required, but does not supply time info.
+
         # this creates a datetime object
         # of the systems timezone
         # wich is further handled correctly by django
@@ -260,6 +270,8 @@ class SpotnetRawPost(object):
             return None
         # the following has been deprecated because
         p = self.content.get('NNTP-Posting-Date', None)
+        # A Date sometimes added by the NNTP server in case the current server date is different to the date provided by the news client.
+        # source: http://tgos.org/newbie/xheader.html
         if p is None:
             p = self.get('Date')
         date = self.parse_date(p)

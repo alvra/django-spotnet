@@ -1,84 +1,22 @@
 <!doctype html>
-{% load i18n %}
+{% load i18n %}{% load static from staticfiles %}
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Spotnet</title>
-<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
-<link href="/static/css/selector.css" rel="stylesheet" type="text/css" />
-<link href="/static/css/paginator.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<style type="text/css">
-div.spotdescription {
-    border-top: 1px solid #F0B800;
-    border-bottom: 1px solid #F0B800;
-    background-color: #FFFBF0;
-    margin-bottom: 1em;
-}
-
-div#download_buttons {
-    position: relative;
-    width: 140px;
-}
-div#download_buttons:hover ul {
-    display: block;
-}
-div#download_buttons ul {
-    display: none;
-    position: absolute;
-    top: 0px;
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-    width: 140px;
-    z-index: 2;
-}
-div#download_buttons > a {
-    margin: 30px 0px;
-    z-index: 1;
-}
-div#download_buttons ul li {
-    margin: 0px;
-    width: 140px;
-}
-div#download_buttons a {
-    padding: 4px;
-    display: block;
-    width: 140px;
-    border-bottom: none;
-    border: 1px solid #F0B800;
-    background-color: #FFFBF0;
-}
-div#download_buttons a:hover{
-    background-color: #F0B800;
-}
-</style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Spotnet</title>
+  <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
 </head>
 <body>
-  <div id="container" style="">
-    <div class="header"></div>
-    <div class="main">
-      <div class="innerheader">
-        <h1><img src="/static/img/omesium.png" alt="Omesium"/> {% trans "Omesium" %}<sup class="beta">{% trans "Beta" %}</sup></h1>
-        <div id="lang_flag"><a href="{% url language %}"><img src="/static/img/language/{{ language.code }}.png" alt="{{ language.name }} ({{ language.universal_name }})" title="{{ language.name }} ({{ language.universal_name }})" style="border:0px;" /></a></div>
-      </div>
-      <div class="page">
-        <div class="sidemenu">
-          <ul>{% for m in menu %}
-            <li><a href="{{ m.url }}">{{ m.title }}</a></li>{% endfor %}
-          </ul>
-        </div>
-        <div class="content">{% if messages %}
-          <ul class="messages">{% for message in messages %}
-            <li{% if message.tags %} class="message_{{ message.tags }}"{% endif %}><span class="message_title">{{ message.tags|capfirst }}:</span> {{ message }}</li>{% endfor %}
-          </ul>
+  <div id="container">
+    <div class="content">{% if messages %}
+      <ul class="messages">{% for message in messages %}
+        <li{% if message.tags %} class="message_{{ message.tags }}"{% endif %}><span class="message_title">{{ message.tags|capfirst }}:</span> {{ message }}</li>{% endfor %}
+      </ul>
 {% endif %}
-          <h2>{% block title %}{% trans "No title!" %}{% endblock %}</h2>{% block content %}{% trans "No content!" %}{% endblock %}
-        </div>
-        <div class="footer">
-          <p>&copy; {% trans "Copyright" %} 2008 - {{ year }} &mdash; <a href="http://validator.w3.org/check/referer">{% trans "Valid HTML5" %}</a></p>
-        </div>
-      </div>
+      {% block content %}{% trans "No content!" %}{% endblock %}
+    </div>
+    <div class="footer">
+      <p>&copy;{% trans "Copyright" %} 2008 - {{ year }} &mdash; <a href="http://validator.w3.org/check/referer">{% trans "Valid HTML5" %}</a></p>
     </div>
   </div>
 </body>

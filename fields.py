@@ -1,10 +1,13 @@
 from django.db import models
+from django.utils.translation import ugettext as _
+from formfields import StringSetFormField
 
 
 
 
 
-class StringSetField(models.CommaSeparatedIntegerField):
+#class StringSetField(models.CommaSeparatedIntegerField):
+class StringSetField(models.CharField):
     """A field that holds a set of strings.
     Subclass of CommaSeparatedIntegerField since the internal storage is the same.
     """
@@ -13,9 +16,16 @@ class StringSetField(models.CommaSeparatedIntegerField):
 
     __metaclass__ = models.SubfieldBase
 
+    def __init__(self, **kwargs):
+        error_messages = kwargs.pop('error_messages', {})
+        if not 'invalid' in error_messages:
+            error_messages['invalid'] = _('Enter only text separated by commas.')
+        kwargs['error_messages'] = error_messages
+        return super(StringSetField, self).__init__(**kwargs)
+
     def to_python(self, value):
         # from a db value to a python object
-        if isinstance(value, (list, set, tuple)):
+        if isinstance(value, (list, set, tuple)) or hasattr(value, '__iter__'):
             return list(value)
         elif isinstance(value, basestring):
             return value.split(',')
@@ -34,6 +44,12 @@ class StringSetField(models.CommaSeparatedIntegerField):
             return None
         else:
             raise TypeError("StringSetField.get_prep_value got an invalid type!")
+
+    def value_to_string(self, obj):
+        return ', '.join(obj)
+
+    def formfield(self, **kwargs):
+        return StringSetFormField(**kwargs)
 
 
 

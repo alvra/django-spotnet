@@ -59,7 +59,7 @@ def search(request, search=None, cats=None, scats=None):
         if isinstance(action_response, HttpResponse):
             return action_response
 
-    paginator = Paginator(selector, settings.POST_PER_PAGE, allow_empty_first_page=True, orphans=settings.POST_LIST_ORPHANS)
+    paginator = Paginator(selector, 1, allow_empty_first_page=True, orphans=0)
     try:
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
