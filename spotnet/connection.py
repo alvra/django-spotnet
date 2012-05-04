@@ -3,7 +3,7 @@ import settings
 import zlib
 from cStringIO import StringIO
 from django.db import IntegrityError
-from models import Post, Marker
+from models import Post, PostMarker
 from post import RawPost, InvalidPost
 
 
@@ -69,7 +69,6 @@ class Connection(object):
             )
         except nntplib.NNTPError as e:
             raise ConnectError(e)
-        else:
         # try to encrypt connection using ssl
         if hasattr(nntp, 'starttls'):
             nntp.starttls(ssl_context=None)
@@ -179,9 +178,8 @@ class Connection(object):
         h = '%s: ' % header
         while not post[3][index].startswith(h) and index < len(post[3]):
             index += 1
-        assert post[3][index].startswith(h),
-            "Post %s does not have a '%s' header!"
-            % (post[2], header)
+        assert post[3][index].startswith(h), \
+            "Post %s does not have a '%s' header!" % (post[2], header)
         return post[3][index][len(h):]
 
     def add_post(self, postnumber, messageid):

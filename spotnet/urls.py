@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 
-urlpatterns = patterns('django_spotnet.views',
+urlpatterns = patterns('spotnet.views',
     url(r'^$', 'search', name="index"),
     url(r'^(?P<page>[0-9]+)/$', 'search', name="index"),
 
@@ -24,9 +24,6 @@ urlpatterns = patterns('django_spotnet.views',
     url(r'^post/(?P<id>[0-9]+)/download/(?P<dls>[a-zA-Z0-9]+)/$', 'download', name="download_using"),
 
     url(r'^downloaded/$', 'downloaded', name='downloaded'),
-    url(r'^watching/$', 'watchlist', name='watchlist'),
-    url(r'^recommended/$', 'recommendations', name='recommendations'),
-    url(r'^recommendations/$', 'recommendations_made', name='recommendations_made'),
 
     # TODO: download nzb + link
 )

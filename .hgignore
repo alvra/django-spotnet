@@ -5,3 +5,4 @@ db_settings.py
 pySpotnet
 testing
 tests/example_posts
+sqlite.db

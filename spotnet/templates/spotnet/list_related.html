@@ -1,4 +1,4 @@
-{% extends "django_spotnet/base.html" %}
+{% extends "spotnet/base.html" %}
 {% load i18n %}
 
 
@@ -48,5 +48,5 @@
   </tfoot>
 </table>
 </form>
-{% include "django_spotnet/paginate.html" %}
+{% include navigator_template|default:"spotnet/paginate.html" %}
 {% endblock %}

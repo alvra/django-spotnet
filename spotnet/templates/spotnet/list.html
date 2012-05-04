@@ -1,19 +1,12 @@
-{% extends "django_spotnet/base.html" %}
+{% extends "spotnet/base.html" %}
 {% load i18n %}
 
 
 {% block content %}
 <h1>{% trans "Spotnet" %}</h1>
-<p>{% trans "Go" %}</p>
-<ul>
-  <li><a href="{% url spotnet:downloaded %}">{% trans "Downloaded" %}</a></li>
-  <li><a href="{% url spotnet:watchlist %}">{% trans "Watching" %}</a></li>
-  <li><a href="{% url spotnet:recommendations %}">{% trans "Recommended" %}</a></li>
-  <li><a href="{% url spotnet:recommendations_made %}">{% trans "Recommendations made" %}</a></li>
-</ul>
 
-
-{% include "django_spotnet/search_pane.html" %}
+{% include "spotnet/navigator.html" %}
+{% include "spotnet/search_pane.html" %}
 
 
 <form action="" method="post">
@@ -53,5 +46,5 @@
   </tfoot>
 </table>
 </form>
-{% include "django_spotnet/paginate.html" %}
+{% include navigator_template|default:"spotnet/paginate.html" %}
 {% endblock %}

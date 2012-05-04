@@ -11,7 +11,7 @@ from subcategories import Subcategory
 
 
 #
-# ID's ON THE SpotnetPost
+# ID's ON THE Post
 #       and where they come from...
 #
 # * id : the id of the post in our database (used in this app for views etc.)
@@ -196,7 +196,7 @@ class PostMarker(models.Model):
 
 class PostDownloaded(models.Model):
     user = models.ForeignKey(User)
-    post = models.ForeignKey(SpotnetPost)
+    post = models.ForeignKey(Post)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

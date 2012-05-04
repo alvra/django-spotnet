@@ -6,8 +6,8 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.utils.functional import wraps # TODO: use this for decorators (right one?)
 import json
-from models import SpotnetPost, PostDownloaded, PostWatch, PostRecommendation
-from downloading import DownloadError, PostDownload
+from models import Post, PostDownloaded
+#from downloading import DownloadError, PostDownload
 import settings
 #from paginator import Paginator, InvalidPage, EmptyPage
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -38,6 +38,12 @@ def authenticate(view):
             return view(request, *args, **kwargs)
     return _authenticated_view
 
+def get_paginate_template():
+    if settings.POSTS_PAGINATE_FULL:
+        return 'spotnet/paginate_full.html'
+    else:
+        return 'spotnet/paginate.html'
+
 
 
 
@@ -46,7 +52,7 @@ def authenticate(view):
 def search(request, search=None, cats=None, scats=None):
     page = request.GET.get('page', 1)
     searcher = Searcher(search, cats, scats)
-    snps = SpotnetPost.objects.order_by('-posted')
+    snps = Post.objects.order_by('-posted')
     snps = searcher.filter_queryset(snps)
     searcher.unfilter_categories()
 
@@ -66,10 +72,11 @@ def search(request, search=None, cats=None, scats=None):
         raise Http404
     return render(
         request,
-        'django_spotnet/list.html',
+        'spotnet/list.html',
         dict(
             searcher = searcher,
             page = page,
+            paginate_template = get_paginate_template(),
         ),
     )
 
@@ -80,7 +87,7 @@ def viewpost(request, id):
     post = get_object_or_404(SpotnetPost, id=id)
     return render(
         request,
-        'django_spotnet/viewpost.html',
+        'spotnet/viewpost.html',
         dict(
             post = post,
             download = PostDownload(post),
@@ -151,10 +158,11 @@ def view_related_post_list(request, objects, page, title, extra_actions={}):
         raise Http404
     return render(
         request,
-        'django_spotnet/list_related.html',
+        'spotnet/list_related.html',
         dict(
             title = title,
             page = page,
+            paginate_template = get_paginate_template(),
         ),
     )
 
@@ -173,6 +181,9 @@ def downloaded(request):
     
 
 
+
+def update(request):
+    pass # TODO
 
 
 

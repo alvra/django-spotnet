@@ -18,7 +18,7 @@ SERVER_PASSWORD        = getattr(settings, 'SPOTNET_SERVER_PASSWORD',        Non
 SERVER_READERMODE      = getattr(settings, 'SPOTNET_SERVER_READERMODE',      False)
 
 UPDATE_MINPOST         = getattr(settings, 'SPOTNET_UPDATE_MINPOST',         None)
-UPDATE_EXTRA           = getattr(settings, 'SPOTNET_UPDATE_EXTRA',         15000)
+UPDATE_EXTRA           = getattr(settings, 'SPOTNET_UPDATE_EXTRA',           15000)
 UPDATE_BULK_COUNT      = getattr(settings, 'SPOTNET_UPDATE_BULK_COUNT',      1000)
 UPDATE_GROUPS          = getattr(settings, 'SPOTNET_UPDATE_GROUPS',          ('free.pt', 'spot.net', ))
 UPDATE_COMMENT_GROUPS  = getattr(settings, 'SPOTNET_UPDATE_COMMENT_GROUPS',  ('free.usenet', ))
@@ -31,6 +31,7 @@ CLEANUP_ALLOW_INPAGE   = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE',   Tru
 
 POST_PER_PAGE          = getattr(settings, 'SPOTNET_POST_PER_PAGE',          30)
 POST_LIST_ORPHANS      = getattr(settings, 'POST_LIST_ORPHANS',              POST_PER_PAGE//5)
+POSTS_PAGINATE_FULL    = getattr(settings, 'POST_POSTS_PAGINATE_FULL',       False)
 
 ALLOW_NZB_UPLOAD       = getattr(settings, 'SPOTNET_ALLOW_NZB_UPLOAD',       True)
 

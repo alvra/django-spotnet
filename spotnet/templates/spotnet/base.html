@@ -13,10 +13,8 @@
         <li{% if message.tags %} class="message_{{ message.tags }}"{% endif %}><span class="message_title">{{ message.tags|capfirst }}:</span> {{ message }}</li>{% endfor %}
       </ul>
 {% endif %}
+      {% include "spotnet/navigator.html" %}
       {% block content %}{% trans "No content!" %}{% endblock %}
-    </div>
-    <div class="footer">
-      <p>&copy;{% trans "Copyright" %} 2008 - {{ year }} &mdash; <a href="http://validator.w3.org/check/referer">{% trans "Valid HTML5" %}</a></p>
     </div>
   </div>
 </body>

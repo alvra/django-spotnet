@@ -13,7 +13,7 @@ class InvalidPost(Exception):
 
 
 
-class SpotnetRawPost(object):
+class RawPost(object):
 
     # PUBLIC ATTRIBUTES:
     # messageid     : string, like <xxx@spot.net>
