@@ -4,11 +4,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-import exproj.index
-print 'indexfile:', exproj.index.__file__
-import exproj.index.views
-print exproj.index.views
-
 urlpatterns = patterns('',
     url(r'^$', 'exproj.index.views.index'),
     url(r'^spotnet/', include('spotnet.urls', namespace='spotnet')),

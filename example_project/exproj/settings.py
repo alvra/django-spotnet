@@ -2,8 +2,13 @@
 
 import os, sys
 
-# make spotnet importable
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+try:
+    import spotnet
+except ImportError:
+    print 'spotnet example_project: Found no spotnet installation, using the local version'
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+else:
+    print 'spotnet example_project: Spotnet found, using that version'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

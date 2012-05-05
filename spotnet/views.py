@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, Http404
 from django.shortcuts import render
 from django.template import RequestContext
@@ -5,12 +6,10 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.utils.functional import wraps # TODO: use this for decorators (right one?)
-import json
-from models import Post, PostDownloaded
-#from downloading import DownloadError, PostDownload
-import settings
-#from paginator import Paginator, InvalidPage, EmptyPage
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+import settings
+from models import Post, PostDownloaded
+from downloading import DownloadError, PostDownload
 from selector import QuerySelector
 from actions import DeleteAction, DownloadNzbAction, DownloadRelatedNzbAction
 from searcher import Searcher
@@ -182,8 +181,18 @@ def downloaded(request):
 
 
 
+@authenticate
 def update(request):
     pass # TODO
+    
+
+
+
+@authenticate
+def download_nzb(request, id):
+    pass # TODO
+
+
 
 
 
