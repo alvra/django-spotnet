@@ -83,7 +83,7 @@ def search(request, search=None, cats=None, scats=None):
 
 @authenticate
 def viewpost(request, id):
-    post = get_object_or_404(SpotnetPost, id=id)
+    post = get_object_or_404(Post, id=id)
     return render(
         request,
         'spotnet/viewpost.html',
@@ -99,7 +99,7 @@ def viewpost(request, id):
 
 @authenticate
 def download(request, id, dls=None):
-    post = get_object_or_404(SpotnetPost, id=id)
+    post = get_object_or_404(Post, id=id)
     if dls is None:
         server = settings.DOWNLOAD_SERVERS.get_default()
     else:
