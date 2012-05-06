@@ -117,7 +117,8 @@ def download(request, id, dls=None):
     except DownloadError as e:
         x = e
     else:
-        post.mark_downloaded(request.user)
+        if request.user.is_authenticated():
+            post.mark_downloaded(request.user)
 
     if request.is_ajax():
         if isinstance(e, DownloadError):

@@ -8,7 +8,13 @@ setup(
     author_email = 'alexander@van-ratingen.nl',
     url = 'http://www.bitbucket.org/Blue/django-spotnet/',
     download_url = 'http://www.bitbucket.org/Blue/django-spotnet/',
-    packages = ['spotnet'],
+    packages = [
+        'spotnet',
+        'spotnet.downloadserver',
+        'spotnet.management',
+        'spotnet.management.commands',
+        'spotnet.tests',
+    ],
     package_data = {'spotnet': [
         'templates/spotnet/*.html',
         'static/*',

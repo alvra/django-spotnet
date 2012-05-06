@@ -50,10 +50,10 @@ class WatchfolderDownloadServer(DownloadServer):
                raise
         else:
             if name is None:
-                return ugettext(u"Successfully placed nzb file in watchfolder, it was added under the name '%(id)s'.")
+                return ugettext(u"Successfully placed nzb file in watchfolder, it was added under the name '%(id)s'.") \
                     % dict(id='%s.nzb'%attempt_filename)
             else:
-                return ugettext(u"Successfully placed '%(name)s' in watchfolder, it was added under the name '%(id)s'.")
+                return ugettext(u"Successfully placed '%(name)s' in watchfolder, it was added under the name '%(id)s'.") \
                     % dict(name=name, id='%s.nzb'%attempt_filename)
 
 

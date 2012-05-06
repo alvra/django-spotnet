@@ -120,10 +120,10 @@ class SabnzbdDownloadServer(DownloadServer):
         ))
         if x['status'] is True:
             if name is None:
-                return ugettext(u"Successfully added nzb file to Sabnzbd server, it was added under the name '%(id)s'.")
+                return ugettext(u"Successfully added nzb file to Sabnzbd server, it was added under the name '%(id)s'.") \
                     % dict(id=id)
             else:
-                return ugettext(u"Successfully added '%(name)s' to Sabnzbd server, it was added under the name '%(id)s'.")
+                return ugettext(u"Successfully added '%(name)s' to Sabnzbd server, it was added under the name '%(id)s'.") \
                     % dict(name=name,id=id)
         else:
             raise DownloadError(
@@ -137,11 +137,11 @@ class SabnzbdDownloadServer(DownloadServer):
             nzbname = id,
         ))
         if x['status'] is True:
-            return ugettext(u"Successfully added url '%(url)s' to Sabnzbd server, it was added under the name '%(id)s'.")
+            return ugettext(u"Successfully added url '%(url)s' to Sabnzbd server, it was added under the name '%(id)s'.") \
                 % dict(url=url,id=id)
         else:
             raise DownloadError(
-                ugettext("An unknown error occured, response was: %s")
+                ugettext("An unknown error occured, response was: %s") \
                 % x
             )
 
