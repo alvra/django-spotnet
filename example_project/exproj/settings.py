@@ -173,7 +173,7 @@ SPOTNET_SERVER_HOST = 'news.windstream.net' # a free usenet provider
 SPOTNET_ANONYMOUS_ACTION = 'allow' # allow access to everyone
 
 try:
-    from settings_override
+    from settings_overrides import *
 except ImportError:
     pass
 
