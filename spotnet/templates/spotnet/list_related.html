@@ -3,13 +3,7 @@
 
 
 {% block content %}
-<h1>{% trans "Spotnet" %}: {{ title }}</h1>
-<p>{% trans "Go" %}</p>
-<ul>
-  <li><a href="{% url spotnet:downloaded %}">{% trans "Downloaded" %}</a></li>
-  <li><a href="{% url spotnet:watchlist %}">{% trans "Watching" %}</a></li>
-  <li><a href="{% url spotnet:recommendations %}">{% trans "Recommended" %}</a></li>
-</ul>
+<h2>{{ title }}</h2>
 
 <form action="" method="post">
 {% csrf_token %}
@@ -21,7 +15,6 @@
       <td>{% trans "Poster" %}</td>
       <td>{% trans "Category" %}</td>
       <td>{% trans "Posted" %}</td>
-      <td>{% trans "State" %}</td>
     </tr>
   </thead>
   <tbody>
@@ -32,18 +25,17 @@
       <td>{{ object.post.poster }}</td>
       <td>{{ object.post.get_category_display }}</td>
       <td>{{ object.post.posted }}</td>
-      <td>{{ object.post.get_state_display }}</td>
     </tr>
 {% empty %}
     <tr>
-      <td colspan="6"><i>{% trans "Nothing here!" %}</i></td>
+      <td colspan="5"><i>{% trans "Nothing here!" %}</i></td>
     </tr>
 {% endfor %}
   </tbody>
   <tfoot>
     <tr>
       <td></td>
-      <td colspan="5">{{ page.object_list.action_selector }} <input type="submit" value="{% trans "Go" %}" /></td>
+      <td colspan="4">{{ page.object_list.action_selector }} <input type="submit" value="{% trans "Go" %}" /></td>
     </tr>
   </tfoot>
 </table>

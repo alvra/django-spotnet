@@ -101,6 +101,7 @@ class Connection(object):
 
     def update(self, logger=noop):
         "Retrieves all new posts."
+        logger("Updating spotnet")
         for group in settings.UPDATE_GROUPS:
             self.update_group(group, logger=lambda x: logger('  %s'%x))
 
@@ -162,7 +163,7 @@ class Connection(object):
             if post[4][:-1].split('@',1)[-1] not in settings.UPDATE_DISCARD_ENDINGS:
                 if not Post.objects.filter(messageid=post[4]).exists():
                     try:
-                        if self.add_post(post[0], post[4]):
+                        if self.add_post(post[0], post[4], logger=lambda x: logger('  %s'%x)):
                             last_added = post[0]
                     except socket.error as e:
                         if e.errno == errno.ECONNRESET:
@@ -187,7 +188,7 @@ class Connection(object):
             "Post %s does not have a '%s' header!" % (post[2], header)
         return post[3][index][len(h):]
 
-    def add_post(self, postnumber, messageid):
+    def add_post(self, postnumber, messageid, logger=noop):
         "Add a new post to the database (not post a new post)"
         try:
             post = self._nntp.article(messageid)
@@ -213,7 +214,6 @@ class Connection(object):
         try:
             raw = RawPost(postnumber, post)
         except InvalidPost as e:
-            self.log('debug', "Found invalid post %s, number %s. Exception was '%s'" % (messageid, postnumber, repr(e)))
             return False
         snp = Post.from_raw(raw)
         try:
@@ -222,6 +222,7 @@ class Connection(object):
             # this post must already exist
             return False
         else:
+            logger("Added post: %s" % (raw.messageid))
             return True
 
     def get_raw_post(self, messageid):
@@ -279,7 +280,7 @@ class Connection(object):
     def get_last_messageid_in_db(self):
         try:
             snp = Post.objects.order_by('-posted').only('messageid')[0]
-        except KeyError:
+        except IndexError:
             return None
         else:
             return snp.messageid

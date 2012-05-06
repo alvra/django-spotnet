@@ -4,16 +4,16 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Spotnet</title>
-  <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
 </head>
 <body>
   <div id="container">
-    <div class="content">{% if messages %}
+    <div class="content">
+      <h1>{% trans "Spotnet" %}</h1>
+      {% include "spotnet/navigator.html" %}{% if messages %}
       <ul class="messages">{% for message in messages %}
         <li{% if message.tags %} class="message_{{ message.tags }}"{% endif %}><span class="message_title">{{ message.tags|capfirst }}:</span> {{ message }}</li>{% endfor %}
       </ul>
 {% endif %}
-      {% include "spotnet/navigator.html" %}
       {% block content %}{% trans "No content!" %}{% endblock %}
     </div>
   </div>

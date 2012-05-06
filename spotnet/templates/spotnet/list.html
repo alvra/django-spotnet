@@ -3,11 +3,9 @@
 
 
 {% block content %}
-<h1>{% trans "Spotnet" %}</h1>
+<h2>{% trans "Posts" %}</h2>
 
-{% include "spotnet/navigator.html" %}
 {% include "spotnet/search_pane.html" %}
-
 
 <form action="" method="post">
 {% csrf_token %}
@@ -19,7 +17,6 @@
       <td>{% trans "Poster" %}</td>
       <td>{% trans "Category" %}</td>
       <td>{% trans "Posted" %}</td>
-      <td>{% trans "State" %}</td>
     </tr>
   </thead>
   <tbody>
@@ -30,21 +27,21 @@
       <td>{{ post.poster }}</td>
       <td>{{ post.get_category_display }}</td>
       <td>{{ post.posted }}</td>
-      <td>{{ post.get_state_display }}</td>
     </tr>
 {% empty %}
     <tr>
-      <td colspan="6"><i>{% trans "No posts in database!" %}<br/>{% trans "Try updating." %}</i></td>
+      <td colspan="5"><i>{% trans "No posts in database!" %}<br/>{% trans "Try updating." %}</i></td>
     </tr>
 {% endfor %}
   </tbody>
   <tfoot>
     <tr>
       <td></td>
-      <td colspan="5">{{ page.object_list.action_selector }} <input type="submit" value="{% trans "Go" %}" /></td>
+      <td colspan="4">{{ page.object_list.action_selector }} <input type="submit" value="{% trans "Go" %}" /></td>
     </tr>
   </tfoot>
 </table>
 </form>
+
 {% include navigator_template|default:"spotnet/paginate.html" %}
 {% endblock %}

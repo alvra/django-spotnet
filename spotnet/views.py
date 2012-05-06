@@ -23,6 +23,11 @@ def authenticate_base(user):
     if settings.ANONYMOUS_ACTION != 'allow' and user.is_anonymous():
         if settings.ANONYMOUS_ACTION == '403':
             return HttpResponseForbidden()
+        elif settings.ANONYMOUS_ACTION == 'login':
+            # TODO: which one to use here?
+            #from django.conf.settings import LOGIN_URL
+            #return HttpResponseRedirect(LOGIN_URL)
+            return HttpResposeRedirect(reverse('login'))
         else:
             return HttpResponseNotFound()
     else:
@@ -64,7 +69,7 @@ def search(request, search=None, cats=None, scats=None):
         if isinstance(action_response, HttpResponse):
             return action_response
 
-    paginator = Paginator(selector, 1, allow_empty_first_page=True, orphans=0)
+    paginator = Paginator(selector, settings.POST_PER_PAGE, allow_empty_first_page=True, orphans=0)
     try:
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
@@ -172,7 +177,10 @@ def view_related_post_list(request, objects, page, title, extra_actions={}):
 @authenticate
 def downloaded(request):
     page = request.GET.get('page', 1)
-    objects = PostDownloaded.objects.order_by('-created').select_related('post').filter(user=request.user)
+    if request.user.is_anonymous():
+        objects = PostDownloaded.objects.none() # TODO: is there something more sensible to do here?
+    else:
+        objects = PostDownloaded.objects.order_by('-created').select_related('post').filter(user=request.user)
 
     return view_related_post_list(request, objects, page, _('Downloaded'), dict(
        delete = DeleteAction(objects.model, title=_('Remove from list')),

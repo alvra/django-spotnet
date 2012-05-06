@@ -3,8 +3,9 @@
 
 
 {% block content %}
-<h1>{% trans "View post" %}</h1>
-<h2>{{ post.title }}</h2>
+<h2>{% trans "Post" %}</h2>
+
+<h3>{{ post.title }}</h3>
 <p>{% trans "Posted by" %}: <i>{% if post.website %}<a href="{{ post.website }}">{{ post.poster }}</a>{% else %}{{ post.poster }}{% endif %}</i> {% trans "On" %}: <i>{{ post.posted }}</i></p>
 {% if post.image %}<a href="{{ post.image }}"><img src="{{ post.image }}" alt="{{ post.title }}" style="max-width:200px;float:right;clear:right;margin:0.5em 0 1.3em 1.4em;" /></a>{% endif %}
 <div class="spotdescription">{{ post.description_markup|linebreaks }}</div>
@@ -76,14 +77,14 @@
 {% endif %}
 </div>
 {% endif %}
-<hr/>
-<h2>{% trans "Comments" %}</h2>
+
+<h3>{% trans "Comments" %}</h3>
 {% for comment in post.comments %}
 <h3>{{ comment.author }}</h3>
 <p>{{ comment.content }}</p>
 {% empty %}
 <p><i>{% trans "No comments yet!" %}</i></p>
 {% endfor %}
-<h2>{% trans "Post comment" %}</h2>
+<h4>{% trans "Post comment" %}</h4>
 {{ commentform }}
 {% endblock %}

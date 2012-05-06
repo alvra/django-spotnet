@@ -1,6 +1,10 @@
 import logging
 from xml.dom.minidom import parseString
-from datetime import datetime
+from datetime import datetime, timedelta
+try:
+    import pytz
+except ImportError:
+    pytz = None
 
 
 
@@ -169,6 +173,36 @@ class RawPost(object):
     def decode_string(self, string):
         return string
 
+    def apply_timezone_str(self, dt, tz_str):
+        if tz_str.startswith('+'):
+            assert len(tz_str) == 5
+            offset = timedelta(hours=int(tz_str[1:3]), minutes=int(tz_str[3:5]))
+            dt -= offset 
+            return pytz.utc.localize(dt)
+        else:
+            try:
+                tz = pytz.timezone(tz_str)
+            except (KeyError, pytz.exceptions.UnknownTimeZoneError):
+                pass
+            else:
+                return tz.localize(dt)
+        return None
+
+    def apply_timezone(self, dt):
+        if pytz:
+            date_str = self.content.get('Date', None)
+            if date_str:
+                try:
+                    tz_str = date_str.rsplit(' ',1)[1]
+                except KeyError:
+                    pass
+                adt = self.apply_timezone_str(dt, tz_str)
+                if adt:
+                    return adt
+            return dt
+        else:
+            return dt
+
     # public properties
 
     @property
@@ -216,28 +250,15 @@ class RawPost(object):
         # Note that the 'Date' header is the only one usefull here
         # that is required, but does not supply time info.
 
-        # this creates a datetime object
-        # of the systems timezone
-        # wich is further handled correctly by django
-        dt = self.extra.get('Created', None)
-        try:
-            dt = float(dt)
-        except ValueError:
-            dt = None
-        if dt:
-            return datetime.fromtimestamp(dt)
+        dt_str = self.content['Date']
+        if dt_str.endswith('GMT'):
+            dt = datetime.strptime(dt_str[:20], '%d %b %Y %H:%M:%S')
         else:
-            return None
-        # the following has been deprecated because
-        # (same reason as description)
-        p = self.content.get('NNTP-Posting-Date', None)
-        # A Date sometimes added by the NNTP server in case the current server date is different to the date provided by the news client.
-        # source: http://tgos.org/newbie/xheader.html
-        if p is None:
-            p = self.get('Date')
-        date = self.parse_date(p)
-        assert date == datetime.fromtimestamp(self.extra.get['Created'])
-        return date
+            dt = datetime.strptime(dt_str[:25], '%a, %d %b %Y %H:%M:%S')
+
+        dt = self.apply_timezone(dt)
+
+        return dt
 
     @property
     def category(self):
