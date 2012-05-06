@@ -92,6 +92,7 @@ class Post(models.Model):
 
     @property
     def subcategories(self):
+        s = self.subcategory_codes
         return (Subcategory(code) for code in self.subcategory_codes)
 
     # this is the identifier that is passed to download servers

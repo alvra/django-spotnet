@@ -1,5 +1,6 @@
 syntax: glob
 db_settings.py
+settings_overrides.py
 *.pyc
 *~
 pySpotnet

@@ -1,6 +1,7 @@
 import logging
 from xml.dom.minidom import parseString
 from datetime import datetime, timedelta
+from nzb import decode_nzb, DecodeNzbError
 try:
     import pytz
 except ImportError:
@@ -72,6 +73,7 @@ class RawPost(object):
         self.postnumber = int(postnumber) if postnumber is not None else None
         self.messageid = rawpost[2]
         self._rawpost = rawpost
+        self._content_is_nzb = None
         try:
             self.content = self.parse_rawpost_content(self._rawpost[3])
         except InvalidPost:
@@ -79,15 +81,11 @@ class RawPost(object):
         except Exception as e:
             raise InvalidPost("Error in parsing raw post content, exception was '%s'" % e)
         try:
-            xml_data = self.content['X-XML']
-        except KeyError:
-            raise InvalidPost("Post has no X-XML header")
-        try:
-            self.extra = self.parse_xml_content(xml_data)
-        except InvalidPost:
-            raise
+            self.extra = self.parse_xml_content(self.content['X-XML'])
+        except (KeyError, InvalidPost):
+            self.extra = {}
         except:
-            print 'Error in parsing raw post content'
+            raise InvalidPost('Error in parsing raw post content')
 
     def parse_rawpost_content(self, content):
         d = {}
@@ -171,13 +169,21 @@ class RawPost(object):
         return NotImplemented
 
     def decode_string(self, string):
-        return string
+        if string is None or isinstance(string, unicode):
+            return string
+        elif isinstance(string, str):
+            return string.decode('utf8', 'replace')
+        else:
+            raise TypeError(string)
 
     def apply_timezone_str(self, dt, tz_str):
-        if tz_str.startswith('+'):
+        if tz_str.startswith('+') or tz_str.startswith('-'):
             assert len(tz_str) == 5
             offset = timedelta(hours=int(tz_str[1:3]), minutes=int(tz_str[3:5]))
-            dt -= offset 
+            if tz_str[0] == '+':
+                dt -= offset
+            else:
+                dt += offset
             return pytz.utc.localize(dt)
         else:
             try:
@@ -203,36 +209,47 @@ class RawPost(object):
         else:
             return dt
 
+    def get_content(self):
+        return ''.join(self._rawpost[3][-int(self.content['Lines']):])
+
+    def check_content_is_nzb(self):
+        if self._content_is_nzb is None:
+            content = self.get_content()
+            try:
+                # TODO: yenc decoding and possibly some more
+                # because this alone never seems to work
+                decode_nzb(content)
+            except DecodeNzbError:
+                self._content_is_nzb = False
+            else:
+                self._content_is_nzb = True
+
     # public properties
 
     @property
     def poster(self):
         p = self.content['From'].split('<', 1)[0].strip()
-        assert p == self.extra['Poster']
-        return self.decode_string(self.extra['Poster'])
+        return self.decode_string(p)
 
     @property
     def subject(self):
-        return self.extra['Title']
-        # the following has been deprecated because
-        # (same reason as description)
-        subj = self.content['Subject']
-        if ' | ' in subj:
-            subj, poster = subj.split(' | ',1)
-        assert subj == self.extra['Title']
-        #assert poster == self.extra['Poster'] # this is not True
-        return self.decode_string(self.extra['Title'])
+        if 'Title' in self.extra:
+            return self.decode_string(self.extra['Title'])
+        else:
+            subj = self.content['Subject']
+            if ' | ' in subj:
+                subj, poster = subj.split(' | ',1)
+            return self.decode_string(subj)
 
     @property
     def description(self):
-        return self.decode_string(self.extra['Description'])
-        # the following has been deprecated because
-        # the xml description a mucht better
-        # and simpler way of obtaining the title
-        # without any immediate encoding errors
-        desc = ''.join(self._rawpost[3][-int(self.content['Lines']):])
-        assert desc == self.extra['Description']
-        return self.decode_string(self.extra['Description'])
+        if 'Description' in self.extra:
+            return self.decode_string(self.extra['Description'])
+        self.check_content_is_nzb()
+        if self._content_is_nzb is True:
+            return u''
+        else:
+            return self.decode_string(self.get_content())
 
     @property
     def tag(self):
@@ -262,27 +279,37 @@ class RawPost(object):
 
     @property
     def category(self):
-        return self.extra.get('Category', None)
+        return self.decode_string(self.extra.get('Category', None))
 
     @property
     def subcategories(self):
-        return self.extra.get('Subcategories', [])
+        return [self.decode_string(x) for x in self.extra.get('Subcategories', []) if x]
 
     @property
     def image(self):
-        return self.extra.get('Image', None)
+        return self.decode_string(self.extra.get('Image', None))
 
     @property
     def website(self):
-        return self.extra.get('Website', None)
+        return self.decode_string(self.extra.get('Website', None))
 
     @property
     def size(self):
-        return self.extra.get('Size', None)
+        try:
+            return int(self.extra.get('Size', None))
+        except (TypeError, ValueError):
+            return None
 
     @property
     def nzb(self):
-        return self.extra.get('NZB', [])
+        if 'NZB' in self.extra:
+            nzb_raw = self.extra['NZB']
+            return [self.decode_string(x) for x in nzb_raw]
+        self.check_content_is_nzb()
+        if self._content_is_nzb is True:
+            return [self.decode_string(self.messageid)]
+        else:
+            return []
 
 
 

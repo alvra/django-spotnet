@@ -25,10 +25,11 @@ class StringSetField(models.CharField):
 
     def to_python(self, value):
         # from a db value to a python object
-        if isinstance(value, (list, set, tuple)) or hasattr(value, '__iter__'):
+        if isinstance(value, basestring):
+            splitted = value.split(',')
+            return [x for x in splitted if x]
+        elif isinstance(value, (list, set, tuple)) or hasattr(value, '__iter__'):
             return list(value)
-        elif isinstance(value, basestring):
-            return value.split(',')
         elif value is None:
             return []
         else:

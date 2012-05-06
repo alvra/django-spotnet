@@ -5,6 +5,7 @@ from cStringIO import StringIO
 from django.db import IntegrityError
 from models import Post, PostMarker
 from post import RawPost, InvalidPost
+from nzb import decode_nzb, DecodeNzbError
 
 
 
@@ -214,15 +215,17 @@ class Connection(object):
         try:
             raw = RawPost(postnumber, post)
         except InvalidPost as e:
+            logger("Skipped invalid post %s" % postnumber)
             return False
         snp = Post.from_raw(raw)
         try:
             snp.save()
         except IntegrityError:
             # this post must already exist
+            logger("Skipped existing post %s: %s" % (raw.postnumber, raw.messageid))
             return False
         else:
-            logger("Added post: %s" % (raw.messageid))
+            logger("Added post %s: %s" % (raw.postnumber, raw.messageid))
             return True
 
     def get_raw_post(self, messageid):
@@ -253,20 +256,10 @@ class Connection(object):
         content = zipped.getvalue()
         del zipped
 
-        # decompression used is slightly different
-        # from the python implementation
-        # after a long night, this finally worked...
-        content = content.replace(chr(10), '')
-        content = content.replace('=C', '\n')
-        content = content.replace('=B', '\r')
-        content = content.replace('=A', '\0')
-        content = content.replace('=D', '=')
         try:
-            decompressed = zlib.decompress(content, -zlib.MAX_WBITS)
-        except zlib.error as e:
-            raise ConnectionError(e)
-        else:
-            return decompressed
+            return decode_nbz(content)
+        except DecodeNzbError as e:
+            raise ConnectionError(e.msg)
 
     def get_comments(self, post):
         "Retrieves the comments for a post"

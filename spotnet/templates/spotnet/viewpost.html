@@ -26,10 +26,12 @@
     <td><a href="{{ post.website }}">{{ post.website }}</a></td>
   </tr>
 {% endif %}
+{% if post.size %}
   <tr>
     <th>{% trans "Size" %}</th>
     <td>{{ post.size|filesizeformat }}</td>
   </tr>
+{% endif %}
   <tr>
     <th>{% trans "Subcategories" %}</th>
     <td>{{ post.subcategories|join:", " }}</td>
