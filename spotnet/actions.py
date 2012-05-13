@@ -168,7 +168,7 @@ class DownloadNzbAction(DownloadFileAction):
                 if len(posts) != len(pks):
                     messages.error(request, _("Could not download all nzbs for all posts you requested since some of them do not exists."))
                 self.mark_posts_downloaded(request.user, posts)
-                connection = SpotnetConnection(connect=True)
+                connection = Connection(connect=True)
                 return self.download_several_files(dict(
                     (self.post_to_filename(post), post.get_nzb_file(connection=connection))
                 for post in posts), 'nzb (%s).zip'%len(posts))
