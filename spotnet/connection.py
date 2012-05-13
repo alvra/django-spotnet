@@ -257,7 +257,7 @@ class Connection(object):
         del zipped
 
         try:
-            return decode_nbz(content)
+            return decode_nzb(content)
         except DecodeNzbError as e:
             raise ConnectionError(e.msg)
 

@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, IntegrityError
 from cStringIO import StringIO
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
@@ -71,13 +71,14 @@ class Post(models.Model):
         return ('spotnet:viewpost', (), dict(id=self.id))
 
     def mark_downloaded(self, user):
-        try:
-            PostDownloaded.objects.create(
-                user = user,
-                post = self,
-            )
-        except IntegrityError:
-            pass
+        if user.is_authenticated():
+            try:
+                PostDownloaded.objects.create(
+                    user = user,
+                    post = self,
+                )
+            except IntegrityError:
+                pass
 
     # public properties that can be used to list
     # details about this spotnet post
