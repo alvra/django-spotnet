@@ -246,7 +246,7 @@ class RawPost(object):
     def description(self):
         if 'Description' in self.extra:
             return self.decode_string(self.extra['Description'])
-        self.check_content_is_nzb():
+        if self.check_content_is_nzb():
             return u''
         else:
             return self.decode_string(self.get_content())
@@ -305,7 +305,7 @@ class RawPost(object):
         if 'NZB' in self.extra:
             nzb_raw = self.extra['NZB']
             return [self.decode_string(x) for x in nzb_raw]
-        self.check_content_is_nzb():
+        if self.check_content_is_nzb():
             return [self.decode_string(self.messageid)]
         else:
             return []
