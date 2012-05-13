@@ -30,6 +30,8 @@ class ConnectionError(Exception):
     pass
 class ConnectError(ConnectionError):
     pass
+class NotFoundError(Exception):
+    pass
 
 
 
@@ -251,8 +253,14 @@ class Connection(object):
         "Retrieves the nzb for a post, returned is the nzb content"
         assert self.is_connected()
         zipped = StringIO() # TODO: maybe replace this with os.tmpfile
-        for messageid in post.nzb:
-            self._nntp.body('<%s>'%messageid, zipped)
+        try:
+            for messageid in post.nzb:
+                self._nntp.body('<%s>'%messageid, zipped)
+        except nntplib.NNTPTemporaryError as e:
+            if e.response == '430 No such article':
+                raise NotFoundError
+            else:
+                raise
         content = zipped.getvalue()
         del zipped
 

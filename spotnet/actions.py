@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from models import Post, PostDownloaded
-from connection import Connection
+from connection import Connection, NotFoundError
 
 
 
@@ -143,6 +143,13 @@ class DownloadNzbAction(DownloadFileAction):
             for post in posts:
                 post.mark_downloaded(user)
 
+    def get_nzb(self, request, post, connection):
+        try:
+            return post.get_nzb_file(connection=connection)
+        except NotFoundError:
+            messages.warning(request, _("Could not download nzb for '%s' since it does not exist on the server anymore.") % post.title)
+            return None
+
     def apply(self, request, pks):
         if len(pks) == 0:
             messages.warning(request, _("Could not download nzbs since no posts were selected."))
@@ -155,7 +162,11 @@ class DownloadNzbAction(DownloadFileAction):
                 return None
             else:
                 self.mark_posts_downloaded(request.user, post)
-                return self.download_file(post.get_nzb_file(), self.post_to_filename(post), mimetype=self.nzb_mimetype)
+                try:
+                    return self.download_file(post.get_nzb_file(), self.post_to_filename(post), mimetype=self.nzb_mimetype)
+                except NotFoundError:
+                    messages.error(request, _("The post you requested to download nzbs from does not exist anymore on the server."))
+                    return None
         else:
             posts = self.get_posts_from_several_pks(pks)
             if len(posts) == 0:
@@ -168,10 +179,17 @@ class DownloadNzbAction(DownloadFileAction):
                 if len(posts) != len(pks):
                     messages.error(request, _("Could not download all nzbs for all posts you requested since some of them do not exists."))
                 self.mark_posts_downloaded(request.user, posts)
-                connection = SpotnetConnection(connect=True)
-                return self.download_several_files(dict(
-                    (self.post_to_filename(post), post.get_nzb_file(connection=connection))
-                for post in posts), 'nzb (%s).zip'%len(posts))
+                connection = Connection(connect=True)
+
+                files = [(
+                    self.post_to_filename(post),
+                    self.get_nzb(request, post, connection)
+                ) for post in posts]
+                files = [f for f in files if f[1] is not None]
+                if files:
+                    return self.download_several_files(dict(files), 'nzb (%s).zip'%len(posts))
+                else:
+                    return None
 
 
 
