@@ -58,7 +58,7 @@ def search(request, search=None, cats=None, scats=None):
     searcher.unfilter_categories()
 
     selector = QuerySelector(snps, dict(
-       download=DownloadNzbAction(),
+        download=DownloadNzbAction(),
     ))
 
     if request.method == 'POST':
@@ -66,8 +66,12 @@ def search(request, search=None, cats=None, scats=None):
         if isinstance(action_response, HttpResponse):
             return action_response
 
-    paginator = Paginator(selector, settings.POST_PER_PAGE, \
-        allow_empty_first_page=True, orphans=0)
+    paginator = Paginator(
+        selector,
+        settings.POST_PER_PAGE,
+        allow_empty_first_page=True,
+        orphans=0,
+    )
     try:
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
@@ -137,7 +141,7 @@ def download(request, id, dls=None):
 
 def view_related_post_list(request, objects, page, title, extra_actions={}):
     actions = dict(
-       download=DownloadRelatedNzbAction(),
+        download=DownloadRelatedNzbAction(),
     )
     actions.update(extra_actions)
     selector = QuerySelector(objects, actions)
@@ -147,8 +151,12 @@ def view_related_post_list(request, objects, page, title, extra_actions={}):
         if isinstance(action_response, HttpResponse):
             return action_response
 
-    paginator = Paginator(selector, settings.POST_PER_PAGE, \
-        allow_empty_first_page=True, orphans=settings.POST_LIST_ORPHANS)
+    paginator = Paginator(
+        selector,
+        settings.POST_PER_PAGE,
+        allow_empty_first_page=True,
+        orphans=settings.POST_LIST_ORPHANS,
+    )
     try:
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
@@ -174,7 +182,11 @@ def downloaded(request):
         objects = PostDownloaded.objects.order_by('-created') \
             .select_related('post').filter(user=request.user)
 
-    return view_related_post_list(request, objects, page, _('Downloaded'),
+    return view_related_post_list(
+        request,
+        objects,
+        page,
+        _('Downloaded'),
         dict(
             delete=DeleteAction(objects.model, title=_('Remove from list')),
         )

@@ -87,14 +87,20 @@ def download_url(url, timeout):
     try:
         response = urllib2.urlopen(url, None, timeout)
     except urllib2.HTTPError as e:
-        raise ConnectionError(ugettext("While connecting to the server, " \
-            "got an unexpected http response code: %s") % e.code)
+        raise ConnectionError(ugettext(
+            "While connecting to the server, "
+            "got an unexpected http response code: %s"
+        ) % e.code)
     except urllib2.URLError as e:
-        raise ConnectionError(ugettext("Error while connecting to the " \
-            "server: %s") % e.reason)
+        raise ConnectionError(ugettext(
+            "Error while connecting to the "
+            "server: %s"
+        ) % e.reason)
     if response is None:
-        raise ConnectionError(ugettext("While connecting to the server, " \
-            "got nothing as response"))
+        raise ConnectionError(ugettext(
+            "While connecting to the server, "
+            "got nothing as response"
+        ))
     else:
         return response
 
@@ -125,8 +131,10 @@ class DownloadServer(object):
         if getattr(self.download_nzb, 'implemented', True):
             return self.download_nzb(user, id, post.get_nzb_file())
         else:
-            raise NotImplementedError("The download_post method of this " \
-                "DownloadServer is not implemented.")
+            raise NotImplementedError(
+                "The download_post method of this "
+                "DownloadServer is not implemented."
+            )
 
     def download_url(self, user, id, url):
         if getattr(self.download_nzb, 'implemented', True):
@@ -134,13 +142,17 @@ class DownloadServer(object):
             response = download_url(url, self._connection_timeout)
             self.download_nzb(user, id, response)
         else:
-            raise NotImplementedError("The download_url method of this " \
-                "DownloadServer is not implemented.")
+            raise NotImplementedError(
+                "The download_url method of this "
+                "DownloadServer is not implemented."
+            )
     download_url.implemented = False
 
     def download_nzb(self, user, id, post):
-        raise NotImplementedError("The download_nzb method of this " \
-            "DownloadServer is not implemented.")
+        raise NotImplementedError(
+            "The download_nzb method of this "
+            "DownloadServer is not implemented."
+        )
     download_nzb.implemented = False
 
 
@@ -298,8 +310,12 @@ class PostDownloadForServer(object):
     def render(self):
         description = self.description
         if description:
-            return mark_safe(u'<a href="%s" title="%s">%s</a>' % \
-                (self.url, description, conditional_escape(self.verbose_name)))
+            return mark_safe(
+                u'<a href="%s" title="%s">%s</a>'
+                % (self.url, description, conditional_escape(self.verbose_name))
+            )
         else:
-            return mark_safe(u'<a href="%s">%s</a>' % \
-                (self.url, conditional_escape(self.verbose_name)))
+            return mark_safe(
+                u'<a href="%s">%s</a>'
+                % (self.url, conditional_escape(self.verbose_name))
+            )

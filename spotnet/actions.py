@@ -78,7 +78,7 @@ class DownloadFileAction(Action):
             else:
                 filesize = self.get_path_filesize(filepath)
         response = HttpResponse(FileWrapper(f), mimetype=mimetype)
-        response['Content-Disposition'] = self.clean_response_header( \
+        response['Content-Disposition'] = self.clean_response_header(
             u'attachment; filename=%s' % name)
         response['Content-Length'] = self.clean_response_header(unicode(filesize))
         return response
@@ -145,24 +145,32 @@ class DownloadNzbAction(DownloadFileAction):
         try:
             return post.get_nzb_file(connection=connection)
         except NotFoundError:
-            messages.warning(request, _("Could not download nzb for '%s' " \
-                "since it does not exist on the server anymore.") % post.title)
+            messages.warning(request, _(
+                "Could not download nzb for '%s' "
+                "since it does not exist on the server anymore."
+            ) % post.title)
             return None
 
     def apply(self, request, pks):
         if len(pks) == 0:
-            messages.warning(request, _("Could not download nzbs since no " \
-                "posts were selected."))
+            messages.warning(request, _(
+                "Could not download nzbs since no "
+                "posts were selected."
+            ))
             return None
         else:
             posts = self.get_posts_from_several_pks(pks)
             if len(posts) == 0:
-                messages.warning(request, _("The posts you requested to " \
-                    "download nzbs from do not exist."))
+                messages.warning(request, _(
+                    "The posts you requested to "
+                    "download nzbs from do not exist."
+                ))
                 return None
             if len(pks) != len(posts):
-                messages.error(request, _("Some of the posts you requested " \
-                    "to download nzbs from do not exist."))
+                messages.error(request, _(
+                    "Some of the posts you requested "
+                    "to download nzbs from do not exist."
+                ))
             if len(posts) == 1:
                 self.mark_posts_downloaded(request.user, posts[0])
                 nzb = self.get_nzb(request, posts[0])
@@ -176,9 +184,10 @@ class DownloadNzbAction(DownloadFileAction):
                     return None
             else:
                 if len(posts) != len(pks):
-                    messages.error(request, _("Could not download all nzbs " \
-                        "for all posts you requested since some of them " \
-                        "do not exists."))
+                    messages.error(request, _(
+                        "Could not download all nzbs for all posts you "
+                        "requested since some of them do not exists."
+                    ))
                 self.mark_posts_downloaded(request.user, posts)
                 connection = Connection(connect=True)
 

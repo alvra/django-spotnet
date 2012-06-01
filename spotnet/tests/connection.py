@@ -95,7 +95,9 @@ class ConnectionTest(ConnectionTestMixin, unittest.TestCase):
             settings.SERVER_PASSWORD = prev_pasw
             settings.SERVER_READERMODE = prev_rdrm
 
-    @unittest.skipIf(settings.SERVER_HOST is None, \
-        "No usenet server defined in your settings file.")
+    @unittest.skipIf(
+        settings.SERVER_HOST is None,
+        "No usenet server defined in your settings file.",
+    )
     def test_connect_current_settings(self):
         pass

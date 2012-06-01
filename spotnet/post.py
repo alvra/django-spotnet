@@ -74,8 +74,9 @@ class RawPost(object):
         except InvalidPost:
             raise
         except Exception as e:
-            raise InvalidPost("Error in parsing raw post content, " \
-                exception was '%s'" % e)
+            raise InvalidPost(
+                "Error in parsing raw post content, exception was '%s'" % e
+            )
         try:
             self.extra = self.parse_xml_content(self.content['X-XML'])
         except (KeyError, InvalidPost):
@@ -105,14 +106,17 @@ class RawPost(object):
             else:
                 # we only allow an empty line here!
                 if content[l] != '':
-                    raise InvalidPost("Post has invalid header line '%s'" \
-                        % content[l])
+                    raise InvalidPost(
+                        "Post has invalid header line '%s'" % content[l]
+                    )
             l += 1
         if not content[l] == '':
             raise InvalidPost("First line after headers is not empty!")
         if not len(content) == int(d['Lines']) + l + 1:
-            raise InvalidPost("Header value for Lines differs from " \
-                "actual number of lines!")
+            raise InvalidPost(
+                "Header value for Lines differs from "
+                "actual number of lines!"
+            )
         return d
 
     def parse_xml_content(self, xml_string):
@@ -122,15 +126,21 @@ class RawPost(object):
             raise InvalidPost("Post has invalid XML data for header X-XML")
         doc = xml.documentElement
         if not doc.tagName == 'Spotnet':
-            raise InvalidPost("XML for spotnet post does not have a main " \
-                "node called 'Spotnet'")
+            raise InvalidPost(
+                "XML for spotnet post does not have a main "
+                "node called 'Spotnet'"
+            )
         if not len(doc.childNodes) == 1:
-            raise InvalidPost("XML for spotnet post does not have 1 child " \
-                "for main node 'Spotnet'")
+            raise InvalidPost(
+                "XML for spotnet post does not have 1 child "
+                "for main node 'Spotnet'"
+            )
         main = doc.childNodes[0]
         if not main.tagName == 'Posting':
-            raise InvalidPost("XML for spotnet post does not have a main " \
-                "child node called 'Posting' for 'Spotnet'")
+            raise InvalidPost(
+                "XML for spotnet post does not have a main "
+                "child node called 'Posting' for 'Spotnet'"
+            )
         # assemble dict of content
         d = {}
         for e in main.childNodes:
@@ -154,8 +164,10 @@ class RawPost(object):
                 d['NZB'] = []
                 for nzb_node in e.childNodes:
                     if not nzb_node.tagName == 'Segment':
-                        raise InvalidPost("XML for spotnet post, in NZB node " \
-                            "there are child nodes that are not named 'Segment'")
+                        raise InvalidPost(
+                            "XML for spotnet post, in NZB node "
+                            "there are child nodes that are not named 'Segment'"
+                        )
                     d['NZB'].append(nzb_node.childNodes[0].nodeValue)
         if isinstance(d.get('Category', None), list):
             if len(d['Category']) == 0:

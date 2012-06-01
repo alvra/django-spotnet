@@ -62,12 +62,16 @@ class Connection(object):
                 nntp = nntplib.NNTP(
                     host=settings.SERVER_HOST,
                     port=settings.SERVER_PORT,
-                    user=settings.SERVER_USERNAME \
-                        if settings.SERVER_USERNAME is not None \
-                        else NEWSSERVER_UNAUTH_USERNAME,
-                    password=settings.SERVER_PASSWORD\
-                        if settings.SERVER_PASSWORD is not None \
-                        else NEWSSERVER_UNAUTH_PASSWORD,
+                    user=(
+                        settings.SERVER_USERNAME
+                        if settings.SERVER_USERNAME is not None
+                        else NEWSSERVER_UNAUTH_USERNAME
+                    ),
+                    password=(
+                        settings.SERVER_PASSWORD
+                        if settings.SERVER_PASSWORD is not None
+                        else NEWSSERVER_UNAUTH_PASSWORD
+                    ),
                     readermode=settings.SERVER_READERMODE,
                     usenetrc=False,
                 )
@@ -152,8 +156,10 @@ class Connection(object):
         try:
             xover = self._nntp.xover(str(start), str(end))
         except (nntplib.NNTPError, socket.error) as e:
-            logger("Error updating group '%s', block [%d, %d]: %s" \
-                % (groupname, start, end, e))
+            logger(
+                "Error updating group '%s', block [%d, %d]: %s"
+                % (groupname, start, end, e)
+            )
             raise ConnectionError(e)
         last_added = None
         index = 0
@@ -226,8 +232,10 @@ class Connection(object):
             snp.save()
         except IntegrityError:
             # this post must already exist
-            logger("Skipped existing post %s: %s" % \
-                (raw.postnumber, raw.messageid))
+            logger(
+                "Skipped existing post %s: %s"
+                % (raw.postnumber, raw.messageid)
+            )
             return False
         else:
             logger("Added post %s: %s" % (raw.postnumber, raw.messageid))

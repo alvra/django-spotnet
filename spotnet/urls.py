@@ -1,7 +1,9 @@
 from django.conf.urls.defaults import *
 
 
-urlpatterns = patterns('spotnet.views',
+urlpatterns = patterns(
+    'spotnet.views',
+
     url(r'^$', 'search', name="index"),
     url(r'^(?P<page>[0-9]+)/$', 'search', name="index"),
 

@@ -85,8 +85,10 @@ class Searcher(object):
         if self.search:
             kwargs['search'] = self.search
         if self.subcategories:
-            kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] \
-                for c in self.subcategories)
+            kwargs['scats'] = ','.join(
+                settings.SUBCATEGORY_MAPPING[c]
+                for c in self.subcategories
+            )
         for catid, cat in settings.CATEGORY_MAPPING.iteritems():
             if len(self.categories) == 1 and catid in self.categories:
                 yield None, ugettext(cat).capitalize()
@@ -102,8 +104,10 @@ class Searcher(object):
         if self.search:
             kwargs['search'] = self.search
         if self.subcategories:
-            kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] \
-                for c in self.subcategories)
+            kwargs['scats'] = ','.join(
+                settings.SUBCATEGORY_MAPPING[c]
+                for c in self.subcategories
+            )
         for catid, cat in settings.CATEGORY_MAPPING.iteritems():
             if catid not in self.categories:
                 k = dict(

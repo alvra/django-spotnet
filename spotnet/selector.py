@@ -27,12 +27,16 @@ class Selector(object):
             return None
 
     def get_object_id(self, obj):
-        raise NotImplementedError("The 'get_object_id' method of this " \
-            "Selector is not implemented")
+        raise NotImplementedError(
+            "The 'get_object_id' method of this "
+            "Selector is not implemented"
+        )
 
     def get_selection(self, obj):
-        raise NotImplementedError("The 'get_selection' method of this " \
-            "Selector is not implemented")
+        raise NotImplementedError(
+            "The 'get_selection' method of this "
+            "Selector is not implemented"
+        )
 
     def get_checkbox(self, obj):
         return mark_safe(self.checkbox_template % dict(

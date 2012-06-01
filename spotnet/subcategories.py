@@ -26,8 +26,7 @@ class Subcategory(object):
     def is_valid(self):
         return self._main  in settings.CATEGORY_MAPPING \
             and self._type in settings.SUBCATEGORY_TYPE_MAPPING[self._main] \
-            and self._sub  in settings. \
-                SUBCATEGORY_MAPPING[self._main][self.type_base]
+            and self._sub  in settings.SUBCATEGORY_MAPPING[self._main][self.type_base]
 
     @property
     def main(self):

@@ -8,8 +8,8 @@ class WatchfolderDownloadServer(DownloadServer):
     def __init__(self, dirpath, **kwargs):
         if not os.path.isdir(dirpath):
             raise ImproperlyConfigured(
-                "Created WatchfolderDownloadServer with " \
-                "nonexisting dirpath '%s'." \
+                "Created WatchfolderDownloadServer with "
+                "nonexisting dirpath '%s'."
                 % dirpath
             )
         self._dirpath = dirpath
@@ -49,13 +49,15 @@ class WatchfolderDownloadServer(DownloadServer):
                 raise
         else:
             if name is None:
-                return ugettext(u"Successfully placed nzb file in " \
-                    "watchfolder, it was added under the name '%(id)s'.") \
-                    % dict(id='%s.nzb' % attempt_filename)
+                return ugettext(
+                    u"Successfully placed nzb file in "
+                    "watchfolder, it was added under the name '%(id)s'."
+                ) % dict(id='%s.nzb' % attempt_filename)
             else:
-                return ugettext(u"Successfully placed '%(name)s' in " \
-                    "watchfolder, it was added under the name '%(id)s'.") \
-                    % dict(name=name, id='%s.nzb' % attempt_filename)
+                return ugettext(
+                    u"Successfully placed '%(name)s' in "
+                    "watchfolder, it was added under the name '%(id)s'."
+                ) % dict(name=name, id='%s.nzb' % attempt_filename)
 
     def download_nzb(self, user, id, nzb):
         return self.download_nzb_base(id, nzb)
