@@ -2,6 +2,8 @@
 
 import os, sys
 
+from django import VERSION as django_version
+
 try:
     import spotnet
 except ImportError:
@@ -123,7 +125,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -132,6 +133,8 @@ INSTALLED_APPS = (
     'exproj.index',
     'spotnet',
 )
+if not django_version < (1, 3):
+    INSTALLED_APPS += ('django.contrib.staticfiles',)
 
 try:
     import debug_toolbar
@@ -149,29 +152,9 @@ INTERNAL_IPS = ('127.0.0.1',)
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
+# LOGGING = {}
+# removed for django 1.3 compatibitily
+# it contained the newer RequireDebugFalse Zfilter
 
 # spotnet settings
 

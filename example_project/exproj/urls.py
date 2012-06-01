@@ -1,4 +1,11 @@
-from django.conf.urls import patterns, include, url
+try:
+    from django.conf.urls import patterns, include, url
+except ImportError as e:
+    # django 1.3 compatibility
+    try:
+        from django.conf.urls.defaults import patterns, include, url
+    except ImportError:
+        raise e
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin

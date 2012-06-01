@@ -1,7 +1,6 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect, \
     HttpResponseNotFound, HttpResponseForbidden, Http404
-from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -16,6 +15,21 @@ from selector import QuerySelector
 from actions import DeleteAction, DownloadNzbAction, DownloadRelatedNzbAction
 from searcher import Searcher
 from subcategories import Subcategory
+
+
+try:
+    from django.shortcuts import render
+except ImportError:
+    # for django==1.2 compatibility
+    from django.shortcuts import render_to_response
+    from django.template import RequestContext
+
+    def render(request, template, context):
+        return render_to_response(
+            template,
+            context,
+            context_instance=RequestContext(request),
+        )
 
 
 def authenticate_base(user):
@@ -84,6 +98,7 @@ def search(request, search=None, cats=None, scats=None):
             searcher=searcher,
             page=page,
             paginate_template=get_paginate_template(),
+            navigator_template="spotnet/paginate.html",  # TODO: use settings here
         ),
     )
 
