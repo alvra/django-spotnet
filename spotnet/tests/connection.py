@@ -6,6 +6,7 @@ except ImportError:
     except ImportError:
         import unittest
 if not hasattr(unittest, 'expectedFailure'):
+    unittest.skipIf = lambda c, m: (lambda f: f) if c else (lambda f: None)
     unittest.expectedFailure = lambda f: f
 
 from django.test import TestCase as DjangoTestCase
