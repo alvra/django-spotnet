@@ -1,0 +1,44 @@
+# Django-Spotnet
+
+This is a Django app to handle spotnet posts.
+It can fetch posts from your NNTP server,
+and push NZBs to your download server (eg: Sabnzbd+).
+
+
+## Installation
+
+Install with
+
+    $ pip install hg+https://Blue@bitbucket.org/Blue/django-spotnet
+
+You'll probably also want to install pytz and pycrypto
+to get the correct timezones and verification of post signatures.
+
+    $ pip install pytz pycrypto
+
+Then update setting file:
+
+    # settings.py
+
+    INSTALLED_APPS += ('spotnet',)
+
+    SPOTNET_SERVER_HOST = 'your.nntp-server.com'
+
+with that last setting being the address
+to a NNTP server, it's the only required setting. 
+And set up the urls to the included views
+
+    (r'^spotnet/', include('spotnet.urls')),
+
+When you're ready, sync and update your database.
+
+    $ python manage.py syncdb
+    $ python manage.py update_spotnet
+
+You're good to go!
+
+
+## License
+
+See LICENSE file.
+

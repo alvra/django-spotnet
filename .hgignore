@@ -6,3 +6,4 @@ settings_overrides.py
 testing
 tests/example_posts
 sqlite.db
+docs/_build

@@ -26,7 +26,7 @@ UPDATE_LAST_STORAGE    = getattr(settings, 'SPOTNET_UPDATE_LAST_STORAGE',    Fal
 UPDATE_DISCARD_ENDINGS = getattr(settings, 'SPOTNET_UPDATE_DISCARD_ENDINGS', (SERVER_HOST,))
 
 CLEANUP_MINAGE         = getattr(settings, 'SPOTNET_CLEANUP_MINAGE',         1999)
-CLEANUP_ALLOW_INPAGE   = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE',   True)
+#CLEANUP_ALLOW_INPAGE   = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE',   True)
 
 POST_PER_PAGE          = getattr(settings, 'SPOTNET_POST_PER_PAGE',          30)
 POST_LIST_ORPHANS      = getattr(settings, 'POST_LIST_ORPHANS',              POST_PER_PAGE // 5)
