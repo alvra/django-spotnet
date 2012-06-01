@@ -7,9 +7,9 @@ and push NZBs to your download server (eg: Sabnzbd+).
 
 ## Installation
 
-Install with
+Install with either one of
 
-    $ pip install hg+https://Blue@bitbucket.org/Blue/django-spotnet
+    $ pip install django-spotnet
 
 You'll probably also want to install pytz and pycrypto
 to get the correct timezones and verification of post signatures.
@@ -36,6 +36,18 @@ When you're ready, sync and update your database.
     $ python manage.py update_spotnet
 
 You're good to go!
+
+
+## Documentation
+
+Read the docs at http://readthedocs.org/docs/django-spotnet/en/latest/
+
+
+## Development
+
+The main development version is hosted at bitbucket (https://bitbucket.org/Blue/django-spotnet), but there's a maintained copy over at github (https://github.com/AJHMvR/django-spotnet).
+CI server is running at Travis CI (http://travis-ci.org/#!/AJHMvR/django-spotnet),
+it's current status is https://secure.travis-ci.org/AJHMvR/django-spotnet.png.
 
 
 ## License
