@@ -23,5 +23,4 @@ class Command(NoArgsCommand):
         else:
             conn.update(self.logger_function)
         finally:
-            conn.disconnect()        
-
+            conn.disconnect()

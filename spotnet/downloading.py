@@ -6,13 +6,7 @@ from django.core.urlresolvers import reverse
 import settings
 
 
-
-
-
 no_server_description_available_message = ugettext_lazy("No description given.")
-
-
-
 
 
 class DownloadError(Exception):
@@ -26,8 +20,8 @@ class DownloadError(Exception):
 
     def as_json_object(self):
         obj = dict(
-            description = self.description,
-            type = type(self).__name__,
+            description=self.description,
+            type=type(self).__name__,
         )
         if self.details is not None:
             self.obj['details'] = self.details
@@ -49,33 +43,41 @@ class DownloadError(Exception):
             ret.append(self.details)
         return u''.join(unicode(x) for x in ret)
 
+
 class ConfigurationError(DownloadError):
     description = ugettext_lazy(u"An error in the configuration was detected")
+
 
 class ConnectionError(DownloadError):
     description = ugettext_lazy(u"An error occured while connecting to the download server")
 
+
 class PermissionDeniedError(DownloadError):
     description = ugettext_lazy(u"The requesting user was denied access to the download server")
+
 
 class UnauthenticatedError(PermissionDeniedError):
     description = ugettext_lazy(u"The requesting user was denied access to the download server because he/she is unauthenticated")
 
+
 class FsError(DownloadError):
     description = ugettext_lazy(u"There was an error when reading/writing the filesystem")
+
+
 class DiskFullError(FsError):
     description = ugettext_lazy(u"Downloading failed because the disk is full")
 
+
 class InvalidNzbError(DownloadError):
     description = ugettext_lazy(u"The nzb file is invalid")
+
+
 class EmptyNzbError(InvalidNzbError):
     description = ugettext_lazy(u"The nzb file is an empty file")
 
+
 class UnhandledDownloadError(DownloadError):
     description = ugettext_lazy(u"The DownloadServer instance failed to handle an exception")
-
-
-
 
 
 def download_url(url, timeout):
@@ -85,16 +87,16 @@ def download_url(url, timeout):
     try:
         response = urllib2.urlopen(url, None, timeout)
     except urllib2.HTTPError as e:
-        raise ConnectionError(ugettext("While connecting to the server, got an unexpected http response code: %s") % e.code)
+        raise ConnectionError(ugettext("While connecting to the server, " \
+            "got an unexpected http response code: %s") % e.code)
     except urllib2.URLError as e:
-        raise ConnectionError(ugettext("Error while connecting to the server: %s") % e.reason)
+        raise ConnectionError(ugettext("Error while connecting to the " \
+            "server: %s") % e.reason)
     if response is None:
-        raise ConnectionError(ugettext("While connecting to the server, got nothing as response"))
+        raise ConnectionError(ugettext("While connecting to the server, " \
+            "got nothing as response"))
     else:
         return response
-
-
-
 
 
 class DownloadServer(object):
@@ -103,7 +105,6 @@ class DownloadServer(object):
         self.description = description
         self.allow_anonymous = allow_anonymous
         self._connection_timeout = 30 if connection_timeout is None else connection_timeout
-
 
     def download_post_base(self, user, id, post):
         if user.is_anonymous() and not self.allow_anonymous:
@@ -120,12 +121,12 @@ class DownloadServer(object):
             raise UnauthenticatedError
         return self.download_nzb(user, id, nzb)
 
-
     def download_post(self, user, id, post):
         if getattr(self.download_nzb, 'implemented', True):
             return self.download_nzb(user, id, post.get_nzb_file())
         else:
-            raise NotImplementedError("The download_post method of this DownloadServer is not implemented.")
+            raise NotImplementedError("The download_post method of this " \
+                "DownloadServer is not implemented.")
 
     def download_url(self, user, id, url):
         if getattr(self.download_nzb, 'implemented', True):
@@ -133,15 +134,14 @@ class DownloadServer(object):
             response = download_url(url, self._connection_timeout)
             self.download_nzb(user, id, response)
         else:
-            raise NotImplementedError("The download_url method of this DownloadServer is not implemented.")
+            raise NotImplementedError("The download_url method of this " \
+                "DownloadServer is not implemented.")
     download_url.implemented = False
 
     def download_nzb(self, user, id, post):
-        raise NotImplementedError("The download_nzb method of this DownloadServer is not implemented.")
+        raise NotImplementedError("The download_nzb method of this " \
+            "DownloadServer is not implemented.")
     download_nzb.implemented = False
-
-
-
 
 
 class DownloadManager(object):
@@ -175,7 +175,6 @@ class DownloadManager(object):
         else:
             return None
 
-
     def get_server_verbose_name(self, server_name):
         server = self.get_server(server_name)
         if server.verbose_name:
@@ -199,10 +198,11 @@ class DownloadManager(object):
             yield server_name, self.get_server_verbose_name(server_name)
 
     def list_servers_verbose_extensive(self):
-        "This yields tuples of (server_name, server_verbose_name, server_description)"
+        """This yields tuples of
+        (server_name, server_verbose_name, server_description)
+        """
         for server_name in self._servers:
             yield server_name, self.get_server_verbose_name(server_name)
-
 
     def download_post_base(self, post, server):
         """Download a post using a server.
@@ -227,14 +227,13 @@ class DownloadManager(object):
         Returns None or raises a DownloadError subclass."""
         if server_name is None:
             server = self.get_default()
-            assert server is not None, "Requested to download post from default download server when there is no default defined."
+            assert server is not None, "Requested to download post from " \
+                "default download server when there is no default defined."
         else:
             server = self.get_server(server_name)
-            assert server is not None, "Requested to download post from unknown download server '%s'." % server_name
+            assert server is not None, "Requested to download post from " \
+                "unknown download server '%s'." % server_name
         return server.download_post(post)
-
-
-
 
 
 class PostDownload(object):
@@ -253,7 +252,6 @@ class PostDownload(object):
     def get_for_server(self, servername):
         return PostDownloadForServer(self.post, servername)
 
-
     def get_default(self):
         return self.get_for_server(settings.DOWNLOAD_SERVERS.default_server_name)
 
@@ -265,9 +263,6 @@ class PostDownload(object):
     def __iter__(self):
         for servername in settings.DOWNLOAD_SERVERS.list_servers():
             yield self.get_for_server(servername)
-
-
-
 
 
 class PostDownloadForServer(object):
@@ -290,10 +285,10 @@ class PostDownloadForServer(object):
     @property
     def url(self):
         return reverse(
-            'spotnet:download_using', 
-            kwargs = dict(
-                id = self.post.id, 
-                dls = self.servername,
+            'spotnet:download_using',
+            kwargs=dict(
+                id=self.post.id,
+                dls=self.servername,
             ),
         )
 
@@ -303,11 +298,8 @@ class PostDownloadForServer(object):
     def render(self):
         description = self.description
         if description:
-            return mark_safe(u'<a href="%s" title="%s">%s</a>' % (self.url, description, conditional_escape(self.verbose_name)))
+            return mark_safe(u'<a href="%s" title="%s">%s</a>' % \
+                (self.url, description, conditional_escape(self.verbose_name)))
         else:
-            return mark_safe(u'<a href="%s">%s</a>' % (self.url, conditional_escape(self.verbose_name)))
-
-
-
-
-
+            return mark_safe(u'<a href="%s">%s</a>' % \
+                (self.url, conditional_escape(self.verbose_name)))

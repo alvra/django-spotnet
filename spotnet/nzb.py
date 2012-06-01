@@ -20,4 +20,3 @@ def decode_nzb(content):
         raise DecodeNzbError(e)
     else:
         return decompressed
-

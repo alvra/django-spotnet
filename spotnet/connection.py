@@ -1,4 +1,8 @@
-import nntplib, socket, errno, os, sys
+import nntplib
+import socket
+import errno
+import os
+import sys
 import settings
 import zlib
 from cStringIO import StringIO
@@ -7,8 +11,6 @@ from models import Post, PostMarker
 from post import RawPost, InvalidPost
 from nzb import decode_nzb, DecodeNzbError
 
-
-
 # TODO:
 # maybe decode headers using a function (new in python 3?)
 # http://docs.python.org/py3k/library/nntplib.html?highlight=nntp#nntplib.decode_header
@@ -16,23 +18,20 @@ from nzb import decode_nzb, DecodeNzbError
 noop = lambda x: None
 
 
-
-
-
 NEWSSERVER_UNAUTH_USERNAME = None
 NEWSSERVER_UNAUTH_PASSWORD = None
 
 
-
-
-
 class ConnectionError(Exception):
     pass
+
+
 class ConnectError(ConnectionError):
     pass
+
+
 class NotFoundError(Exception):
     pass
-
 
 
 #
@@ -42,6 +41,7 @@ class NotFoundError(Exception):
 # - postnumber : server dependent id, eg: '65903' (always use strings in nntplib!)
 #
 
+
 class Connection(object):
     """Class to connect to the nntp server with."""
 
@@ -49,8 +49,6 @@ class Connection(object):
         self._nntp = None
         if connect:
             self.connect()
-
-
 
     # public methods
 
@@ -60,32 +58,33 @@ class Connection(object):
     def connect(self):
         # connect to server
         try:
-            if sys.version[:2] < (3,2):
+            if sys.version[:2] < (3, 2):
                 nntp = nntplib.NNTP(
-                    host = settings.SERVER_HOST,
-                    port = settings.SERVER_PORT,
-                    user = settings.SERVER_USERNAME \
+                    host=settings.SERVER_HOST,
+                    port=settings.SERVER_PORT,
+                    user=settings.SERVER_USERNAME \
                         if settings.SERVER_USERNAME is not None \
                         else NEWSSERVER_UNAUTH_USERNAME,
-                    password = settings.SERVER_PASSWORD\
+                    password=settings.SERVER_PASSWORD\
                         if settings.SERVER_PASSWORD is not None \
                         else NEWSSERVER_UNAUTH_PASSWORD,
-                    readermode = settings.SERVER_READERMODE,
-                    usenetrc = False,
+                    readermode=settings.SERVER_READERMODE,
+                    usenetrc=False,
                 )
             else:
                 # try to encrypt connection using ssl
                 nntp = nntplib.NNTP(
-                    host = settings.SERVER_HOST,
-                    port = settings.SERVER_PORT,
-                    readermode = settings.SERVER_READERMODE,
-                    usenetrc = False,
+                    host=settings.SERVER_HOST,
+                    port=settings.SERVER_PORT,
+                    readermode=settings.SERVER_READERMODE,
+                    usenetrc=False,
                 )
-                nntp.starttls(ssl_context=None) # this method is introduced in python 3.2
+                # this 'starttls' method is introduced in python 3.2
+                nntp.starttls(ssl_context=None)
                 # login, now that we might be encrypted
                 nntp.login(
-                    user = settings.SERVER_USERNAME if settings.SERVER_USERNAME is not None else NEWSSERVER_UNAUTH_USERNAME,
-                    password = settings.SERVER_PASSWORD if settings.SERVER_PASSWORD is not None else NEWSSERVER_UNAUTH_PASSWORD,
+                    user=settings.SERVER_USERNAME if settings.SERVER_USERNAME is not None else NEWSSERVER_UNAUTH_USERNAME,
+                    password=settings.SERVER_PASSWORD if settings.SERVER_PASSWORD is not None else NEWSSERVER_UNAUTH_PASSWORD,
                 )
         except (nntplib.NNTPError, socket.error) as e:
             raise ConnectError(e)
@@ -106,9 +105,7 @@ class Connection(object):
         "Retrieves all new posts."
         logger("Updating spotnet")
         for group in settings.UPDATE_GROUPS:
-            self.update_group(group, logger=lambda x: logger('  %s'%x))
-
-
+            self.update_group(group, logger=lambda x: logger('  %s' % x))
 
     # private update methods
 
@@ -117,10 +114,10 @@ class Connection(object):
         try:
             gresp = self._nntp.group(groupname)
         except (nntplib.NNTPError, socket.error) as e:
-            logger("Failed updating group '%s': %s" % (groupname,e))
+            logger("Failed updating group '%s': %s" % (groupname, e))
             return ConnectionError(e)
 
-        first_on_server,last = gresp[2],gresp[3] # first < last
+        first_on_server, last = gresp[2], gresp[3]  # first < last
         last_in_db = self.get_last_postnumber_in_db()
 
         first_options = [int(first_on_server)]
@@ -137,8 +134,8 @@ class Connection(object):
             x = self.update_group_postnumbers(
                 groupname,
                 curstart,
-                curstart+settings.UPDATE_BULK_COUNT,
-                logger = lambda x: logger('  %s'%x),
+                curstart + settings.UPDATE_BULK_COUNT,
+                logger=lambda x: logger('  %s' % x),
             )
             if x:
                 last_added = x
@@ -151,11 +148,12 @@ class Connection(object):
             self.set_last_postnumber_in_db(last_added)
 
     def update_group_postnumbers(self, groupname, start, end, logger=noop):
-        logger("Updating group '%s', block [%d, %d]" % (groupname,start,end))
+        logger("Updating group '%s', block [%d, %d]" % (groupname, start, end))
         try:
             xover = self._nntp.xover(str(start), str(end))
         except (nntplib.NNTPError, socket.error) as e:
-            logger("Error updating group '%s', block [%d, %d]: %s" % (groupname,start,end,e))
+            logger("Error updating group '%s', block [%d, %d]: %s" \
+                % (groupname, start, end, e))
             raise ConnectionError(e)
         last_added = None
         index = 0
@@ -163,10 +161,14 @@ class Connection(object):
             post = xover[1][index]
             # we limit ourselves here since not all posts
             # seem to provide real spotnet posts
-            if post[4][:-1].split('@',1)[-1] not in settings.UPDATE_DISCARD_ENDINGS:
+            if post[4][:-1].split('@', 1)[-1] not in settings.UPDATE_DISCARD_ENDINGS:
                 if not Post.objects.filter(messageid=post[4]).exists():
                     try:
-                        if self.add_post(post[0], post[4], logger=lambda x: logger('  %s'%x)):
+                        if self.add_post(
+                            post[0],
+                            post[4],
+                            logger=lambda x: logger('  %s' % x),
+                        ):
                             last_added = post[0]
                     except socket.error as e:
                         if e.errno == errno.ECONNRESET:
@@ -200,14 +202,14 @@ class Connection(object):
             return False
         # check for dispose messages
         subject = self.get_post_header('Subject', post)
-        if subject.startswith('DISPOSE '): # and '@' in subject:
+        if subject.startswith('DISPOSE '):  # and '@' in subject:
             # it's a dispose message
-            dispose_messageid = '<%s>'%subject[len('DISPOSE '):]
+            dispose_messageid = '<%s>' % subject[len('DISPOSE '):]
             try:
                 PostMarker.objects.create(
-                    messageid = dispose_messageid,
-                    person_id = '$%s' % self.get_post_header('From', post),
-                    is_good = False,
+                    messageid=dispose_messageid,
+                    person_id='$%s' % self.get_post_header('From', post),
+                    is_good=False,
                 )
             except IntegrityError:
                 # this marker must already exist
@@ -224,7 +226,8 @@ class Connection(object):
             snp.save()
         except IntegrityError:
             # this post must already exist
-            logger("Skipped existing post %s: %s" % (raw.postnumber, raw.messageid))
+            logger("Skipped existing post %s: %s" % \
+                (raw.postnumber, raw.messageid))
             return False
         else:
             logger("Added post %s: %s" % (raw.postnumber, raw.messageid))
@@ -236,26 +239,24 @@ class Connection(object):
         except (nntplib.NNTPError, socket.error) as e:
             raise ConnectionError(e)
         else:
-            return RawPost(None, post) # TODO: maybe we do need the postnumber?...
+            return RawPost(None, post)  # TODO: maybe we do need the postnumber
 
     def verify_post(self, post):
         keys = settings.VERIFICATION_KEYS
         if keys is None or len(keys) == 0:
             return True
         else:
-            raise NotImplementedError # TODO
-
-
+            raise NotImplementedError  # TODO
 
     # public functionality methods
 
     def get_nzb(self, post):
         "Retrieves the nzb for a post, returned is the nzb content"
         assert self.is_connected()
-        zipped = StringIO() # TODO: maybe replace this with os.tmpfile
+        zipped = StringIO()  # TODO: maybe replace this with os.tmpfile
         try:
             for messageid in post.nzb:
-                self._nntp.body('<%s>'%messageid, zipped)
+                self._nntp.body('<%s>' % messageid, zipped)
         except nntplib.NNTPTemporaryError as e:
             if e.response == '430 No such article':
                 raise NotFoundError
@@ -272,9 +273,7 @@ class Connection(object):
     def get_comments(self, post):
         "Retrieves the comments for a post"
         assert self.is_connected()
-        raise NotImplementedError # TODO
-
-
+        raise NotImplementedError  # TODO
 
     # internal utility methods
 
@@ -304,8 +303,3 @@ class Connection(object):
     def set_last_postnumber_in_db(self, last_added):
         if settings.UPDATE_LAST_STORAGE:
             raise NotImplementedError
-
-
-
-
-

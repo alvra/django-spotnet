@@ -1,13 +1,12 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy, ugettext
-import os, json, urllib
+import os
+import json
+import urllib
 from ..downloading import DownloadServer, download_url, \
     DownloadError, \
     ConnectionError, \
     ConfigurationError
-
-
-
 
 
 class SabnzbdDownloadServer(DownloadServer):
@@ -20,27 +19,26 @@ class SabnzbdDownloadServer(DownloadServer):
     error_repsonse_start = 'error: '
 
     POST_PROCESSING = {
-        0 : ugettext_lazy('Download'),
-        1 : "+%s" % ugettext_lazy('Repair'),
-        2 : "+%s" % ugettext_lazy('Unpack'),
-        3 : "+%s" % ugettext_lazy('Delete'),
+        0: ugettext_lazy('Download'),
+        1: "+%s" % ugettext_lazy('Repair'),
+        2: "+%s" % ugettext_lazy('Unpack'),
+        3: "+%s" % ugettext_lazy('Delete'),
     }
     PRIORITY = {
-       -1 : ugettext_lazy('Low'),
-        0 : ugettext_lazy('Normal'),
-        1 : ugettext_lazy('High'),
-        2 : ugettext_lazy('Force'),
+       -1: ugettext_lazy('Low'),
+        0: ugettext_lazy('Normal'),
+        1: ugettext_lazy('High'),
+        2: ugettext_lazy('Force'),
     }
-    
 
-    def __init__(self, 
-      webpath, 
-      apikey, 
-      connection_timeout=10, 
-      category=None, 
-      priority=None, 
-      finish_script=None, 
-      post_processing=None, 
+    def __init__(self,
+      webpath,
+      apikey,
+      connection_timeout=10,
+      category=None,
+      priority=None,
+      finish_script=None,
+      post_processing=None,
       **kwargs
     ):
         if not webpath.endswith('api'):
@@ -89,7 +87,6 @@ class SabnzbdDownloadServer(DownloadServer):
         else:
             return ret
 
-
     def base_download_params(self, user):
         params = {}
         if self._category is not None:
@@ -100,7 +97,6 @@ class SabnzbdDownloadServer(DownloadServer):
             params['script'] = self._finish_script
         if self._priority is not None:
             params['priority'] = self._priority
-
 
     def download_nzb(self, user, id, nzb):
         temppath = os.tempnam()
@@ -114,17 +110,19 @@ class SabnzbdDownloadServer(DownloadServer):
 
     def download_local_nzb(self, user, id, path, name=None):
         x = self.base_action(dict(
-            mode = 'addlocalfile',
-            name = path,
-            nzbname = id,
+            mode='addlocalfile',
+            name=path,
+            nzbname=id,
         ))
         if x['status'] is True:
             if name is None:
-                return ugettext(u"Successfully added nzb file to Sabnzbd server, it was added under the name '%(id)s'.") \
+                return ugettext(u"Successfully added nzb file to Sabnzbd "\
+                    "server, it was added under the name '%(id)s'.") \
                     % dict(id=id)
             else:
-                return ugettext(u"Successfully added '%(name)s' to Sabnzbd server, it was added under the name '%(id)s'.") \
-                    % dict(name=name,id=id)
+                return ugettext(u"Successfully added '%(name)s' to Sabnzbd " \
+                    "server, it was added under the name '%(id)s'.") \
+                    % dict(name=name, id=id)
         else:
             raise DownloadError(
                 ugettext("An unknown error occured, response was: %s") % x
@@ -132,18 +130,16 @@ class SabnzbdDownloadServer(DownloadServer):
 
     def download_url(self, user, id, url):
         x = self.base_action(dict(
-            mode = 'addurl',
-            name = url,
-            nzbname = id,
+            mode='addurl',
+            name=url,
+            nzbname=id,
         ))
         if x['status'] is True:
-            return ugettext(u"Successfully added url '%(url)s' to Sabnzbd server, it was added under the name '%(id)s'.") \
-                % dict(url=url,id=id)
+            return ugettext(u"Successfully added url '%(url)s' to Sabnzbd " \
+                "server, it was added under the name '%(id)s'.") \
+                % dict(url=url, id=id)
         else:
             raise DownloadError(
                 ugettext("An unknown error occured, response was: %s") \
                 % x
             )
-
-
-

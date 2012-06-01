@@ -3,9 +3,6 @@ from django.utils.html import conditional_escape
 from django.utils.translation import ugettext as _
 
 
-
-
-
 class Selector(object):
     checkbox_template = '<input type="checkbox" name="%(name)s" value="%(value)s" />'
     action_input_name = 'selector_action'
@@ -19,7 +16,7 @@ class Selector(object):
         posted = dict(request.POST)
         action_name = posted.pop(self.action_input_name, [None])[0]
         action = self._actions.get(action_name, None)
-        selection = self.get_selection((k for k,v in posted.iteritems() if v[0] == self.checkbox_true_val))
+        selection = self.get_selection((k for k, v in posted.iteritems() if v[0] == self.checkbox_true_val))
         # this is way to generic, the actions should do this themselves
         # since they can provide a more detailed message
         #if len(selection) == 0:
@@ -30,15 +27,17 @@ class Selector(object):
             return None
 
     def get_object_id(self, obj):
-        raise NotImplementedError("The 'get_object_id' method of this Selector is not implemented")
+        raise NotImplementedError("The 'get_object_id' method of this " \
+            "Selector is not implemented")
 
     def get_selection(self, obj):
-        raise NotImplementedError("The 'get_selection' method of this Selector is not implemented")
+        raise NotImplementedError("The 'get_selection' method of this " \
+            "Selector is not implemented")
 
     def get_checkbox(self, obj):
         return mark_safe(self.checkbox_template % dict(
-            name = conditional_escape(self.get_object_id(obj)),
-            value = self.checkbox_true_val,
+            name=conditional_escape(self.get_object_id(obj)),
+            value=self.checkbox_true_val,
         ))
 
     def get_row(self, obj):
@@ -57,10 +56,12 @@ class Selector(object):
     def action_selector(self):
         x = ['<select name="%s">' % self.action_input_name]
         for action_name, action in self._actions.iteritems():
-            x.append('<option value="%(val)s">%(title)s</option>' % dict(val=action_name, title=conditional_escape(action.title())))
+            x.append('<option value="%(val)s">%(title)s</option>' % dict(
+                val=action_name,
+                title=conditional_escape(action.title()),
+            ))
         x.append('</select>')
         return mark_safe(''.join(x))
-
 
 
 class QuerySelector(Selector):
@@ -81,7 +82,7 @@ class QuerySelector(Selector):
         pks = (self.get_id_pk(i) for i in ids)
         return [i for i in pks if i is not None]
 
-    def __len__(self): 
+    def __len__(self):
         return len(object.__getattribute__(self, '_objects'))
 
     def __getitem__(self, key):
@@ -89,7 +90,6 @@ class QuerySelector(Selector):
             return type(self)(object.__getattribute__(self, '_objects').__getitem__(key), self._actions)
         else:
             return self.get_row(object.__getattribute__(self, '_objects').__getitem__(key))
-
 
 
 class SelectorRow(object):
@@ -102,6 +102,3 @@ class SelectorRow(object):
             return object.__getattribute__(self, '_checkbox')
         else:
             return getattr(object.__getattribute__(self, '_object'), name)
-
-
-

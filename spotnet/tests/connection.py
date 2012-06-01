@@ -5,13 +5,11 @@ from spotnet import settings
 from spotnet.connection import Connection, ConnectError
 
 
-
 class ConnectionTestMixin(object):
     def get_conn(self):
         conn = Connection(connect=False)
         conn._nntp = Mock()
         return conn
-
 
 
 class BasicConnectionTest(ConnectionTestMixin, unittest.TestCase):
@@ -40,7 +38,6 @@ class BasicConnectionTest(ConnectionTestMixin, unittest.TestCase):
         # TODO
 
 
-
 class DbConnectionTest(ConnectionTestMixin, DjangoTestCase):
     "Test methods of the Connection class that use the db."
 
@@ -63,9 +60,10 @@ class DbConnectionTest(ConnectionTestMixin, DjangoTestCase):
         # TODO
 
 
-
 class ConnectionTest(ConnectionTestMixin, unittest.TestCase):
-    "Test methods of the Connection class that must connect to a real nntp server."
+    """Test methods of the Connection class
+    that must connect to a real nntp server.
+    """
 
     @unittest.expectedFailure
     def test_connect_default(self):
@@ -97,9 +95,7 @@ class ConnectionTest(ConnectionTestMixin, unittest.TestCase):
             settings.SERVER_PASSWORD = prev_pasw
             settings.SERVER_READERMODE = prev_rdrm
 
-    @unittest.skipIf(settings.SERVER_HOST is None, "No usenet server defined in your settings file.")
+    @unittest.skipIf(settings.SERVER_HOST is None, \
+        "No usenet server defined in your settings file.")
     def test_connect_current_settings(self):
         pass
-
-
-

@@ -1,6 +1,3 @@
-
-
-
 def load_object(path):
     if '.' not in path:
         return None
@@ -10,6 +7,3 @@ def load_object(path):
     except ImportError as e:
         return None
     return getattr(module, name, None)
-
-
-

@@ -3,13 +3,11 @@ from django.utils.translation import ugettext as _
 from formfields import StringSetFormField
 
 
-
-
-
 #class StringSetField(models.CommaSeparatedIntegerField):
 class StringSetField(models.CharField):
     """A field that holds a set of strings.
-    Subclass of CommaSeparatedIntegerField since the internal storage is the same.
+    Subclass of CommaSeparatedIntegerField since
+    the internal storage is the same.
     """
 
     description = "A field that holds a set of strings"
@@ -53,9 +51,6 @@ class StringSetField(models.CharField):
         return StringSetFormField(**kwargs)
 
 
-
-
-
 class NzbField(models.TextField):
     __metaclass__ = models.SubfieldBase
 
@@ -82,26 +77,15 @@ class NzbField(models.TextField):
             raise TypeError("NzbField.get_prep_value got an invalid type!")
 
 
-
-
-
 class CategoryField(models.CharField):
     def __init__(self, *args, **kwargs):
         return __init__(self, max_length=30, *args, choices=(
-            ('',''),
+            ('', ''),
         ), **kwargs)
-
-
-
 
 
 class SubCategoryField(StringSetField):
     def __init__(self, *args, **kwargs):
         return __init__(self, max_length=80, *args, choices=(
-            ('',''),
+            ('', ''),
         ), **kwargs)
-
-
-
-
-

@@ -22,4 +22,3 @@ urlpatterns = patterns('spotnet.views',
 
     url(r'^downloaded/$', 'downloaded', name='downloaded'),
 )
-

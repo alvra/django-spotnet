@@ -7,9 +7,6 @@ from fields import StringSetField, NzbField, CategoryField, SubCategoryField
 from subcategories import Subcategory
 
 
-
-
-
 #
 # ID's ON THE Post
 #       and where they come from...
@@ -20,12 +17,9 @@ from subcategories import Subcategory
 #
 
 
-
-
-
 #
 # DATABASE INDEX FIELDS:
-# 
+#
 # * id : primary key
 # * spotid : not unique (over multiple usenet servers)
 # * messageid : unique
@@ -33,15 +27,12 @@ from subcategories import Subcategory
 #
 
 
-
-
-
 class Post(models.Model):
     # id # omesium db id
 
     # SPOTNET PARAMETERS
-    #postnumber = models.PositiveIntegerField(editable=False, null=False) # spotnet post id
-    messageid = models.CharField(max_length=80, editable=False, null=False) # spotnet message id ???
+    #postnumber = models.PositiveIntegerField(editable=False, null=False)  # spotnet post id
+    messageid = models.CharField(max_length=80, editable=False, null=False)  # spotnet message id ???
     poster = models.CharField(max_length=120, null=True)
     title = models.CharField(max_length=150, null=True)
     description = models.TextField(null=True)
@@ -53,13 +44,11 @@ class Post(models.Model):
         (3, _('Game')),
         (4, _('Application')),
     ))
-    subcategory_codes = StringSetField(max_length=250, editable=False, null=True, db_column='subcategories') ###
-    image = models.CharField(max_length=250, null=True) ###
-    website = models.CharField(max_length=150, null=True) ###
+    subcategory_codes = StringSetField(max_length=250, editable=False, null=True, db_column='subcategories')
+    image = models.CharField(max_length=250, null=True)
+    website = models.CharField(max_length=150, null=True)
     size = models.BigIntegerField(max_length=33, null=True)
     nzb = NzbField(max_length=250, editable=False, null=True)
-
-
 
     class Meta:
         db_table = 'spotnet_post'
@@ -74,8 +63,8 @@ class Post(models.Model):
         if user.is_authenticated():
             try:
                 PostDownloaded.objects.create(
-                    user = user,
-                    post = self,
+                    user=user,
+                    post=self,
                 )
             except IntegrityError:
                 pass
@@ -89,7 +78,7 @@ class Post(models.Model):
 
     @property
     def description_markup(self):
-        return self.description.replace('[br]','\n')
+        return self.description.replace('[br]', '\n')
 
     @property
     def subcategories(self):
@@ -106,9 +95,9 @@ class Post(models.Model):
 
     @classmethod
     def from_identifier(cls, identifier):
-        id,title = identifier.split(': ', 1)
+        id, title = identifier.split(': ', 1)
         try:
-            return cls.objects.get(id=id) # , title=title)
+            return cls.objects.get(id=id)  # , title=title)
         except cls.DoesNotExist:
             return None
 
@@ -133,43 +122,38 @@ class Post(models.Model):
 
     @classmethod
     def from_raw(cls, raw):
+        subcats_len = Post._meta.get_field('subcategory_codes').max_length // 6
         return cls(
-            #postnumber = raw.postnumber,
-            messageid = raw.messageid[0:80],
-            poster = raw.poster,
-            title = raw.subject[0:150],
-            description = raw.description,
-            tag = raw.tag[0:100] if raw.tag else None,
-            posted = raw.posted,
-            category = raw.category if raw.category else None,
+            #postnumber=raw.postnumber,
+            messageid=raw.messageid[0:80],
+            poster=raw.poster,
+            title=raw.subject[0:150],
+            description=raw.description,
+            tag=raw.tag[0:100] if raw.tag else None,
+            posted=raw.posted,
+            category=raw.category if raw.category else None,
             # limit the number of subcategories,
             # some people give posts way too many subcategories
             # with an length of 5 joined with comma's
             # this gives an difference of 1 with the maximum lenght
-            subcategory_codes = raw.subcategories[0:Post._meta.get_field('subcategory_codes').max_length//6],
-            image = raw.image[0:250] if raw.image else None,
-            website = raw.website[0:150] if raw.website else None,
-            size = raw.size if raw.size else None,
-            nzb = raw.nzb,
+            subcategory_codes=raw.subcategories[0:subcats_len],
+            image=raw.image[0:250] if raw.image else None,
+            website=raw.website[0:150] if raw.website else None,
+            size=raw.size if raw.size else None,
+            nzb=raw.nzb,
         )
-
 
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'poster', 'tag', 'category', 'posted')
     list_filter = ('category',)
     ordering = ('-posted',)
-    #search_fields = ['title','description','tag']   # disabled since it's way to slow
+    #search_fields = ['title', 'description', 'tag']  # disabled since it's way to slow
 
     inlines = []
     actions = []
 
 admin.site.register(Post, PostAdmin)
-
-
-
-
-
 
 
 class PostMarker(models.Model):
@@ -180,20 +164,17 @@ class PostMarker(models.Model):
     class Meta:
         db_table = 'spotnet_marker'
         verbose_name = _('watched post')
-        unique_together = (('messageid','person_id',),)
+        unique_together = (('messageid', 'person_id',),)
 
     @property
     def person(self):
-        t,pid = self.person_id[0], self.person_id[1:]
+        t, pid = self.person_id[0], self.person_id[1:]
         if t == '#':
             return User.objects.get(pk=pid)
         elif t == '$':
             return pid
         else:
             raise ValueError("Invalid value found for PostMarker.person_id.")
-
-
-
 
 
 class PostDownloaded(models.Model):
@@ -204,9 +185,4 @@ class PostDownloaded(models.Model):
     class Meta:
         db_table = 'spotnet_downloaded'
         verbose_name = _('downloaded post')
-        unique_together = (('user','post',),)
-
-
-
-
-
+        unique_together = (('user', 'post',),)

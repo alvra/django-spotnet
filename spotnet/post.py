@@ -5,18 +5,12 @@ from nzb import decode_nzb, DecodeNzbError
 try:
     import pytz
 except ImportError:
-    print "Unable to import pytz, so posting datetimes will not contain timezones." # TODO: log this instead
+    print "Unable to import pytz, so posting datetimes will not contain timezones."  # TODO: log this instead
     pytz = None
-
-
-
 
 
 class InvalidPost(Exception):
     pass
-
-
-
 
 
 class RawPost(object):
@@ -38,8 +32,8 @@ class RawPost(object):
     #                  use a RawNzbPost object to get the actual nzb file from these messageids
     #
     # PUBLIC METHODS:
-    # verify_post()     : bool, 
-    # verify_poster()   : bool, 
+    # verify_post()     : bool,
+    # verify_poster()   : bool,
     #
 
     # RAW POST DESCRIPTION:
@@ -50,14 +44,14 @@ class RawPost(object):
     # body:
     # NOTE THAT SOME HEADERS ARE SPREAD OVER SEVERAL LINES!
     # - Path                        : 'news.hitnews.eu!not-for-mail'
-    # - From                        : 'kww <132200@13a05b03.42638314.132200.1309845303.JnY.so8.POWbpJxp9q5FWkRbrq8aDIbCAvdBkK0XmV9mpTIswr9SL8FlU28vtJYtnEuS-sqx-s>'
+    # - From                        : 'kww <132200@13a05b03.42638314.132200.1309845303.JnY.so8.EuS-sqx-s>'
     # - Subject
     # - Newsgroups
     # - Message-ID
     # - X-XML
     # - X-XML
     # - X-XML-Signature             : 'cUWupZtWsQAhp4WLYg-pwT00ab-sJvdMQnKWu1kDETInZowAc06x-pBW3-sIWT0D7VuQ' : signature of xml
-    # - X-User-Key                  : '<RSAKeyValue><Modulus>szsAIT5lVEzonnwg81DoU/44KTXkdIYrAdAFpoB/99Fw0VC6QVad7PRKgDPFeDW5</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>'
+    # - X-User-Key                  : '<RSAKeyValue><Modulus>szsAIT5W5</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>'
     # - X-User-Signature            : 'Mh-sbcEHnIR-pNRVHFtPP-sxHTTTFu7S1vkmOterGBKGNCIcwyN5Xo7BQxaFtq0FgRd'
     # - Content-Type                : 'text/plain; charset=ISO-8859-1' : mime-type; encoding
     # - Content-Transfer-Encoding   : '8bit' : ?
@@ -80,7 +74,8 @@ class RawPost(object):
         except InvalidPost:
             raise
         except Exception as e:
-            raise InvalidPost("Error in parsing raw post content, exception was '%s'" % e)
+            raise InvalidPost("Error in parsing raw post content, " \
+                exception was '%s'" % e)
         try:
             self.extra = self.parse_xml_content(self.content['X-XML'])
         except (KeyError, InvalidPost):
@@ -93,16 +88,16 @@ class RawPost(object):
         content_length = len(content)
         l = -1
         # find Lines header
-        for num,line in enumerate(content):
+        for num, line in enumerate(content):
             if line.startswith('Lines: '):
                 l = num
                 break
         if l == 0:
             raise InvalidPost("Post does not have a Lines header.")
         body_lines = int(content[l][len('Lines: '):])
-        for l in xrange(len(content)-body_lines-1):
+        for l in xrange(len(content) - body_lines - 1):
             if ':' in content[l]:
-                k,v = content[l].split(': ', 1)
+                k, v = content[l].split(': ', 1)
                 if k in d:
                     d[k] += v
                 else:
@@ -110,12 +105,14 @@ class RawPost(object):
             else:
                 # we only allow an empty line here!
                 if content[l] != '':
-                    raise InvalidPost("Post has invalid header line '%s'" % content[l])
+                    raise InvalidPost("Post has invalid header line '%s'" \
+                        % content[l])
             l += 1
         if not content[l] == '':
             raise InvalidPost("First line after headers is not empty!")
         if not len(content) == int(d['Lines']) + l + 1:
-            raise InvalidPost("Header value for Lines differs from actual number of lines!")
+            raise InvalidPost("Header value for Lines differs from " \
+                "actual number of lines!")
         return d
 
     def parse_xml_content(self, xml_string):
@@ -125,16 +122,19 @@ class RawPost(object):
             raise InvalidPost("Post has invalid XML data for header X-XML")
         doc = xml.documentElement
         if not doc.tagName == 'Spotnet':
-            raise InvalidPost("XML for spotnet post does not have a main node called 'Spotnet'")
+            raise InvalidPost("XML for spotnet post does not have a main " \
+                "node called 'Spotnet'")
         if not len(doc.childNodes) == 1:
-            raise InvalidPost("XML for spotnet post does not have 1 child for main node 'Spotnet'")
+            raise InvalidPost("XML for spotnet post does not have 1 child " \
+                "for main node 'Spotnet'")
         main = doc.childNodes[0]
         if not main.tagName == 'Posting':
-            raise InvalidPost("XML for spotnet post does not have a main child node called 'Posting' for 'Spotnet'")
+            raise InvalidPost("XML for spotnet post does not have a main " \
+                "child node called 'Posting' for 'Spotnet'")
         # assemble dict of content
         d = {}
         for e in main.childNodes:
-            if len(e.childNodes) == 1 and e.childNodes[0].nodeType in (3,4):
+            if len(e.childNodes) == 1 and e.childNodes[0].nodeType in (3, 4):
                 # if it has one child that is a textnode or cdata node, add it to the dict
                 d[e.tagName] = e.childNodes[0].nodeValue
             elif e.tagName == 'Category':
@@ -154,15 +154,16 @@ class RawPost(object):
                 d['NZB'] = []
                 for nzb_node in e.childNodes:
                     if not nzb_node.tagName == 'Segment':
-                        raise InvalidPost("XML for spotnet post, in NZB node there are child nodes that are not named 'Segment'")
+                        raise InvalidPost("XML for spotnet post, in NZB node " \
+                            "there are child nodes that are not named 'Segment'")
                     d['NZB'].append(nzb_node.childNodes[0].nodeValue)
         if isinstance(d.get('Category', None), list):
-              if len(d['Category']) == 0:
-                  d['Category'] = None
-              else:
-                  d['Category'] = d['Category'][0]
+            if len(d['Category']) == 0:
+                d['Category'] = None
+            else:
+                d['Category'] = d['Category'][0]
         if isinstance(d.get('NZB', None), basestring):
-              d['NZB'] = [d['NZB']]
+            d['NZB'] = [d['NZB']]
         return d
 
     def parse_date(self, date):
@@ -200,7 +201,7 @@ class RawPost(object):
             date_str = self.content.get('Date', None)
             if date_str:
                 try:
-                    tz_str = date_str.rsplit(' ',1)[1]
+                    tz_str = date_str.rsplit(' ', 1)[1]
                 except KeyError:
                     pass
                 adt = self.apply_timezone_str(dt, tz_str)
@@ -240,7 +241,7 @@ class RawPost(object):
         else:
             subj = self.content['Subject']
             if ' | ' in subj:
-                subj, poster = subj.split(' | ',1)
+                subj, poster = subj.split(' | ', 1)
             return self.decode_string(subj)
 
     @property
@@ -310,8 +311,3 @@ class RawPost(object):
             return [self.decode_string(self.messageid)]
         else:
             return []
-
-
-
-
-

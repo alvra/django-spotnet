@@ -1,11 +1,12 @@
 import json
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, Http404
+from django.http import HttpResponse, HttpResponseRedirect, \
+    HttpResponseNotFound, HttpResponseForbidden, Http404
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.utils.functional import wraps # TODO: use this for decorators (right one?)
+from django.utils.functional import wraps  # TODO: use this for decorators
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import settings
 from models import Post, PostDownloaded
@@ -14,9 +15,6 @@ from selector import QuerySelector
 from actions import DeleteAction, DownloadNzbAction, DownloadRelatedNzbAction
 from searcher import Searcher
 from subcategories import Subcategory
-
-
-
 
 
 def authenticate_base(user):
@@ -33,6 +31,7 @@ def authenticate_base(user):
     else:
         return None
 
+
 def authenticate(view):
     def _authenticated_view(request, *args, **kwargs):
         res = authenticate_base(request.user)
@@ -42,14 +41,12 @@ def authenticate(view):
             return view(request, *args, **kwargs)
     return _authenticated_view
 
+
 def get_paginate_template():
     if settings.POSTS_PAGINATE_FULL:
         return 'spotnet/paginate_full.html'
     else:
         return 'spotnet/paginate.html'
-
-
-
 
 
 @authenticate
@@ -61,7 +58,7 @@ def search(request, search=None, cats=None, scats=None):
     searcher.unfilter_categories()
 
     selector = QuerySelector(snps, dict(
-       download = DownloadNzbAction(),
+       download=DownloadNzbAction(),
     ))
 
     if request.method == 'POST':
@@ -69,7 +66,8 @@ def search(request, search=None, cats=None, scats=None):
         if isinstance(action_response, HttpResponse):
             return action_response
 
-    paginator = Paginator(selector, settings.POST_PER_PAGE, allow_empty_first_page=True, orphans=0)
+    paginator = Paginator(selector, settings.POST_PER_PAGE, \
+        allow_empty_first_page=True, orphans=0)
     try:
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
@@ -78,12 +76,11 @@ def search(request, search=None, cats=None, scats=None):
         request,
         'spotnet/list.html',
         dict(
-            searcher = searcher,
-            page = page,
-            paginate_template = get_paginate_template(),
+            searcher=searcher,
+            page=page,
+            paginate_template=get_paginate_template(),
         ),
     )
-
 
 
 @authenticate
@@ -93,13 +90,10 @@ def viewpost(request, id):
         request,
         'spotnet/viewpost.html',
         dict(
-            post = post,
-            download = PostDownload(post),
+            post=post,
+            download=PostDownload(post),
         ),
     )
-
-
-
 
 
 @authenticate
@@ -123,12 +117,12 @@ def download(request, id, dls=None):
     if request.is_ajax():
         if isinstance(e, DownloadError):
             return HttpResponse(json.dumps(dict(
-                success = False,
-                error = x.as_json_object(),
+                success=False,
+                error=x.as_json_object(),
             )))
         else:
             obj = dict(
-                success = True,
+                success=True,
             )
             if x is not None:
                 obj['message'] = x
@@ -141,12 +135,9 @@ def download(request, id, dls=None):
         return HttpResponseRedirect(post.get_absolute_url())
 
 
-
-
-
 def view_related_post_list(request, objects, page, title, extra_actions={}):
     actions = dict(
-       download = DownloadRelatedNzbAction(),
+       download=DownloadRelatedNzbAction(),
     )
     actions.update(extra_actions)
     selector = QuerySelector(objects, actions)
@@ -156,7 +147,8 @@ def view_related_post_list(request, objects, page, title, extra_actions={}):
         if isinstance(action_response, HttpResponse):
             return action_response
 
-    paginator = Paginator(selector, settings.POST_PER_PAGE, allow_empty_first_page=True, orphans=settings.POST_LIST_ORPHANS)
+    paginator = Paginator(selector, settings.POST_PER_PAGE, \
+        allow_empty_first_page=True, orphans=settings.POST_LIST_ORPHANS)
     try:
         page = paginator.page(page)
     except InvalidPage, EmptyPage:
@@ -165,43 +157,35 @@ def view_related_post_list(request, objects, page, title, extra_actions={}):
         request,
         'spotnet/list_related.html',
         dict(
-            title = title,
-            page = page,
-            paginate_template = get_paginate_template(),
+            title=title,
+            page=page,
+            paginate_template=get_paginate_template(),
         ),
     )
-
-
-
 
 
 @authenticate
 def downloaded(request):
     page = request.GET.get('page', 1)
     if request.user.is_anonymous():
-        objects = PostDownloaded.objects.none() # TODO: is there something more sensible to do here?
+        objects = PostDownloaded.objects.none()
+        # TODO: is there something more sensible to do here?
     else:
-        objects = PostDownloaded.objects.order_by('-created').select_related('post').filter(user=request.user)
+        objects = PostDownloaded.objects.order_by('-created') \
+            .select_related('post').filter(user=request.user)
 
-    return view_related_post_list(request, objects, page, _('Downloaded'), dict(
-       delete = DeleteAction(objects.model, title=_('Remove from list')),
-    ))
-    
-
+    return view_related_post_list(request, objects, page, _('Downloaded'),
+        dict(
+            delete=DeleteAction(objects.model, title=_('Remove from list')),
+        )
+    )
 
 
 @authenticate
 def update(request):
-    pass # TODO
-    
-
+    pass  # TODO
 
 
 @authenticate
 def download_nzb(request, id):
-    pass # TODO
-
-
-
-
-
+    pass  # TODO

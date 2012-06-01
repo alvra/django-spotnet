@@ -5,7 +5,6 @@ from load import load_object
 from downloading import DownloadManager, DownloadServer
 
 
-
 try:
     SERVER_HOST = settings.SPOTNET_SERVER_HOST
 except AttributeError:
@@ -30,7 +29,7 @@ CLEANUP_MINAGE         = getattr(settings, 'SPOTNET_CLEANUP_MINAGE',         199
 CLEANUP_ALLOW_INPAGE   = getattr(settings, 'SPOTNET_CLEANUP_ALLOW_INPAGE',   True)
 
 POST_PER_PAGE          = getattr(settings, 'SPOTNET_POST_PER_PAGE',          30)
-POST_LIST_ORPHANS      = getattr(settings, 'POST_LIST_ORPHANS',              POST_PER_PAGE//5)
+POST_LIST_ORPHANS      = getattr(settings, 'POST_LIST_ORPHANS',              POST_PER_PAGE // 5)
 POSTS_PAGINATE_FULL    = getattr(settings, 'POST_POSTS_PAGINATE_FULL',       False)
 
 ALLOW_NZB_UPLOAD       = getattr(settings, 'SPOTNET_ALLOW_NZB_UPLOAD',       True)
@@ -40,47 +39,46 @@ ANONYMOUS_ACTION       = getattr(settings, 'SPOTNET_ANONYMOUS_ACTION',       '40
 USE_CELERY             = getattr(settings, 'SPOTNET_USE_CELERY',             False)
 
 
-
 # category settings
 
-CATEGORY_MAPPING       = getattr(settings, 'SPOTNET_CATEGORY_MAPPING',     {
-    1 : _('image'),
-    2 : _('sound'),
-    3 : _('game'),
-    4 : _('application'),
+CATEGORY_MAPPING = getattr(settings, 'SPOTNET_CATEGORY_MAPPING', {
+    1: _('image'),
+    2: _('sound'),
+    3: _('game'),
+    4: _('application'),
 })
-CATEGORY_REVERSED_MAPPING = dict((v,k) for k,v in CATEGORY_MAPPING.iteritems())
+CATEGORY_REVERSED_MAPPING = dict((v, k) for k, v in CATEGORY_MAPPING.iteritems())
 
-SUBCATEGORY_TYPE_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_TYPE_MAPPING',     {
+SUBCATEGORY_TYPE_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_TYPE_MAPPING', {
     1 : dict(
-            a = _('format'),
-            b = _('source'),
-            c = _('language'),
-            d = _('genre'),
-            z = _('type'),
+            a=_('format'),
+            b=_('source'),
+            c=_('language'),
+            d=_('genre'),
+            z=_('type'),
         ),
     2 : dict(
-            a = _('format'),
-            b = _('source'),
-            c = _('bitrate'),
-            d = _('genre'),
-            z = _('type'),
+            a=_('format'),
+            b=_('source'),
+            c=_('bitrate'),
+            d=_('genre'),
+            z=_('type'),
         ),
     3 : dict(
-            a = _('platform'),
-            b = _('format'),
-            c = _('genre'),
+            a=_('platform'),
+            b=_('format'),
+            c=_('genre'),
         ),
     4 : dict(
-            a = _('platform'),
-            b = _('genre'),
+            a=_('platform'),
+            b=_('genre'),
         ),
 })
 
-SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
+SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING', {
     # source: https://github.com/spotweb/spotweb/blob/master/lib/SpotCategories.php
     1 : dict(
-            format = {
+            format={
                 0 : _('DivX'),
                 1 : _('wmv'),
                 2 : _('mpg'),
@@ -93,7 +91,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 9 : _('x264hd'),
                10 : _('dvd9'),
             },
-            source = {
+            source={
                 0 : _('cam'),
                 1 : _('(s)vcd'),
                 2 : _('promo'),
@@ -106,7 +104,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 9 : _('telesync'),
                10 : _('scan'),
             },
-            language = {
+            language={
                 0 : _('no subtitles'),
                 1 : _('dutch subtitled (external)'),
                 2 : _('dutch subtitled (internal)'),
@@ -123,7 +121,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                13 : _('french spoken'),
                14 : _('spanish spoken'),
             },
-            genre = {
+            genre={
                 0 : _('action'),
                 1 : _('adventure'),
                 2 : _('animation'),
@@ -187,7 +185,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                58 : _('fairy tale'),
                59 : _('technics'),
                60 : _('art'),
-               
+               #61 - 71
                72 : _('bi'),
                73 : _('lesbian'),
                74 : _('gay'),
@@ -207,7 +205,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                88 : _('hentai'),
                89 : _('outside'),
             },
-            type = {
+            type={
                 0 : _('movie'),
                 1 : _('series'),
                 2 : _('book'),
@@ -215,7 +213,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
             },
         ),
     2 : dict(
-            format = {
+            format={
                 0 : _('mp3'),
                 1 : _('wma'),
                 2 : _('wav'),
@@ -226,7 +224,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 7 : _('ape'),
                 8 : _('flac'),
             },
-            source = {
+            source={
                 0 : _('cd'),
                 1 : _('radio'),
                 2 : _('compilation'),
@@ -235,7 +233,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 5 : _('vinyl'),
                 6 : _('stream'),
             },
-            bitrate = {
+            bitrate={
                 0 : _('variable'),
                 1 : _('< 96k'),
                 2 : _('96k'),
@@ -247,7 +245,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 8 : _('lossless'),
                 #9 : _(''),
             },
-            genre = {
+            genre={
                 0 : _('blues'),
                 1 : _('compilation'),
                 2 : _('cabaret'),
@@ -288,7 +286,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                37 : _('latin'),
                38 : _('live'),
             },
-            type = {
+            type={
                 0 : _('album'),
                 1 : _('liveset'),
                 2 : _('podcast'),
@@ -296,7 +294,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
             },
         ),
     3 : dict(
-            platform = {
+            platform={
                 0 : _('windows'),
                 1 : _('mac'),
                 2 : _('unix'),
@@ -315,7 +313,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                15 : _('android'),
                16 : _('3ds'),
             },
-            format = {
+            format={
                 0 : _('iso'),
                 1 : _('rip'),
                 2 : _('retail'),
@@ -324,7 +322,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 5 : _('patch'),
                 6 : _('crack'),
             },
-            genre = {
+            genre={
                 0 : _('action'),
                 1 : _('adventure'),
                 2 : _('strategy'),
@@ -346,7 +344,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
             },
         ),
     4 : dict(
-            platform = {
+            platform={
                 0 : _('windows'),
                 1 : _('mac'),
                 2 : _('unix'),
@@ -356,7 +354,7 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
                 6 : _('iOS'),
                 7 : _('android'),
             },
-            genre = {
+            genre={
                 0 : _('audio'),
                 1 : _('video'),
                 2 : _('graphics'),
@@ -394,14 +392,12 @@ SUBCATEGORY_MAPPING = getattr(settings, 'SPOTNET_SUBCATEGORY_MAPPING',     {
 })
 
 
-
 # spot verification keys
 
-VERIFICATION_KEYS    = getattr(settings, 'SPOTNET_VERIFICATION_KEYS', (
-    # default verification keys from: 
+VERIFICATION_KEYS = getattr(settings, 'SPOTNET_VERIFICATION_KEYS', (
+    # default verification keys from:
     '',
 ))
-
 
 
 # download server settings and handling
@@ -410,8 +406,11 @@ DOWNLOAD_SERVERS = DownloadManager()
 
 for server_name, server_settings in getattr(settings, 'SPOTNET_DOWNLOAD_SERVERS', {}).iteritems():
     server_type = load_object(server_settings[0])
-    assert server_type is not None, "Spotnet download server '%s' at '%s' could not be found." % (server_name, server_settings[0])
-    assert issubclass(server_type, DownloadServer), "Spotnet download server '%s' at '%s' is not a django-spotnet.DownloadServer subclass." % (server_name, server_settings[0])
+    assert server_type is not None, "Spotnet download server '%s' at '%s' " \
+        "could not be found." % (server_name, server_settings[0])
+    assert issubclass(server_type, DownloadServer), "Spotnet download " \
+        "server '%s' at '%s' is not a django-spotnet.DownloadServer subclass." \
+        % (server_name, server_settings[0])
     if len(server_settings) < 2:
         args = ()
     else:
@@ -422,6 +421,3 @@ for server_name, server_settings in getattr(settings, 'SPOTNET_DOWNLOAD_SERVERS'
         kwargs = server_settings[2]
     server = server_type(*args, **kwargs)
     DOWNLOAD_SERVERS.add_server(server_name, server)
-
-
-

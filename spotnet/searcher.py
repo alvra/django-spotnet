@@ -5,9 +5,6 @@ from django.http import Http404
 import settings
 
 
-
-
-
 class Searcher(object):
     def __init__(self, search=None, categories=None, subcategories=None):
         self.search = search or ''
@@ -16,7 +13,6 @@ class Searcher(object):
         # clean attributes
         self.categories = [self.clean_category(cat) for cat in self.categories]
         self.categories = [cat for cat in self.categories if cat is not None]
-        
 
     def clean_category(self, cat):
         if isinstance(cat, int):
@@ -54,7 +50,7 @@ class Searcher(object):
             )
         # filter categories
         if self.categories:
-            qs = qs.filter(category__in = self.categories)
+            qs = qs.filter(category__in=self.categories)
         # filter subcategories
         # TODO
         return qs
@@ -68,7 +64,6 @@ class Searcher(object):
         if scats:
             kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] for c in scats)
         return reverse('spotnet:search', **kwargs)
-        
 
     # properties
 
@@ -90,13 +85,14 @@ class Searcher(object):
         if self.search:
             kwargs['search'] = self.search
         if self.subcategories:
-            kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] for c in self.subcategories)
+            kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] \
+                for c in self.subcategories)
         for catid, cat in settings.CATEGORY_MAPPING.iteritems():
             if len(self.categories) == 1 and catid in self.categories:
                 yield None, ugettext(cat).capitalize()
             else:
                 k = dict(
-                    cats = cat,
+                    cats=cat,
                 )
                 k.update(kwargs)
                 yield reverse('spotnet:search', kwargs=k), ugettext(cat).capitalize()
@@ -106,11 +102,12 @@ class Searcher(object):
         if self.search:
             kwargs['search'] = self.search
         if self.subcategories:
-            kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] for c in self.subcategories)
+            kwargs['scats'] = ','.join(settings.SUBCATEGORY_MAPPING[c] \
+                for c in self.subcategories)
         for catid, cat in settings.CATEGORY_MAPPING.iteritems():
             if catid not in self.categories:
                 k = dict(
-                    cats = ','.join([settings.CATEGORY_MAPPING[c] for c in self.categories]+[cat]),
+                    cats=','.join([settings.CATEGORY_MAPPING[c] for c in self.categories] + [cat]),
                 )
                 k.update(kwargs)
                 yield reverse('spotnet:search', kwargs=k), ugettext(cat).capitalize()
@@ -118,7 +115,4 @@ class Searcher(object):
                 yield None, ugettext(cat).capitalize()
 
     def single_subcategory_filters(self):
-        return [] # TODO
-
-
-
+        return []  # TODO
