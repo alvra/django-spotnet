@@ -6,8 +6,8 @@ except ImportError:
     except ImportError:
         import unittest
 if not hasattr(unittest, 'expectedFailure'):
-    unittest.expectedFailure = unittest.skip('Expected failure')
-    
+    unittest.expectedFailure = lambda f: f
+
 from django.test import TestCase as DjangoTestCase
 from mock import Mock
 from spotnet import settings
