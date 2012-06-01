@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils.functional import wraps  # TODO: use this for decorators
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -25,7 +26,7 @@ def authenticate_base(user):
             # TODO: which one to use here?
             #from django.conf.settings import LOGIN_URL
             #return HttpResponseRedirect(LOGIN_URL)
-            return HttpResposeRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('login'))
         else:
             return HttpResponseNotFound()
     else:

@@ -120,7 +120,7 @@ class DownloadServer(object):
     def download_url_base(self, user, id, url):
         if user.is_anonymous() and not self.allow_anonymous:
             raise UnauthenticatedError
-        return self.download_post(user, id, post)
+        return self.download_url(user, id, url)
 
     def download_nzb_base(self, user, id, nzb):
         if user.is_anonymous() and not self.allow_anonymous:
@@ -199,7 +199,7 @@ class DownloadManager(object):
         if server.description:
             return server.description
         else:
-            return no_server_description_avaiable_message
+            return no_server_description_available_message
 
     def list_servers(self):
         return self._servers.keys()

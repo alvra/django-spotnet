@@ -15,6 +15,6 @@ install:
   - pip install -q -e . --use-mirrors
 before_script:
   - "pep8 --exclude=migrations --ignore=E501,E272,E221,E241 spotnet"
-  - pyflakes -x W spotnet
+  -  [ "$TRAVIS_PYTHON_VERSION" \> 3 ] || pyflakes -x W spotnet
 script:
   - python example_project/manage.py test

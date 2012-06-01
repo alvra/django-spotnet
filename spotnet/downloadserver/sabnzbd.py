@@ -60,7 +60,7 @@ class SabnzbdDownloadServer(DownloadServer):
         elif response.read(len(self.error_repsonse_start)) == self.error_repsonse_start:
             raise DownloadError(
                 "Sabnzbd returned error while communicating: %s"
-                % response.read()[error_repsonse_start:]
+                % response.read()[self.error_repsonse_start:]
             )
         else:
             raise DownloadError("Invalid Sabnzbd api key")

@@ -44,9 +44,9 @@ class Searcher(object):
         # filter search
         if self.search:
             qs = qs.filter(
-                Q(title__icontains=search) |
-                Q(tag__icontains=search) |
-                Q(description__icontains=search)
+                Q(title__icontains=self.search) |
+                Q(tag__icontains=self.search) |
+                Q(description__icontains=self.search)
             )
         # filter categories
         if self.categories:
