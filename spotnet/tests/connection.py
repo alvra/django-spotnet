@@ -1,7 +1,13 @@
 try:
     from django.utils import unittest
 except ImportError:
-    import unittest
+    try:
+        import unittest2 as unittest
+    except ImportError:
+        import unittest
+if not hasattr(unittest, 'expectedFailure'):
+    unittest.expectedFailure = unittest.skip('Expected failure')
+    
 from django.test import TestCase as DjangoTestCase
 from mock import Mock
 from spotnet import settings
