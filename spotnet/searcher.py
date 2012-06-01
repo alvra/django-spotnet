@@ -76,6 +76,10 @@ class Searcher(object):
     def is_category_filtered(self):
         return len(self.categories) > 0
 
+    @property
+    def is_subcategory_filtered(self):
+        return len(self.subcategories) > 0
+
     # methods to create search urls
 
     def unfilter_categories(self):
@@ -112,6 +116,9 @@ class Searcher(object):
                 yield reverse('spotnet:search', kwargs=k), ugettext(cat).capitalize()
             else:
                 yield None, ugettext(cat).capitalize()
+
+    def single_subcategory_filters(self):
+        return [] # TODO
 
 
 

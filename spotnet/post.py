@@ -5,6 +5,7 @@ from nzb import decode_nzb, DecodeNzbError
 try:
     import pytz
 except ImportError:
+    print "Unable to import pytz, so posting datetimes will not contain timezones." # TODO: log this instead
     pytz = None
 
 
