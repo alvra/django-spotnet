@@ -3,7 +3,5 @@ db_settings.py
 settings_overrides.py
 *.pyc
 *~
-testing
-tests/example_posts
 sqlite.db
 docs/_build
