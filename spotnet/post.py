@@ -96,6 +96,7 @@ class RawPost(object):
         if l == 0:
             raise InvalidPost("Post does not have a Lines header.")
         body_lines = int(content[l][len('Lines: '):])
+        last_header = None
         for l in xrange(len(content) - body_lines - 1):
             if ':' in content[l]:
                 k, v = content[l].split(': ', 1)
@@ -103,12 +104,21 @@ class RawPost(object):
                     d[k] += v
                 else:
                     d[k] = v
+                last_header = k
             else:
-                # we only allow an empty line here!
+                # we only allow an empty line, or a continuation here!
                 if content[l] != '':
-                    raise InvalidPost(
-                        "Post has invalid header line '%s'" % content[l]
-                    )
+                    if content[l][0] == ' ':
+                        if last_header:
+                            d[k] += v
+                        else:
+                            raise InvalidPost(
+                                "Post has invalid header first line '%s'" % content[l]
+                            )
+                    else:
+                        raise InvalidPost(
+                            "Post has invalid header line '%s'" % content[l]
+                        )
             l += 1
         if not content[l] == '':
             raise InvalidPost("First line after headers is not empty!")

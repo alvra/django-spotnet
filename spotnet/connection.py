@@ -225,7 +225,7 @@ class Connection(object):
         try:
             raw = RawPost(postnumber, post)
         except InvalidPost as e:
-            logger("Skipped invalid post %s" % postnumber)
+            logger("Skipped invalid post %s: %s" % (postnumber, e))
             return False
         snp = Post.from_raw(raw)
         try:
