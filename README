@@ -2,7 +2,7 @@
 
 This is a Django app to handle spotnet posts.
 It can fetch posts from your NNTP server,
-and push NZBs to your download server (eg: Sabnzbd+).
+and push NZBs to your download server (eg: Sabnzbd+ or NZBGet).
 
 
 ## Installation

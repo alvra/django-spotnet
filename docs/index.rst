@@ -9,7 +9,7 @@ websites.
 
 This app includes all you need to get started with spotnet.
 It everything handles retrieving posts from your NNTP server,
-to pushing them to your download server (eg: Sabnzbd+).
+to pushing them to your download server (eg: Sabnzbd+ or NZBGet).
 
 To get up and running quickly, consult the :ref:`quick-start guide
 <quickstart>`, which describes all the necessary steps to install
