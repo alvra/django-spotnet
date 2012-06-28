@@ -7,7 +7,7 @@ and push NZBs to your download server (eg: Sabnzbd+ or NZBGet).
 
 ## Installation
 
-Install with either one of
+Install with
 
     $ pip install django-spotnet
 
