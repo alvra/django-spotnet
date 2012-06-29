@@ -1,12 +1,8 @@
 import logging
+from dateutil.parser import parse as parse_datetime
 from xml.dom.minidom import parseString
 from datetime import datetime, timedelta
 from nzb import decode_nzb, DecodeNzbError
-try:
-    import pytz
-except ImportError:
-    print "Unable to import pytz, so posting datetimes will not contain timezones."  # TODO: log this instead
-    pytz = None
 
 
 class InvalidPost(Exception):
@@ -188,10 +184,6 @@ class RawPost(object):
             d['NZB'] = [d['NZB']]
         return d
 
-    def parse_date(self, date):
-        # p is of form 'Mon, 06 Jun 2011 17:56:39 +0200'
-        return NotImplemented
-
     def decode_string(self, string):
         if string is None or isinstance(string, unicode):
             return string
@@ -199,39 +191,6 @@ class RawPost(object):
             return string.decode('utf8', 'replace')
         else:
             raise TypeError(string)
-
-    def apply_timezone_str(self, dt, tz_str):
-        if tz_str.startswith('+') or tz_str.startswith('-'):
-            assert len(tz_str) == 5
-            offset = timedelta(hours=int(tz_str[1:3]), minutes=int(tz_str[3:5]))
-            if tz_str[0] == '+':
-                dt -= offset
-            else:
-                dt += offset
-            return pytz.utc.localize(dt)
-        else:
-            try:
-                tz = pytz.timezone(tz_str)
-            except (KeyError, pytz.exceptions.UnknownTimeZoneError):
-                pass
-            else:
-                return tz.localize(dt)
-        return None
-
-    def apply_timezone(self, dt):
-        if pytz:
-            date_str = self.content.get('Date', None)
-            if date_str:
-                try:
-                    tz_str = date_str.rsplit(' ', 1)[1]
-                except KeyError:
-                    pass
-                adt = self.apply_timezone_str(dt, tz_str)
-                if adt:
-                    return adt
-            return dt
-        else:
-            return dt
 
     def get_content(self):
         return ''.join(self._rawpost[3][-int(self.content['Lines']):])
@@ -292,14 +251,10 @@ class RawPost(object):
         # that is required, but does not supply time info.
 
         dt_str = self.content['Date']
-        if dt_str.endswith('GMT'):
-            dt = datetime.strptime(dt_str[:20], '%d %b %Y %H:%M:%S')
-        else:
-            dt = datetime.strptime(dt_str[:25], '%a, %d %b %Y %H:%M:%S')
-
-        dt = self.apply_timezone(dt)
-
-        return dt
+        try:
+            return parse_datetime(dt_str)
+        except ValueError:
+            raise InvalidPost('Invalid header value for Date: %r' % dt_str)
 
     @property
     def category(self):

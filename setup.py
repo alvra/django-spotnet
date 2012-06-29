@@ -21,6 +21,9 @@ setup(
         'static/*',
         'locale/*/LC_MESSAGES/*',
     ]},
+    install_requires=[
+        'python-dateutil>=2.1',
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
