@@ -230,7 +230,9 @@ class Connection(object):
         snp = Post.from_raw(raw)
         try:
             snp.save()
-        except IntegrityError:
+        except IntegrityError as e:
+            if str(e) != 'column messageid is not unique':
+                raise
             # this post must already exist
             logger(
                 "Skipped existing post %s: %s"
