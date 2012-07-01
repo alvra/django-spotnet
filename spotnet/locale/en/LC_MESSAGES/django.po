@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 04:11+0200\n"
+"POT-Creation-Date: 2012-07-01 21:54+0200\n"
 "PO-Revision-Date: 2011-03-21 21:14\n"
 "Last-Translator: Alexander van Ratingen <alexandervanratingen@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Translated-Using: django-rosetta 0.5.6\n"
 
-#: actions.py:40 downloadserver/sabnzbd.py:26
+#: actions.py:36 downloadserver/sabnzbd.py:25
 msgid "Delete"
 msgstr "Delete"
 
-#: actions.py:128
+#: actions.py:126
 #, fuzzy
 msgid "Download nzb files"
 msgstr "Downloaded"
 
-#: actions.py:148
+#: actions.py:149
+#, python-format
+msgid ""
+"Could not download nzb for '%s' since it does not exist on the server "
+"anymore."
+msgstr ""
+
+#: actions.py:157
 msgid "Could not download nzbs since no posts were selected."
 msgstr ""
 
-#: actions.py:154 actions.py:162
-msgid "The post you requested to download nzbs from does not exist."
+#: actions.py:165
+msgid "The posts you requested to download nzbs from do not exist."
 msgstr ""
 
-#: actions.py:169
+#: actions.py:171
+msgid "Some of the posts you requested to download nzbs from do not exist."
+msgstr ""
+
+#: actions.py:188
 msgid ""
 "Could not download all nzbs for all posts you requested since some of them "
 "do not exists."
 msgstr ""
 
-#: downloading.py:8
+#: downloading.py:9
 msgid "No description given."
 msgstr ""
 
-#: downloading.py:15
-msgid "An error occured while trying to download a spot"
+#: downloading.py:13
+msgid "An error occured while trying to download a post"
 msgstr ""
 
-#: downloading.py:35
+#: downloading.py:33
 #, fuzzy
 msgid "Downloading failed"
 msgstr "Downloading"
 
-#: downloading.py:37
+#: downloading.py:35
 msgid "Description"
 msgstr ""
 
-#: downloading.py:43
+#: downloading.py:41
 msgid "Details"
 msgstr ""
 
-#: downloading.py:49
+#: downloading.py:48
 msgid "An error in the configuration was detected"
 msgstr ""
 
@@ -70,1413 +81,1363 @@ msgstr ""
 msgid "An error occured while connecting to the download server"
 msgstr ""
 
-#: downloading.py:55
+#: downloading.py:56
 msgid "The requesting user was denied access to the download server"
 msgstr ""
 
-#: downloading.py:58
+#: downloading.py:60
 msgid ""
 "The requesting user was denied access to the download server because he/she "
 "is unauthenticated"
 msgstr ""
 
-#: downloading.py:61
+#: downloading.py:64
 msgid "There was an error when reading/writing the filesystem"
 msgstr ""
 
-#: downloading.py:63
+#: downloading.py:68
 msgid "Downloading failed because the disk is full"
 msgstr ""
 
-#: downloading.py:66
+#: downloading.py:72
 msgid "The nzb file is invalid"
 msgstr ""
 
-#: downloading.py:68
+#: downloading.py:76
 msgid "The nzb file is an empty file"
 msgstr ""
 
-#: downloading.py:71
+#: downloading.py:80
 msgid "The DownloadServer instance failed to handle an exception"
 msgstr ""
 
-#: downloading.py:81
+#: downloading.py:91
 #, python-format
 msgid ""
 "While connecting to the server, got an unexpected http response code: %s"
 msgstr ""
 
-#: downloading.py:83
+#: downloading.py:96
 #, python-format
 msgid "Error while connecting to the server: %s"
 msgstr ""
 
-#: downloading.py:85
+#: downloading.py:101
 msgid "While connecting to the server, got nothing as response"
 msgstr ""
 
-#: models.py:52
+#: fields.py:20
+msgid "Enter only text separated by commas."
+msgstr ""
+
+#: models.py:42
 msgid "Image"
 msgstr "Image"
 
-#: models.py:53
+#: models.py:43
 msgid "Sound"
 msgstr "Sound"
 
-#: models.py:54
+#: models.py:44
 msgid "Game"
 msgstr "Game"
 
-#: models.py:55
+#: models.py:45
 msgid "Application"
 msgstr "Application"
 
-#: models.py:65
-msgid "Spotted"
-msgstr "Spotted"
-
-#: models.py:66
-msgid "Queued"
-msgstr "Queued"
-
-#: models.py:67
-msgid "Downloading"
-msgstr "Downloading"
-
-#: models.py:68 views.py:170 templates/django_spotnet/index.html:11
-#: templates/django_spotnet/list.html:11
-#: templates/django_spotnet/list_related.html:11
-msgid "Downloaded"
-msgstr "Downloaded"
-
-#: models.py:74
+#: models.py:55
 #, fuzzy
 msgid "spotnet post"
 msgstr "Spotnet"
 
-#: models.py:184 models.py:208
+#: models.py:166
 msgid "watched post"
 msgstr ""
 
-#: models.py:222
+#: models.py:187
 #, fuzzy
 msgid "downloaded post"
 msgstr "Downloaded"
 
-#: models.py:238
-msgid "recommended post"
-msgstr ""
-
-#: settings.py:43
+#: settings.py:45
 #, fuzzy
 msgid "image"
 msgstr "Image"
 
-#: settings.py:44
+#: settings.py:46
 #, fuzzy
 msgid "sound"
 msgstr "Sound"
 
-#: settings.py:45
+#: settings.py:47
 msgid "game"
 msgstr ""
 
-#: settings.py:46
+#: settings.py:48
 #, fuzzy
 msgid "application"
 msgstr "Application"
 
-#: settings.py:52 settings.py:59 settings.py:67
+#: settings.py:54 settings.py:61 settings.py:69
 msgid "format"
 msgstr ""
 
-#: settings.py:53 settings.py:60
+#: settings.py:55 settings.py:62
 msgid "source"
 msgstr ""
 
-#: settings.py:54
+#: settings.py:56
 msgid "language"
 msgstr ""
 
-#: settings.py:55 settings.py:62 settings.py:68 settings.py:72
+#: settings.py:57 settings.py:64 settings.py:70 settings.py:74
 msgid "genre"
 msgstr ""
 
-#: settings.py:56 settings.py:63
+#: settings.py:58 settings.py:65
 msgid "type"
 msgstr ""
 
-#: settings.py:61
+#: settings.py:63
 msgid "bitrate"
 msgstr ""
 
-#: settings.py:66 settings.py:71 settings.py:332
+#: settings.py:68 settings.py:73 settings.py:334
 msgid "platform"
 msgstr ""
 
-#: settings.py:80
+#: settings.py:82
 msgid "DivX"
 msgstr ""
 
-#: settings.py:81
+#: settings.py:83
 msgid "wmv"
 msgstr ""
 
-#: settings.py:82
+#: settings.py:84
 msgid "mpg"
 msgstr ""
 
-#: settings.py:83
+#: settings.py:85
 msgid "dvd5"
 msgstr ""
 
-#: settings.py:84
+#: settings.py:86
 msgid "other highdef"
 msgstr ""
 
-#: settings.py:85
+#: settings.py:87
 msgid "ePub"
 msgstr ""
 
-#: settings.py:86
+#: settings.py:88
 msgid "Blu-ray"
 msgstr ""
 
-#: settings.py:87
+#: settings.py:89
 msgid "hd-dvd"
 msgstr ""
 
-#: settings.py:88
+#: settings.py:90
 msgid "wmvhd"
 msgstr ""
 
-#: settings.py:89
+#: settings.py:91
 msgid "x264hd"
 msgstr ""
 
-#: settings.py:90
+#: settings.py:92
 msgid "dvd9"
 msgstr ""
 
-#: settings.py:93
+#: settings.py:95
 msgid "cam"
 msgstr ""
 
-#: settings.py:94
+#: settings.py:96
 msgid "(s)vcd"
 msgstr ""
 
-#: settings.py:95
+#: settings.py:97
 msgid "promo"
 msgstr ""
 
-#: settings.py:96 settings.py:317
+#: settings.py:98 settings.py:319
 msgid "retail"
 msgstr ""
 
-#: settings.py:97
+#: settings.py:99
 msgid "tv"
 msgstr ""
 
-#: settings.py:99
+#: settings.py:101
 msgid "satellite"
 msgstr ""
 
-#: settings.py:100
+#: settings.py:102
 msgid "r5"
 msgstr ""
 
-#: settings.py:101
+#: settings.py:103
 msgid "telecine"
 msgstr ""
 
-#: settings.py:102
+#: settings.py:104
 msgid "telesync"
 msgstr ""
 
-#: settings.py:103
+#: settings.py:105
 msgid "scan"
 msgstr ""
 
-#: settings.py:106
+#: settings.py:108
 #, fuzzy
 msgid "no subtitles"
 msgstr "Subcategories"
 
-#: settings.py:107
+#: settings.py:109
 msgid "dutch subtitled (external)"
 msgstr ""
 
-#: settings.py:108
+#: settings.py:110
 msgid "dutch subtitled (internal)"
 msgstr ""
 
-#: settings.py:109
+#: settings.py:111
 msgid "english subtitled (external)"
 msgstr ""
 
-#: settings.py:110
+#: settings.py:112
 msgid "english subtitled (internal)"
 msgstr ""
 
-#: settings.py:112
+#: settings.py:114
 msgid "dutch subtitled (selectable)"
 msgstr ""
 
-#: settings.py:113
+#: settings.py:115
 msgid "english subtitled (selectable)"
 msgstr ""
 
-#: settings.py:116
+#: settings.py:118
 msgid "english spoken"
 msgstr ""
 
-#: settings.py:117
+#: settings.py:119
 msgid "dutch spoken"
 msgstr ""
 
-#: settings.py:118
+#: settings.py:120
 msgid "german spoken"
 msgstr ""
 
-#: settings.py:119
+#: settings.py:121
 msgid "french spoken"
 msgstr ""
 
-#: settings.py:120
+#: settings.py:122
 msgid "spanish spoken"
 msgstr ""
 
-#: settings.py:123 settings.py:324
+#: settings.py:125 settings.py:326
 #, fuzzy
 msgid "action"
 msgstr "Application"
 
-#: settings.py:124 settings.py:325
+#: settings.py:126 settings.py:327
 msgid "adventure"
 msgstr ""
 
-#: settings.py:125
+#: settings.py:127
 #, fuzzy
 msgid "animation"
 msgstr "Application"
 
-#: settings.py:126 settings.py:249
+#: settings.py:128 settings.py:251
 msgid "cabaret"
 msgstr ""
 
-#: settings.py:127
+#: settings.py:129
 msgid "comedy"
 msgstr ""
 
-#: settings.py:128
+#: settings.py:130
 msgid "crime"
 msgstr ""
 
-#: settings.py:129
+#: settings.py:131
 msgid "documentary"
 msgstr ""
 
-#: settings.py:130
+#: settings.py:132
 msgid "drama"
 msgstr ""
 
-#: settings.py:131 settings.py:341
+#: settings.py:133 settings.py:343
 msgid "family"
 msgstr ""
 
-#: settings.py:132
+#: settings.py:134
 msgid "fantasy"
 msgstr ""
 
-#: settings.py:133
+#: settings.py:135
 msgid "art film"
 msgstr ""
 
-#: settings.py:134
+#: settings.py:136
 msgid "television"
 msgstr ""
 
-#: settings.py:135
+#: settings.py:137
 msgid "horror"
 msgstr ""
 
-#: settings.py:136 settings.py:340
+#: settings.py:138 settings.py:342
 msgid "music"
 msgstr ""
 
-#: settings.py:137
+#: settings.py:139
 msgid "musical"
 msgstr ""
 
-#: settings.py:138
+#: settings.py:140
 #, fuzzy
 msgid "mystery"
 msgstr "Poster"
 
-#: settings.py:139
+#: settings.py:141
 msgid "romance"
 msgstr ""
 
-#: settings.py:140
+#: settings.py:142
 msgid "science fiction"
 msgstr ""
 
-#: settings.py:141 settings.py:333
+#: settings.py:143 settings.py:335
 msgid "sport"
 msgstr ""
 
-#: settings.py:142
+#: settings.py:144
 msgid "short movie"
 msgstr ""
 
-#: settings.py:143
+#: settings.py:145
 msgid "thriller"
 msgstr ""
 
-#: settings.py:144
+#: settings.py:146
 msgid "war"
 msgstr ""
 
-#: settings.py:145
+#: settings.py:147
 #, fuzzy
 msgid "western"
 msgstr "Poster"
 
-#: settings.py:146
+#: settings.py:148
 msgid "erotica (hetero)"
 msgstr ""
 
-#: settings.py:147
+#: settings.py:149
 msgid "erotica (gay men)"
 msgstr ""
 
-#: settings.py:148
+#: settings.py:150
 msgid "erotica (gay women)"
 msgstr ""
 
-#: settings.py:149
+#: settings.py:151
 msgid "erotica (bi)"
 msgstr ""
 
-#: settings.py:151 settings.py:269
+#: settings.py:153 settings.py:271
 msgid "asian"
 msgstr ""
 
-#: settings.py:152
+#: settings.py:154
 msgid "anime"
 msgstr ""
 
-#: settings.py:153
+#: settings.py:155
 msgid "cover"
 msgstr ""
 
-#: settings.py:154
+#: settings.py:156
 msgid "comic"
 msgstr ""
 
-#: settings.py:155
+#: settings.py:157
 msgid "cartoon"
 msgstr ""
 
-#: settings.py:156
+#: settings.py:158
 msgid "study"
 msgstr ""
 
-#: settings.py:157 settings.py:255 settings.py:334
+#: settings.py:159 settings.py:257 settings.py:336
 msgid "kids"
 msgstr ""
 
-#: settings.py:158
+#: settings.py:160
 msgid "business"
 msgstr ""
 
-#: settings.py:159
+#: settings.py:161
 msgid "economics"
 msgstr ""
 
-#: settings.py:160
+#: settings.py:162
 msgid "computer"
 msgstr ""
 
-#: settings.py:161
+#: settings.py:163
 msgid "hobby"
 msgstr ""
 
-#: settings.py:162
+#: settings.py:164
 msgid "cooking"
 msgstr ""
 
-#: settings.py:163
+#: settings.py:165
 msgid "crafts"
 msgstr ""
 
-#: settings.py:164
+#: settings.py:166
 msgid "handwork"
 msgstr ""
 
-#: settings.py:165
+#: settings.py:167
 msgid "health"
 msgstr ""
 
-#: settings.py:166
+#: settings.py:168
 msgid "history"
 msgstr ""
 
-#: settings.py:167
+#: settings.py:169
 msgid "psychology"
 msgstr ""
 
-#: settings.py:168
+#: settings.py:170
 msgid "journal"
 msgstr ""
 
-#: settings.py:169
+#: settings.py:171
 msgid "magazine"
 msgstr ""
 
-#: settings.py:170
+#: settings.py:172
 msgid "science"
 msgstr ""
 
-#: settings.py:171
+#: settings.py:173
 msgid "women"
 msgstr ""
 
-#: settings.py:172
+#: settings.py:174
 msgid "religion"
 msgstr ""
 
-#: settings.py:173
+#: settings.py:175
 msgid "novel"
 msgstr ""
 
-#: settings.py:174
+#: settings.py:176
 msgid "biography"
 msgstr ""
 
-#: settings.py:175
+#: settings.py:177
 msgid "detective"
 msgstr ""
 
-#: settings.py:176
+#: settings.py:178
 msgid "animals"
 msgstr ""
 
-#: settings.py:177
+#: settings.py:179
 msgid "humor"
 msgstr ""
 
-#: settings.py:178
+#: settings.py:180
 msgid "travel"
 msgstr ""
 
-#: settings.py:179
+#: settings.py:181
 msgid "true events"
 msgstr ""
 
-#: settings.py:180
+#: settings.py:182
 msgid "nonfiction"
 msgstr ""
 
-#: settings.py:181
+#: settings.py:183
 msgid "politics"
 msgstr ""
 
-#: settings.py:182
+#: settings.py:184
 msgid "poetry"
 msgstr ""
 
-#: settings.py:183
+#: settings.py:185
 msgid "fairy tale"
 msgstr ""
 
-#: settings.py:184
+#: settings.py:186
 msgid "technics"
 msgstr ""
 
-#: settings.py:185
+#: settings.py:187
 msgid "art"
 msgstr ""
 
-#: settings.py:187
+#: settings.py:189
 msgid "bi"
 msgstr ""
 
-#: settings.py:188
+#: settings.py:190
 msgid "lesbian"
 msgstr ""
 
-#: settings.py:189
+#: settings.py:191
 msgid "gay"
 msgstr ""
 
-#: settings.py:190
+#: settings.py:192
 msgid "hetero"
 msgstr ""
 
-#: settings.py:191
+#: settings.py:193
 msgid "amature"
 msgstr ""
 
-#: settings.py:192
+#: settings.py:194
 msgid "group"
 msgstr ""
 
-#: settings.py:193
+#: settings.py:195
 msgid "pov"
 msgstr ""
 
-#: settings.py:194
+#: settings.py:196
 msgid "solo"
 msgstr ""
 
-#: settings.py:195
+#: settings.py:197
 msgid "young"
 msgstr ""
 
-#: settings.py:196
+#: settings.py:198
 msgid "soft"
 msgstr ""
 
-#: settings.py:197
+#: settings.py:199
 msgid "fetish"
 msgstr ""
 
-#: settings.py:198
+#: settings.py:200
 msgid "old"
 msgstr ""
 
-#: settings.py:199
+#: settings.py:201
 msgid "fat"
 msgstr ""
 
-#: settings.py:200
+#: settings.py:202
 msgid "sm"
 msgstr ""
 
-#: settings.py:201
+#: settings.py:203
 msgid "rough"
 msgstr ""
 
-#: settings.py:202
+#: settings.py:204
 msgid "dark"
 msgstr ""
 
-#: settings.py:203
+#: settings.py:205
 msgid "hentai"
 msgstr ""
 
-#: settings.py:204
+#: settings.py:206
 msgid "outside"
 msgstr ""
 
-#: settings.py:207
+#: settings.py:209
 msgid "movie"
 msgstr ""
 
-#: settings.py:208
+#: settings.py:210
 msgid "series"
 msgstr ""
 
-#: settings.py:209
+#: settings.py:211
 msgid "book"
 msgstr ""
 
-#: settings.py:210
+#: settings.py:212
 msgid "erotica"
 msgstr ""
 
-#: settings.py:215
+#: settings.py:217
 msgid "mp3"
 msgstr ""
 
-#: settings.py:216
+#: settings.py:218
 msgid "wma"
 msgstr ""
 
-#: settings.py:217
+#: settings.py:219
 msgid "wav"
 msgstr ""
 
-#: settings.py:218
+#: settings.py:220
 msgid "ogg"
 msgstr ""
 
-#: settings.py:219
+#: settings.py:221
 msgid "eac"
 msgstr ""
 
-#: settings.py:220
+#: settings.py:222
 msgid "dts"
 msgstr ""
 
-#: settings.py:221
+#: settings.py:223
 msgid "aac"
 msgstr ""
 
-#: settings.py:222
+#: settings.py:224
 msgid "ape"
 msgstr ""
 
-#: settings.py:223
+#: settings.py:225
 msgid "flac"
 msgstr ""
 
-#: settings.py:226
+#: settings.py:228
 msgid "cd"
 msgstr ""
 
-#: settings.py:227
+#: settings.py:229
 msgid "radio"
 msgstr ""
 
-#: settings.py:228 settings.py:248
+#: settings.py:230 settings.py:250
 #, fuzzy
 msgid "compilation"
 msgstr "Application"
 
-#: settings.py:229
+#: settings.py:231
 msgid "dvd"
 msgstr ""
 
-#: settings.py:231
+#: settings.py:233
 msgid "vinyl"
 msgstr ""
 
-#: settings.py:232
+#: settings.py:234
 msgid "stream"
 msgstr ""
 
-#: settings.py:235
+#: settings.py:237
 msgid "variable"
 msgstr ""
 
-#: settings.py:236
+#: settings.py:238
 msgid "< 96k"
 msgstr ""
 
-#: settings.py:237
+#: settings.py:239
 msgid "96k"
 msgstr ""
 
-#: settings.py:238
+#: settings.py:240
 msgid "128k"
 msgstr ""
 
-#: settings.py:239
+#: settings.py:241
 msgid "160k"
 msgstr ""
 
-#: settings.py:240
+#: settings.py:242
 msgid "192k"
 msgstr ""
 
-#: settings.py:241
+#: settings.py:243
 msgid "256k"
 msgstr ""
 
-#: settings.py:242
+#: settings.py:244
 msgid "320k"
 msgstr ""
 
-#: settings.py:243
+#: settings.py:245
 msgid "lossless"
 msgstr ""
 
-#: settings.py:247
+#: settings.py:249
 msgid "blues"
 msgstr ""
 
-#: settings.py:250
+#: settings.py:252
 msgid "dance"
 msgstr ""
 
-#: settings.py:251
+#: settings.py:253
 #, fuzzy
 msgid "various"
 msgstr "Previous"
 
-#: settings.py:252
+#: settings.py:254
 msgid "hardcore"
 msgstr ""
 
-#: settings.py:253
+#: settings.py:255
 msgid "world"
 msgstr ""
 
-#: settings.py:254
+#: settings.py:256
 msgid "jazz"
 msgstr ""
 
-#: settings.py:256
+#: settings.py:258
 msgid "classic"
 msgstr ""
 
-#: settings.py:257
+#: settings.py:259
 msgid "preforming"
 msgstr ""
 
-#: settings.py:258
+#: settings.py:260
 msgid "dutch"
 msgstr ""
 
-#: settings.py:259
+#: settings.py:261
 msgid "new age"
 msgstr ""
 
-#: settings.py:260
+#: settings.py:262
 msgid "pop"
 msgstr ""
 
-#: settings.py:261
+#: settings.py:263
 msgid "r&b"
 msgstr ""
 
-#: settings.py:262
+#: settings.py:264
 msgid "hiphop"
 msgstr ""
 
-#: settings.py:263
-msgid "reggae"
-msgstr ""
-
-#: settings.py:264
-#, fuzzy
-msgid "religious"
-msgstr "Previous"
-
 #: settings.py:265
-msgid "rock"
+msgid "reggae"
 msgstr ""
 
 #: settings.py:266
 #, fuzzy
+msgid "religious"
+msgstr "Previous"
+
+#: settings.py:267
+msgid "rock"
+msgstr ""
+
+#: settings.py:268
+#, fuzzy
 msgid "soundtrack"
 msgstr "Sound"
 
-#: settings.py:268
+#: settings.py:270
 msgid "hardstyle"
 msgstr ""
 
-#: settings.py:270
+#: settings.py:272
 msgid "disco"
 msgstr ""
 
-#: settings.py:271
+#: settings.py:273
 msgid "classics"
 msgstr ""
 
-#: settings.py:272
+#: settings.py:274
 msgid "metal"
 msgstr ""
 
-#: settings.py:273
+#: settings.py:275
 msgid "country"
 msgstr ""
 
-#: settings.py:274
+#: settings.py:276
 msgid "dubstep"
 msgstr ""
 
-#: settings.py:275
+#: settings.py:277
 msgid "dutch hiphop"
 msgstr ""
 
-#: settings.py:276
+#: settings.py:278
 msgid "drum&bass"
 msgstr ""
 
-#: settings.py:277
+#: settings.py:279
 msgid "electro"
 msgstr ""
 
-#: settings.py:278
+#: settings.py:280
 msgid "folk"
 msgstr ""
 
-#: settings.py:279
+#: settings.py:281
 msgid "soul"
 msgstr ""
 
-#: settings.py:280
+#: settings.py:282
 msgid "trance"
 msgstr ""
 
-#: settings.py:281
+#: settings.py:283
 msgid "balkan"
 msgstr ""
 
-#: settings.py:282
+#: settings.py:284
 msgid "techno"
 msgstr ""
 
-#: settings.py:283
+#: settings.py:285
 msgid "ambient"
 msgstr ""
 
-#: settings.py:284
+#: settings.py:286
 #, fuzzy
 msgid "latin"
 msgstr "Application"
 
-#: settings.py:285
+#: settings.py:287
 msgid "live"
 msgstr ""
 
-#: settings.py:288
+#: settings.py:290
 msgid "album"
 msgstr ""
 
-#: settings.py:289
+#: settings.py:291
 msgid "liveset"
 msgstr ""
 
-#: settings.py:290
+#: settings.py:292
 msgid "podcast"
 msgstr ""
 
-#: settings.py:291
+#: settings.py:293
 msgid "audiobook"
 msgstr ""
 
-#: settings.py:296 settings.py:346
+#: settings.py:298 settings.py:348
 msgid "windows"
 msgstr ""
 
-#: settings.py:297 settings.py:347
+#: settings.py:299 settings.py:349
 msgid "mac"
 msgstr ""
 
-#: settings.py:298 settings.py:348
+#: settings.py:300 settings.py:350
 msgid "unix"
 msgstr ""
 
-#: settings.py:299
+#: settings.py:301
 msgid "ps"
 msgstr ""
 
-#: settings.py:300
+#: settings.py:302
 msgid "ps2"
 msgstr ""
 
-#: settings.py:301
+#: settings.py:303
 msgid "psp"
 msgstr ""
 
-#: settings.py:302
+#: settings.py:304
 msgid "xbox"
 msgstr ""
 
-#: settings.py:303
+#: settings.py:305
 msgid "360"
 msgstr ""
 
-#: settings.py:304
+#: settings.py:306
 msgid "gba"
 msgstr ""
 
-#: settings.py:305
+#: settings.py:307
 msgid "gc"
 msgstr ""
 
-#: settings.py:306
+#: settings.py:308
 msgid "nds"
 msgstr ""
 
-#: settings.py:307
+#: settings.py:309
 msgid "Wii"
 msgstr ""
 
-#: settings.py:308
+#: settings.py:310
 msgid "ps3"
 msgstr ""
 
-#: settings.py:309 settings.py:350
+#: settings.py:311 settings.py:352
 msgid "windows phone"
 msgstr ""
 
-#: settings.py:310 settings.py:352
+#: settings.py:312 settings.py:354
 msgid "iOS"
 msgstr ""
 
-#: settings.py:311 settings.py:353
+#: settings.py:313 settings.py:355
 msgid "android"
 msgstr ""
 
-#: settings.py:312
+#: settings.py:314
 msgid "3ds"
 msgstr ""
 
-#: settings.py:315
+#: settings.py:317
 msgid "iso"
 msgstr ""
 
-#: settings.py:316
+#: settings.py:318
 msgid "rip"
 msgstr ""
 
-#: settings.py:318
+#: settings.py:320
 msgid "dlc"
 msgstr ""
 
-#: settings.py:320
+#: settings.py:322
 msgid "patch"
 msgstr ""
 
-#: settings.py:321
+#: settings.py:323
 msgid "crack"
 msgstr ""
 
-#: settings.py:326
+#: settings.py:328
 #, fuzzy
 msgid "strategy"
 msgstr "Category"
 
-#: settings.py:327
+#: settings.py:329
 msgid "roleplay"
 msgstr ""
 
-#: settings.py:328
+#: settings.py:330
 msgid "simulation"
 msgstr ""
 
-#: settings.py:329
+#: settings.py:331
 msgid "race"
 msgstr ""
 
-#: settings.py:330
+#: settings.py:332
 msgid "flying"
 msgstr ""
 
-#: settings.py:331
+#: settings.py:333
 msgid "shooter"
 msgstr ""
 
-#: settings.py:335
+#: settings.py:337
 msgid "puzzle"
 msgstr ""
 
-#: settings.py:337
+#: settings.py:339
 msgid "bordgame"
 msgstr ""
 
-#: settings.py:338
+#: settings.py:340
 msgid "cards"
 msgstr ""
 
-#: settings.py:339
+#: settings.py:341
 #, fuzzy
 msgid "education"
 msgstr "Application"
 
-#: settings.py:349
+#: settings.py:351
 msgid "os/2"
 msgstr ""
 
-#: settings.py:351
+#: settings.py:353
 msgid "nav"
 msgstr ""
 
-#: settings.py:356
+#: settings.py:358
 msgid "audio"
 msgstr ""
 
-#: settings.py:357
+#: settings.py:359
 msgid "video"
 msgstr ""
 
-#: settings.py:358
+#: settings.py:360
 msgid "graphics"
 msgstr ""
 
-#: settings.py:359
+#: settings.py:361
 msgid "cd/dvd tools"
 msgstr ""
 
-#: settings.py:360
+#: settings.py:362
 msgid "media players"
 msgstr ""
 
-#: settings.py:361
+#: settings.py:363
 msgid "rippers & encoders"
 msgstr ""
 
-#: settings.py:362
+#: settings.py:364
 msgid "plugins"
 msgstr ""
 
-#: settings.py:363
+#: settings.py:365
 msgid "database tools"
 msgstr ""
 
-#: settings.py:364
+#: settings.py:366
 msgid "email software"
 msgstr ""
 
-#: settings.py:365
+#: settings.py:367
 msgid "picture managers"
 msgstr ""
 
-#: settings.py:366
+#: settings.py:368
 msgid "screensavers"
 msgstr ""
 
-#: settings.py:367
+#: settings.py:369
 msgid "skins"
 msgstr ""
 
-#: settings.py:368
+#: settings.py:370
 msgid "drivers"
 msgstr ""
 
-#: settings.py:369
+#: settings.py:371
 msgid "browsers"
 msgstr ""
 
-#: settings.py:370
+#: settings.py:372
 #, fuzzy
 msgid "download managers"
 msgstr "Downloading"
 
-#: settings.py:371
+#: settings.py:373
 #, fuzzy
 msgid "download"
 msgstr "Download"
 
-#: settings.py:372
+#: settings.py:374
 msgid "usenet software"
 msgstr ""
 
-#: settings.py:373
+#: settings.py:375
 msgid "rss readers"
 msgstr ""
 
-#: settings.py:374
+#: settings.py:376
 msgid "ftp software"
 msgstr ""
 
-#: settings.py:375
+#: settings.py:377
 msgid "firewalls"
 msgstr ""
 
-#: settings.py:376
+#: settings.py:378
 msgid "antivirus"
 msgstr ""
 
-#: settings.py:377
+#: settings.py:379
 msgid "antispyware"
 msgstr ""
 
-#: settings.py:378
+#: settings.py:380
 msgid "optimization software"
 msgstr ""
 
-#: settings.py:379
+#: settings.py:381
 msgid "security software"
 msgstr ""
 
-#: settings.py:380
+#: settings.py:382
 msgid "system software"
 msgstr ""
 
-#: settings.py:382
+#: settings.py:384
 #, fuzzy
 msgid "educational"
 msgstr "Application"
 
-#: settings.py:383
+#: settings.py:385
 msgid "office"
 msgstr ""
 
-#: settings.py:384
-msgid "internet"
-msgstr ""
-
-#: settings.py:385
-#, fuzzy
-msgid "communication"
-msgstr "Application"
-
 #: settings.py:386
-msgid "development"
+msgid "internet"
 msgstr ""
 
 #: settings.py:387
 #, fuzzy
+msgid "communication"
+msgstr "Application"
+
+#: settings.py:388
+msgid "development"
+msgstr ""
+
+#: settings.py:389
+#, fuzzy
 msgid "spotnet"
 msgstr "Spotnet"
 
-#: subcategories.py:8
+#: subcategories.py:5
 msgid "unknown"
 msgstr ""
 
-#: views.py:171
+#: views.py:205 templates/spotnet/navigator.html:6
+msgid "Downloaded"
+msgstr "Downloaded"
+
+#: views.py:207
 msgid "Remove from list"
 msgstr ""
 
-#: views.py:182 templates/django_spotnet/index.html:12
-#: templates/django_spotnet/list.html:12
-#: templates/django_spotnet/list_related.html:12
-msgid "Watching"
-msgstr ""
-
-#: views.py:183
-msgid "Unwatch"
-msgstr ""
-
-#: views.py:193 templates/django_spotnet/list.html:14
-msgid "Recommendations made"
-msgstr ""
-
-#: views.py:203 templates/django_spotnet/index.html:13
-#: templates/django_spotnet/list.html:13
-#: templates/django_spotnet/list_related.html:13
-msgid "Recommended"
-msgstr ""
-
-#: downloadserver/sabnzbd.py:23 templates/django_spotnet/viewpost.html:62
-#: templates/django_spotnet/viewpost.html:64
+#: downloadserver/sabnzbd.py:22 templates/spotnet/viewpost.html:63
+#: templates/spotnet/viewpost.html.py:65
 msgid "Download"
 msgstr "Download"
 
-#: downloadserver/sabnzbd.py:24
+#: downloadserver/sabnzbd.py:23
 msgid "Repair"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:25
+#: downloadserver/sabnzbd.py:24
 msgid "Unpack"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:29
+#: downloadserver/sabnzbd.py:28
 msgid "Low"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:30
+#: downloadserver/sabnzbd.py:29
 msgid "Normal"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:31
+#: downloadserver/sabnzbd.py:30
 msgid "High"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:32
+#: downloadserver/sabnzbd.py:31
 msgid "Force"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:115
+#: downloadserver/sabnzbd.py:118
 #, python-format
 msgid ""
 "Successfully added nzb file to Sabnzbd server, it was added under the name "
 "'%(id)s'."
 msgstr ""
 
-#: downloadserver/sabnzbd.py:117
+#: downloadserver/sabnzbd.py:123
 #, python-format
 msgid ""
 "Successfully added '%(name)s' to Sabnzbd server, it was added under the name "
 "'%(id)s'."
 msgstr ""
 
-#: downloadserver/sabnzbd.py:119 downloadserver/sabnzbd.py:130
+#: downloadserver/sabnzbd.py:128 downloadserver/sabnzbd.py:144
 #, python-format
 msgid "An unknown error occured, response was: %s"
 msgstr ""
 
-#: downloadserver/sabnzbd.py:128
+#: downloadserver/sabnzbd.py:139
 #, python-format
 msgid ""
 "Successfully added url '%(url)s' to Sabnzbd server, it was added under the "
 "name '%(id)s'."
 msgstr ""
 
-#: downloadserver/watchfolder.py:47
+#: downloadserver/watchfolder.py:53
 #, python-format
 msgid ""
 "Successfully placed nzb file in watchfolder, it was added under the name "
 "'%(id)s'."
 msgstr ""
 
-#: downloadserver/watchfolder.py:49
+#: downloadserver/watchfolder.py:58
 #, python-format
 msgid ""
 "Successfully placed '%(name)s' in watchfolder, it was added under the name "
 "'%(id)s'."
 msgstr ""
 
-#: templates/django_spotnet/base.html:62
-msgid "Omesium"
-msgstr ""
+#: templates/spotnet/base.html:11
+msgid "Spotnet"
+msgstr "Spotnet"
 
-#: templates/django_spotnet/base.html:62
-msgid "Beta"
-msgstr ""
-
-#: templates/django_spotnet/base.html:76
-#, fuzzy
-msgid "No title!"
-msgstr "Subcategories"
-
-#: templates/django_spotnet/base.html:76
+#: templates/spotnet/base.html:17
 #, fuzzy
 msgid "No content!"
 msgstr "No comments yet!"
 
-#: templates/django_spotnet/base.html:79
-msgid "Copyright"
-msgstr ""
+#: templates/spotnet/list.html:6
+#, fuzzy
+msgid "Posts"
+msgstr "Poster"
 
-#: templates/django_spotnet/base.html:79
-msgid "Valid HTML5"
-msgstr ""
-
-#: templates/django_spotnet/index.html:6 templates/django_spotnet/list.html:6
-#: templates/django_spotnet/list_related.html:6
-msgid "Spotnet"
-msgstr "Spotnet"
-
-#: templates/django_spotnet/index.html:9 templates/django_spotnet/list.html:9
-#: templates/django_spotnet/list.html:53
-#: templates/django_spotnet/list_related.html:9
-msgid "Go"
-msgstr ""
-
-#: templates/django_spotnet/index.html:17
-#: templates/django_spotnet/search_pane.html:10
-msgid "Filter category"
-msgstr "Filter category"
-
-#: templates/django_spotnet/index.html:20
-#: templates/django_spotnet/search_pane.html:13
-#: templates/django_spotnet/search_pane.html:29
-msgid "All"
-msgstr ""
-
-#: templates/django_spotnet/index.html:37
-#: templates/django_spotnet/list.html:27
-#: templates/django_spotnet/list_related.html:22
+#: templates/spotnet/list.html:16 templates/spotnet/list_related.html:14
 msgid "Title"
 msgstr "Title"
 
-#: templates/django_spotnet/index.html:38
-#: templates/django_spotnet/list.html:28
-#: templates/django_spotnet/list_related.html:23
+#: templates/spotnet/list.html:17 templates/spotnet/list_related.html:15
 msgid "Poster"
 msgstr "Poster"
 
-#: templates/django_spotnet/index.html:39
-#: templates/django_spotnet/list.html:29
-#: templates/django_spotnet/list_related.html:24
-#: templates/django_spotnet/viewpost.html:21
+#: templates/spotnet/list.html:18 templates/spotnet/list_related.html:16
+#: templates/spotnet/viewpost.html:20
 msgid "Category"
 msgstr "Category"
 
-#: templates/django_spotnet/index.html:40
-#: templates/django_spotnet/list.html:30
-#: templates/django_spotnet/list_related.html:25
+#: templates/spotnet/list.html:19 templates/spotnet/list_related.html:17
 msgid "Posted"
 msgstr "Posted"
 
-#: templates/django_spotnet/index.html:41
-#: templates/django_spotnet/list.html:31
-#: templates/django_spotnet/list_related.html:26
-msgid "State"
-msgstr "State"
-
-#: templates/django_spotnet/index.html:56
-#: templates/django_spotnet/list.html:46
+#: templates/spotnet/list.html:33
 msgid "No posts in database!"
 msgstr "No posts in database!"
 
-#: templates/django_spotnet/index.html:56
-#: templates/django_spotnet/list.html:46
+#: templates/spotnet/list.html:33
 msgid "Try updating."
 msgstr "Try updating."
 
-#: templates/django_spotnet/list_related.html:41
+#: templates/spotnet/list.html:40 templates/spotnet/list_related.html:38
+#: templates/spotnet/navigator.html:3
+msgid "Go"
+msgstr ""
+
+#: templates/spotnet/list_related.html:31
 msgid "Nothing here!"
 msgstr ""
 
-#: templates/django_spotnet/paginate.html:6
-#: templates/django_spotnet/paginate.html:8
-#: templates/django_spotnet/paginate_full.html:5
-#: templates/django_spotnet/paginate_full.html:7
+#: templates/spotnet/navigator.html:5
+msgid "Index"
+msgstr ""
+
+#: templates/spotnet/paginate.html:6 templates/spotnet/paginate.html.py:8
+#: templates/spotnet/paginate_full.html:5
+#: templates/spotnet/paginate_full.html:7
 msgid "Previous"
 msgstr "Previous"
 
-#: templates/django_spotnet/paginate.html:12
-#: templates/django_spotnet/paginate.html:14
-#: templates/django_spotnet/paginate_full.html:17
-#: templates/django_spotnet/paginate_full.html:19
+#: templates/spotnet/paginate.html:12 templates/spotnet/paginate.html.py:14
+#: templates/spotnet/paginate_full.html:17
+#: templates/spotnet/paginate_full.html:19
 msgid "Next"
 msgstr "Next"
 
-#: templates/django_spotnet/search_pane.html:5
+#: templates/spotnet/search_pane.html:5
 msgid "Search"
 msgstr ""
 
-#: templates/django_spotnet/search_pane.html:26
+#: templates/spotnet/search_pane.html:10
+msgid "Filter category"
+msgstr "Filter category"
+
+#: templates/spotnet/search_pane.html:13 templates/spotnet/search_pane.html:29
+msgid "All"
+msgstr ""
+
+#: templates/spotnet/search_pane.html:26
 #, fuzzy
 msgid "Filter subcategory"
 msgstr "Filter category"
 
-#: templates/django_spotnet/viewpost.html:6
-msgid "View post"
-msgstr "View post"
+#: templates/spotnet/viewpost.html:6
+#, fuzzy
+msgid "Post"
+msgstr "Poster"
 
-#: templates/django_spotnet/viewpost.html:10
+#: templates/spotnet/viewpost.html:9
 msgid "Posted by"
 msgstr "Posted by"
 
-#: templates/django_spotnet/viewpost.html:10
+#: templates/spotnet/viewpost.html:9
 msgid "On"
 msgstr "On"
 
-#: templates/django_spotnet/viewpost.html:16
+#: templates/spotnet/viewpost.html:15
 msgid "Tag"
 msgstr "Tag"
 
-#: templates/django_spotnet/viewpost.html:26
+#: templates/spotnet/viewpost.html:25
 msgid "Website"
 msgstr "Website"
 
-#: templates/django_spotnet/viewpost.html:31
+#: templates/spotnet/viewpost.html:31
 msgid "Size"
 msgstr "Size"
 
-#: templates/django_spotnet/viewpost.html:35
-#: templates/django_spotnet/viewpost.html:44
+#: templates/spotnet/viewpost.html:36 templates/spotnet/viewpost.html.py:45
 msgid "Subcategories"
 msgstr "Subcategories"
 
-#: templates/django_spotnet/viewpost.html:39
+#: templates/spotnet/viewpost.html:40
 msgid "Has nzb"
 msgstr "Has nzb"
 
-#: templates/django_spotnet/viewpost.html:40
+#: templates/spotnet/viewpost.html:41
 msgid "True"
 msgstr "True"
 
-#: templates/django_spotnet/viewpost.html:40
+#: templates/spotnet/viewpost.html:41
 msgid "False"
 msgstr "False"
 
-#: templates/django_spotnet/viewpost.html:53
+#: templates/spotnet/viewpost.html:54
 #, fuzzy
 msgid "No subcategories"
 msgstr "Subcategories"
 
-#: templates/django_spotnet/viewpost.html:82
+#: templates/spotnet/viewpost.html:83
 msgid "Comments"
 msgstr "Comments"
 
-#: templates/django_spotnet/viewpost.html:87
+#: templates/spotnet/viewpost.html:88
 msgid "No comments yet!"
 msgstr "No comments yet!"
 
-#: templates/django_spotnet/viewpost.html:89
+#: templates/spotnet/viewpost.html:90
 msgid "Post comment"
 msgstr "Post comment"
+
+#~ msgid "Spotted"
+#~ msgstr "Spotted"
+
+#~ msgid "Queued"
+#~ msgstr "Queued"
+
+#~ msgid "Downloading"
+#~ msgstr "Downloading"
+
+#, fuzzy
+#~ msgid "No title!"
+#~ msgstr "Subcategories"
+
+#~ msgid "State"
+#~ msgstr "State"
+
+#~ msgid "View post"
+#~ msgstr "View post"
 
 #~ msgid "Objects"
 #~ msgstr "Objects"
