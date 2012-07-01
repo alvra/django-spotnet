@@ -66,7 +66,7 @@ def get_paginate_template():
 
 @authenticate
 def search(request, search=None, cats=None, scats=None):
-    page = request.GET.get('page', 1)
+    page_number = request.GET.get('page', 1)
     searcher = Searcher(search, cats, scats)
     snps = Post.objects.order_by('-posted')
     snps = searcher.filter_queryset(snps)
@@ -87,10 +87,14 @@ def search(request, search=None, cats=None, scats=None):
         allow_empty_first_page=True,
         orphans=0,
     )
-    try:
-        page = paginator.page(page)
-    except InvalidPage, EmptyPage:
-        raise Http404
+
+    if page_number == "last":
+        page = paginator.page(paginator.num_pages)
+    else:
+        try:
+            page = paginator.page(page_number)
+        except InvalidPage, EmptyPage:
+            raise Http404
     return render(
         request,
         'spotnet/list.html',
