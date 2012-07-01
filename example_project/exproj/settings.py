@@ -144,6 +144,28 @@ else:
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
+try:
+    import rosetta
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS += ('rosetta',)
+
+    def custom_show_toolbar(request):   
+        from django.conf import settings
+        return settings.DEBUG  \
+           and not request.path.startswith('/rosetta') \
+           and not request.path.startswith('/admin')
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+        'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+        'EXTRA_SIGNALS': [],
+        'HIDE_DJANGO_SQL': False,
+        'TAG': 'body',
+    }
+
+
 # ips to show debug_toolbar on
 INTERNAL_IPS = ('127.0.0.1',)
 
