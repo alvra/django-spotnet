@@ -198,14 +198,19 @@ class RawPost(object):
     def check_content_is_nzb(self):
         if self._content_is_nzb is None:
             content = self.get_content()
-            try:
-                # TODO: yenc decoding and possibly some more
-                # because this alone never seems to work
-                decode_nzb(content)
-            except DecodeNzbError:
-                self._content_is_nzb = False
+            if content.startswith('=ybegin'):
+                try:
+                    # TODO: yenc decoding and possibly some more
+                    # because this alone never seems to work
+                    ydecoded = content  # TODO
+                    decode_nzb(ydecoded)
+                except DecodeNzbError:
+                    self._content_is_nzb = False
+                else:
+                    self._content_is_nzb = True
+                self._content_is_nzb = True  # TODO
             else:
-                self._content_is_nzb = True
+                self._content_is_nzb = False
         return self._content_is_nzb
 
     # public properties

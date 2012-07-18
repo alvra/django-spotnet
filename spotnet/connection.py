@@ -103,6 +103,9 @@ class Connection(object):
                 # TODO: find a way to check if we're really disconnected
                 # and rethrow the exception if not
                 pass
+            except socket.error as e:
+                if e.errno != errno.EPIPE:
+                    raise
             self._nntp = None
 
     def update(self, logger=noop):
