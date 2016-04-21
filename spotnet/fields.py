@@ -45,7 +45,8 @@ class StringSetField(models.CharField):
             raise TypeError("StringSetField.get_prep_value got an invalid type!")
 
     def value_to_string(self, obj):
-        return ', '.join(obj)
+        value = self.value_from_object(obj)
+        return ', '.join(value)
 
     def formfield(self, **kwargs):
         return StringSetFormField(**kwargs)
